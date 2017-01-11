@@ -9,6 +9,7 @@ INDEX(phaseC),
 PRIMARY KEY(mainName))ENGINE MyISAM;
 
 
+
 CREATE TABLE SecondaryMain(
 secondaryName VARCHAR(6),
 phaseA FLOAT(6,3),
