@@ -1,0 +1,238 @@
+CREATE TABLE PrimaryMain(
+mainName VARCHAR(6),
+phaseA FLOAT(6,3),
+phaseB FLOAT(6,3),
+phaseC FLOAT(6,3),
+INDEX(phaseA),
+INDEX(phaseB),
+INDEX(phaseC),
+PRIMARY KEY(mainName))ENGINE MyISAM;
+
+
+CREATE TABLE SecondaryMain(
+secondaryName VARCHAR(6),
+phaseA FLOAT(6,3),
+phaseB FLOAT(6,3),
+phaseC FLOAT(6,3),
+INDEX(phaseA),
+INDEX(phaseB),
+INDEX(phaseC),
+PRIMARY KEY(SecondaryName))ENGINE MyISAM;
+
+
+
+CREATE TABLE PrimaryPanel(
+panelName VARCHAR(7),
+mainName VARCHAR(6),
+INDEX(mainName),
+PRIMARY KEY(panelName)) ENGINE MyISAM;
+
+
+CREATE TABLE SecondaryPanel(
+panelName VARCHAR(7),
+mainName VARCHAR(6),
+INDEX(mainName),
+PRIMARY KEY(panelName)) ENGINE MyISAM;
+
+
+
+CREATE TABLE PrimaryRPP(
+rppName VARCHAR(8),
+panelName VARCHAR(7),
+INDEX(panelName),
+PRIMARY KEY(rppName)) ENGINE MyISAM;
+
+CREATE TABLE SecondaryRPP(
+rppName VARCHAR(8),
+panelName VARCHAR(7),
+INDEX(panelName),
+PRIMARY KEY(rppName)) ENGINE MyISAM;
+
+
+CREATE TABLE PrimarySection(
+panelName VARCHAR(7),
+PhaseA SMALLINT(2),
+PhaseB SMALLINT(2),
+PhaseC SMALLINT(2),
+Phase_Left_A SMALLINT(2),
+Phase_Left_B SMALLINT(2),
+Phase_Left_C SMALLINT(2),
+INDEX(panelName))ENGINE MyISAM;
+
+CREATE TABLE SecondarySection(
+panelName VARCHAR(7),
+PhaseA SMALLINT(2),
+PhaseB SMALLINT(2),
+PhaseC SMALLINT(2),
+Phase_Left_A SMALLINT(2),
+Phase_Left_B SMALLINT(2),
+Phase_Left_C SMALLINT(2),
+INDEX(panelName))ENGINE MyISAM;
+
+CREATE TABLE PrimaryPowerProduct(
+sID SMALLINT(6),
+cID SMALLINT(6),
+panelName VARCHAR(7),
+productName VARCHAR(18),
+mau FLOAT(5,3),
+mac FLOAT(5,3),
+row SMALLINT(2),
+cab SMALLINT(2),
+INDEX(mau),
+INDEX(mac),
+INDEX(row),
+INDEX(cab),
+PRIMARY KEY(sID))ENGINE MyISAM;
+
+
+CREATE TABLE SecondaryPowerProduct(
+sID SMALLINT(6),
+cID SMALLINT(6),
+panelName VARCHAR(7),
+productName VARCHAR(18),
+mau FLOAT(5,3),
+mac FLOAT(5,3),
+row SMALLINT(2),
+cab SMALLINT(2),
+INDEX(mau),
+INDEX(mac),
+INDEX(row),
+INDEX(cab),
+PRIMARY KEY(sID))ENGINE MyISAM;
+
+
+CREATE TABLE PrimaryPhase(
+sID SMALLINT(6),
+cID SMALLINT(6),
+amps SMALLINT(2),
+numberOfPhases SMALLINT(2),
+phaseLetter VARCHAR(3),
+circuitWatts FLOAT(7,3),
+perPhaseVa FLOAT(7,3),
+perPhaseWatts FLOAT(7,3),
+ratio_A FLOAT(4,3),
+allowedWatts_A FLOAT(7,3),
+totalWatts_A FLOAT(7,3),
+circuitPhaseVa_A FLOAT(7,3),
+totalPhaseVa_A FLOAT(7,3),
+circuitPhaseWatts_A FLOAT(7,3),
+totalPhaseWatts_A FLOAT(7,3),
+ratio_B FLOAT(4,3),
+allowedWatts_B FLOAT(7,3),
+totalWatts_B FLOAT(7,3),
+circuitPhaseVa_B FLOAT(7,3),
+totalPhaseVa_B FLOAT(7,3),
+circuitPhaseWatts_B FLOAT(7,3),
+totalPhaseWatts_B FLOAT(7,3),
+ratio_C FLOAT(4,3),
+allowedWatts_C FLOAT(7,3),
+totalWatts_C FLOAT(7,3),
+circuitPhaseVa_C FLOAT(7,3),
+totalPhaseVa_C FLOAT(7,3),
+circuitPhaseWatts_C FLOAT(7,3),
+totalPhaseWatts_C FLOAT(7,3),
+INDEX(sID),
+INDEX(cID))ENGINE MyISAM;
+
+CREATE TABLE SecondaryPhase(
+sID SMALLINT(6),
+cID SMALLINT(6),
+amps SMALLINT(2),
+numberOfPhases SMALLINT(2),
+phaseLetter VARCHAR(3),
+circuitWatts FLOAT(7,3),
+perPhaseVa FLOAT(7,3),
+perPhaseWatts FLOAT(7,3),
+ratio_A FLOAT(4,3),
+allowedWatts_A FLOAT(7,3),
+totalWatts_A FLOAT(7,3),
+circuitPhaseVa_A FLOAT(7,3),
+totalPhaseVa_A FLOAT(7,3),
+circuitPhaseWatts_A FLOAT(7,3),
+totalPhaseWatts_A FLOAT(7,3),
+ratio_B FLOAT(4,3),
+allowedWatts_B FLOAT(7,3),
+totalWatts_B FLOAT(7,3),
+circuitPhaseVa_B FLOAT(7,3),
+totalPhaseVa_B FLOAT(7,3),
+circuitPhaseWatts_B FLOAT(7,3),
+totalPhaseWatts_B FLOAT(7,3),
+ratio_C FLOAT(4,3),
+allowedWatts_C FLOAT(7,3),
+totalWatts_C FLOAT(7,3),
+circuitPhaseVa_C FLOAT(7,3),
+totalPhaseVa_C FLOAT(7,3),
+circuitPhaseWatts_C FLOAT(7,3),
+totalPhaseWatts_C FLOAT(7,3),
+INDEX(sID),
+INDEX(cID))ENGINE MyISAM;
+
+CREATE TABLE SpaceProduct(
+spaceID SMALLINT(6),
+cID SMALLINT(6),
+cage FLOAT(4,1),
+row SMALLINT(2),
+cab SMALLINT(2),
+INDEX(cID),
+INDEX(row),
+INDEX(cab),
+PRIMARY KEY(spaceID)) ENGINE MyISAM;
+
+CREATE TABLE Customer(
+cID SMALLINT(6),
+name VARCHAR(55),
+sID SMALLINT(6),
+spaceID SMALLINT(6),
+INDEX(cID),
+INDEX(sID))ENGINE MyISAM;
+
+-----------------------------------------------------------------------------------------------------------------
+												NOTES
+-----------------------------------------------------------------------------------------------------------------
+-For circuitPhaseWatts and fields that have FLOAT(7,3), float value might need to be changed later on.
+-cab SMALLLINT(2), might need to be changed later on for a possible 3 digits? might cause an issue later on.
+-numberOfPhases needs to be changed to SMALLINT(1).
+
+
+
+
+
+
+-------------------------------
+CREATE TABLE classics (
+author VARCHAR(128),
+title VARCHAR(128),
+category VARCHAR(16),
+year SMALLINT,
+INDEX(author(20)),
+INDEX(title(20)),
+INDEX(category(4)),
+INDEX(year)) ENGINE MyISAM;
+
+
+
+ALTER TABLE classics ADD isbn CHAR(13) PRIMARY KEY; //works fine if no values have been inserted.
+
+//primary keys and indexes created at the beginning.
+CREATE TABLE classics (
+author VARCHAR(128),
+title VARCHAR(128),
+category VARCHAR(16),
+year SMALLINT,
+isbn CHAR(13),
+INDEX(author(20)),
+INDEX(title(20)),
+INDEX(category(4)),
+INDEX(year),
+PRIMARY KEY (isbn)) ENGINE MyISAM;
+
+----------------------
+Example 8-29. Joining two tables into a single SELECT
+SELECT name,author,title from customers,classics
+WHERE customers.isbn=classics.isbn;
+
+Using NATURAL JOIN, you can save yourself some typing and make queries a little clearer.
+This kind of join takes two tables and automatically joins columns that have the same
+name. So, to achieve the same results as from Example 8-29, you would enter:
+SELECT name,author,title FROM customers NATURAL JOIN classics;
+
