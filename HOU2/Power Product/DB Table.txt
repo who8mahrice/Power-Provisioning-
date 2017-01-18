@@ -9,7 +9,6 @@ INDEX(phaseC),
 PRIMARY KEY(mainName))ENGINE MyISAM;
 
 
-
 CREATE TABLE SecondaryMain(
 secondaryName VARCHAR(6),
 phaseA FLOAT(6,3),
@@ -23,14 +22,14 @@ PRIMARY KEY(SecondaryName))ENGINE MyISAM;
 
 
 CREATE TABLE PrimaryPanel(
-panelName VARCHAR(7),
+panelName VARCHAR(8),
 mainName VARCHAR(6),
 INDEX(mainName),
 PRIMARY KEY(panelName)) ENGINE MyISAM;
 
 
 CREATE TABLE SecondaryPanel(
-panelName VARCHAR(7),
+panelName VARCHAR(8),
 mainName VARCHAR(6),
 INDEX(mainName),
 PRIMARY KEY(panelName)) ENGINE MyISAM;
@@ -45,13 +44,13 @@ PRIMARY KEY(rppName)) ENGINE MyISAM;
 
 CREATE TABLE SecondaryRPP(
 rppName VARCHAR(8),
-panelName VARCHAR(7),
+panelName VARCHAR(8),
 INDEX(panelName),
 PRIMARY KEY(rppName)) ENGINE MyISAM;
 
 
 CREATE TABLE PrimarySection(
-panelName VARCHAR(7),
+panelName VARCHAR(8),
 PhaseA SMALLINT(2),
 PhaseB SMALLINT(2),
 PhaseC SMALLINT(2),
@@ -61,7 +60,7 @@ Phase_Left_C SMALLINT(2),
 INDEX(panelName))ENGINE MyISAM;
 
 CREATE TABLE SecondarySection(
-panelName VARCHAR(7),
+panelName VARCHAR(8),
 PhaseA SMALLINT(2),
 PhaseB SMALLINT(2),
 PhaseC SMALLINT(2),
@@ -73,12 +72,14 @@ INDEX(panelName))ENGINE MyISAM;
 CREATE TABLE PrimaryPowerProduct(
 sID SMALLINT(6),
 cID SMALLINT(6),
-panelName VARCHAR(7),
+panelName VARCHAR(8),
 productName VARCHAR(18),
 mau FLOAT(5,3),
 mac FLOAT(5,3),
+cage FLOAT(4,1),
 row SMALLINT(2),
 cab SMALLINT(2),
+numberOfPhases SMALLINT(2),
 INDEX(mau),
 INDEX(mac),
 INDEX(row),
@@ -89,12 +90,14 @@ PRIMARY KEY(sID))ENGINE MyISAM;
 CREATE TABLE SecondaryPowerProduct(
 sID SMALLINT(6),
 cID SMALLINT(6),
-panelName VARCHAR(7),
+panelName VARCHAR(8),
 productName VARCHAR(18),
 mau FLOAT(5,3),
 mac FLOAT(5,3),
+cage FLOAT(4,1),
 row SMALLINT(2),
 cab SMALLINT(2),
+numberOfPhases SMALLINT(2),
 INDEX(mau),
 INDEX(mac),
 INDEX(row),
@@ -174,6 +177,8 @@ cID SMALLINT(6),
 cage FLOAT(4,1),
 row SMALLINT(2),
 cab SMALLINT(2),
+mau FLOAT(5,3),
+mac FLOAT(5,3),
 INDEX(cID),
 INDEX(row),
 INDEX(cab),
@@ -193,7 +198,8 @@ INDEX(sID))ENGINE MyISAM;
 -For circuitPhaseWatts and fields that have FLOAT(7,3), float value might need to be changed later on.
 -cab SMALLLINT(2), might need to be changed later on for a possible 3 digits? might cause an issue later on.
 -numberOfPhases needs to be changed to SMALLINT(1).
-
+-panelName changed from VARCHAR(7) to VARCHAR(8) because 1A-P1-10 is 8 chars
+ ALTER TABLE primarypanel MODIFY panelName VARCHAR(8);
 
 
 
@@ -236,4 +242,67 @@ Using NATURAL JOIN, you can save yourself some typing and make queries a little 
 This kind of join takes two tables and automatically joins columns that have the same
 name. So, to achieve the same results as from Example 8-29, you would enter:
 SELECT name,author,title FROM customers NATURAL JOIN classics;
+
+
+
+
+ALTER TABLE primarypowerproduct ADD mac FLOAT(5,3);
+
+ALTER TABLE primarypowerproduct ADD mau FLOAT(5,3);
+
+ALTER TABLE primarypowerproduct ADD cage FLOAT(4,1);
+
+ALTER TABLE primarypowerproduct ADD row SMALLINT(2);
+
+ALTER TABLE primarypowerproduct ADD numberOfPhases SMALLINT(2);
+
+
+ALTER TABLE secondarypowerproduct ADD mac FLOAT(5,3);
+
+ALTER TABLE secondarypowerproduct ADD mau FLOAT(5,3);
+
+ALTER TABLE secondarypowerproduct ADD cage FLOAT(4,1);
+
+ALTER TABLE secondarypowerproduct ADD row SMALLINT(2);
+
+ALTER TABLE secondarypowerproduct ADD numberOfPhases SMALLINT(2);
+
+
+ALTER TABLE spaceproduct ADD mac FLOAT(5,3);
+
+ALTER TABLE spaceproduct ADD mau FLOAT(5,3);
+
+
+
+
+ALTER TABLE primarypowerproduct CHANGE sID power_sID smallint(6);
+
+ALTER TABLE primarypowerproduct CHANGE productName powerType varchar(11);
+
+ALTER TABLE secondarypowerproduct CHANGE sID power_sID smallint(6);
+
+ALTER TABLE secondarypowerproduct CHANGE productName power_type varchar(11);
+
+ALTER TABLE primaryphase CHANGE sID power_sID smallint(6);
+
+ALTER TABLE secondaryphase CHANGE sID power_sID smallint(6);
+
+ALTER TABLE customer DROP spaceID;
+
+ALTER TABLE customer DROP sID;
+
+
+
+ALTER TABLE spaceproduct CHANGE cage spaceType float(4,1);
+
+ALTER TABLE spaceproduct CHANGE spaceID space_sID smallint(6);
+
+ALTER TABLE primarypowerproduct CHANGE power_type powerType varchar(11);
+
+ALTER TABLE secondarypowerproduct CHANGE power_type powerType varchar(11);
+
+ADD COLUMN location VARCHAR(7) after spaceType;
+
+
+
 
