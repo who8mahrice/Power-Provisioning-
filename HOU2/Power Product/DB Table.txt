@@ -303,6 +303,9 @@ ALTER TABLE secondarypowerproduct CHANGE power_type powerType varchar(11);
 
 ADD COLUMN location VARCHAR(7) after spaceType;
 
+ALTER TABLE customer CHANGE name customerName varchar(55);
 
 
+
+ALTER TABLE classics ADD id INT UNSIGNED NOT NULL AUTO_INCREMENT KEY;
 
