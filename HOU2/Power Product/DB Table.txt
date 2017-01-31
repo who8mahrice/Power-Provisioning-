@@ -309,3 +309,6 @@ ALTER TABLE customer CHANGE name customerName varchar(55);
 
 ALTER TABLE classics ADD id INT UNSIGNED NOT NULL AUTO_INCREMENT KEY;
 
+
+ALTER TABLE spaceproduct ADD COLUMN mau float(5,2) AFTER spaceType;
+
