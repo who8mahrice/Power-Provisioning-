@@ -33,11 +33,12 @@ if (isset($_POST['primaryAdd'])){
 			$primaryCab = $_POST['primaryCab'];
 			$primaryMau = $_POST['primaryMau'];
 			
+			calculatePrimaryPower($primaryCid, $primarySid, $primaryPowerType, $primaryPhaseLetters,$primaryLocation, $primaryRow, $primaryCab, $primaryMau, $connection);
 
 			addPrimaryPower($primaryCid,$primarySid,$primaryPanel,$primaryPowerType,$primaryMau,$primaryLocation,$primaryRow,$primaryCab,$connection);
 
 
-
+			
 
 
 /* Works great here
@@ -126,7 +127,12 @@ if (isset($_POST['secondaryAdd'])){
 }
 End of works great here */
 
+
+		calculateSecondaryPower($secondaryCid, $secondarySid, $secondaryPowerType, $secondaryPhaseLetters,$secondaryLocation, $secondaryRow, $secondaryCab, $secondaryMau, $connection);
+
 		addSecondaryPower($secondaryCid,$secondarySid,$secondaryPanel,$secondaryPowerType,$secondaryMau,$secondaryLocation,$secondaryRow,$secondaryCab,$connection);
+
+		//calculateSecondaryPower($secondaryCid, $secondarySid, $secondaryPowerType, $secondaryPhaseLetters, $secondaryMau, $connection);
 
 		}
 		else{
@@ -134,39 +140,638 @@ End of works great here */
 		}
 }
 
+//function calculatePrimaryPower($primaryCid,$primarySid,$primaryPowerType,$primaryPhaseLetters,$primaryMau){
 
-function calculatePrimaryPower($primaryCid,$primarySid,$primaryPowerType,$primaryPhaseLetters,$primaryMau){
+function calculatePrimaryPower($primaryCid, $primarySid, $primaryPowerType, $primaryPhaseLetters,$primaryLocation, $primaryRow, $primaryCab, $primaryMau, $connection){
 
+	$previousValues = false;
+	$previousValueA = false;
+	$previousValueB = false;
+	$previousValueC = false;
+
+	$primaryPhaseLetter = explode( "," , $primaryPhaseLetters);
+	$numOfPhases = count($primaryPhaseLetter);
+	$primaryAmps = (int)substr($primaryPowerType,0, -4);
+	$mau = $primaryMau;
+
+	$circuit_watts_calc = $primaryAmps*120*pow(sqrt(3),$numOfPhases-1)*0.8;
+	$per_phase_va_calc = 120*$primaryAmps*0.8;
+	$per_phase_watts_calc = $circuit_watts_calc/$numOfPhases;
+
+
+
+
+
+	// $sql to query the lastest cab power product that was inserted 
+	$checkCabs = "SELECT sID, cID, location, row, cab FROM primarypowerproduct where cID=$primaryCid AND location=$primaryLocation AND row=$primaryRow AND cab=$primaryCab ORDER BY sID DESC LIMIT 1" ;
+	$result = $connection->query($checkCabs);
+
+	if ($result->num_rows > 0) { //(
+		$previousValues = true;
+	    // output data of each row
+	    while($row = $result->fetch_assoc()) {
+
+	    	$sid = $row["sID"];
+	    	echo $sid.'<br>';
+	  }
+	} //)
 	
+	if ($previousValues == true){
+	$sqlPhase = "SELECT sID, numberOfPhases, phaseLetter, ratio_A,  totalWatts_A, totalPhaseVa_A, totalPhaseWatts_A, ratio_B,  totalWatts_B ,  totalPhaseVa_B ,  totalPhaseWatts_B , ratio_C,  totalWatts_C , totalPhaseVa_C , totalPhaseWatts_C FROM primaryphase where sID=$sid";
 
-/*
-	$sql = "INSERT INTO primaryphase (cID, sID, panelName, power_type, mau, location, row, cab)VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+	$result = $connection->query($sqlPhase);
+
+	if ($result->num_rows > 0) {
+	    // output data of each row
+	    while($row = $result->fetch_assoc()) {
+
+	    $aa =$row["numberOfPhases"];
+		$ratioAs =$row["ratio_A"];
+		$totalWattsAs =$row["totalWatts_A"];
+		$totalPhaseVaAs =$row["totalPhaseVa_A"];
+		$totalPhaseWattsAs =$row["totalPhaseWatts_A"];
+		$ratioBs =$row["ratio_B"];
+		$totalWattsBs =$row["totalWatts_B"];
+		$totalPhaseVaBs =$row["totalPhaseVa_B"];
+		$totalPhaseWattsBs =$row["totalPhaseWatts_B"];
+		$ratioCs =$row["ratio_C"];
+		$totalWattsCs =$row["totalWatts_C"];
+		$totalPhaseVaCs =$row["totalPhaseVa_C"];
+		$totalPhaseWattsCs = $row["totalPhaseWatts_C"];
+		
+
+
+
+		//list($a, $ratioA, $totalWattsA, $totalPhaseVaA, $totalPhaseWattsA, $ratioB, $totalWattsB, $totalPhaseVaB, $totalPhaseWattsB, $ratioC, $totalWattsC, $totalPhaseVaC, $totalPhaseWattsC) = returner($aa, $ratioAs,$totalWattsAs,$totalPhaseVaAs,$totalPhaseWattsAs,$ratioBs,$totalWattsBs,$totalPhaseVaBs,$totalPhaseWattsBs,$ratioCs,$totalWattsCs,$totalPhaseVaCs,$totalPhaseWattsCs);
+
+		list($a,$ratioA,$totalWattsA,$totalPhaseVaA,$totalPhaseWattsA,$ratioB,$totalWattsB,$totalPhaseVaB,$totalPhaseWattsB,$ratioC,$totalWattsC,$totalPhaseVaC,$totalPhaseWattsC) = returner($aa,$ratioAs, $totalWattsAs,$totalPhaseVaAs,$totalPhaseWattsAs,$ratioBs,$totalWattsBs,$totalPhaseVaBs,$totalPhaseWattsBs,$ratioCs,$totalWattsCs,$totalPhaseVaCs,$totalPhaseWattsCs);
+
+	    	//echo "sID: " . $row["sID"]. " numberOfPhases: ".$row["numberOfPhases"]." ratio_A: " . $row["ratio_A"]. " totalWatts_A: " . $row["totalWatts_A"]." totalPhaseVa_A: ".$row["totalPhaseVa_A"]." totalPhaseWatts_A: ".$row["totalPhaseWatts_A"]. " ratio_B: " . $row["ratio_B"]. " totalWatts_B: ".$row["totalWatts_B"]."  totalPhaseVa_B: " . $row["totalPhaseVa_B"]. " totalPhaseWatts_B: " . $row["totalPhaseWatts_B"]." ratio_C: ".$row["ratio_C"]." totalWatts_C: ".$row["totalWatts_C"]."   totalPhaseVa_C: " . $row["totalPhaseVa_C"]. " totalPhaseWatts_C: " . $row["totalPhaseWatts_C"]."<br>";
+
+	  } // end of while
+
+	 //echo 'Singles: '.$a.' '.$ratioA.' '.$totalWattsA.' '.$totalPhaseVaA.' '.$totalPhaseWattsA.' '.$ratioB.' '.$totalWattsB.' '.$totalPhaseVaB.' '.$totalPhaseWattsB.' '.$ratioC.' '.$totalWattsC.' '.$totalPhaseVaC.' '.$totalPhaseWattsC.'<br>';
+
+
+	 	foreach($primaryPhaseLetter as $item) {		
+
+			if($item == 'A'){
+				//echo 'This is for Phase A '.'<br>';
+				$previousValueA = true;
+
+				 $pair_ratio_calc_A = min($circuit_watts_calc,($circuit_watts_calc-max($totalWattsAs + $circuit_watts_calc-$mau,0)))/$circuit_watts_calc;   // Takes previous_total_watts
+
+				 $pair_allowed_watts_calc_A =  $pair_ratio_calc_A * $circuit_watts_calc;
+
+				 $pair_total_watts_calc_A = $totalWattsAs +  $pair_ratio_calc_A * $circuit_watts_calc;   // Takes previous_total_watts
+
+				 $pair_circuit_phase_va_calc_A = $pair_ratio_calc_A * $per_phase_va_calc;
+
+
+				 $pair_total_phase_va_calc_A = $totalPhaseVaAs  + $pair_circuit_phase_va_calc_A;   // Takes prvious_total_phase_va
+
+				 $pair_circuit_phase_watts_calc_A = $pair_ratio_calc_A * $per_phase_watts_calc;
+
+
+				 $pair_total_phase_watts_calc_A = $totalPhaseWattsAs + $pair_circuit_phase_watts_calc_A;  // Takes prvious_total_phase_watts
+
+				 echo 'This is for Phase A'.' pair_ratio_calc_A: '.$pair_ratio_calc_A.' pair_allowed_watts_calc_A: '.$pair_allowed_watts_calc_A.' pair_total_watts_calc_A: '.$pair_total_watts_calc_A.' pair_circuit_phase_va_calc_A: '.$pair_circuit_phase_va_calc_A.' pair_total_phase_va_calc_A: '.$pair_total_phase_va_calc_A.' pair_circuit_phase_watts_calc_A: '.$pair_circuit_phase_watts_calc_A.' pair_total_phase_watts_calc_A: '.$pair_total_phase_watts_calc_A.'<br>'.'<br>';
+
+			}
+			else if ($item == 'B'){
+				//echo 'This is for Phase B'.'<br>';
+				$previousValueB = true;
+
+				$pair_ratio_calc_B = min($circuit_watts_calc,($circuit_watts_calc-max($totalWattsBs + $circuit_watts_calc-$mau,0)))/$circuit_watts_calc;   // Takes previous_total_watts
+
+				 $pair_allowed_watts_calc_B =  $pair_ratio_calc_B * $circuit_watts_calc;
+
+				 $pair_total_watts_calc_B = $totalWattsBs +  $pair_ratio_calc_B * $circuit_watts_calc;   // Takes previous_total_watts
+
+				 $pair_circuit_phase_va_calc_B = $pair_ratio_calc_B * $per_phase_va_calc;
+
+
+				 $pair_total_phase_va_calc_B = $totalPhaseVaBs  + $pair_circuit_phase_va_calc_B;   // Takes prvious_total_phase_va
+
+				 $pair_circuit_phase_watts_calc_B = $pair_ratio_calc_B * $per_phase_watts_calc;
+
+
+				 $pair_total_phase_watts_calc_B = $totalPhaseWattsBs + $pair_circuit_phase_watts_calc_B;  // Takes prvious_total_phase_watts
+
+				 echo 'This is for Phase B'.' pair_ratio_calc_B: '.$pair_ratio_calc_B.' pair_allowed_watts_calc_B: '.$pair_allowed_watts_calc_B.' pair_total_watts_calc_B: '.$pair_total_watts_calc_B.' pair_circuit_phase_va_calc_B: '.$pair_circuit_phase_va_calc_B.' pair_total_phase_va_calc_B: '.$pair_total_phase_va_calc_B.' pair_circuit_phase_watts_calc_B: '.$pair_circuit_phase_watts_calc_B.' pair_total_phase_watts_calc_B: '.$pair_total_phase_watts_calc_B.'<br>'.'<br>';
+
+			}
+			else if ($item == 'C'){
+				//echo 'This is for Phase C'.'<br>';
+				$previousValueC = true;
+
+				$pair_ratio_calc_C = min($circuit_watts_calc,($circuit_watts_calc-max($totalWattsCs + $circuit_watts_calc-$mau,0)))/$circuit_watts_calc;   // Takes previous_total_watts
+
+				 $pair_allowed_watts_calc_C =  $pair_ratio_calc_C * $circuit_watts_calc;
+
+				 $pair_total_watts_calc_C = $totalWattsCs +  $pair_ratio_calc_C * $circuit_watts_calc;   // Takes previous_total_watts
+
+				 $pair_circuit_phase_va_calc_C = $pair_ratio_calc_C * $per_phase_va_calc;
+
+
+				 $pair_total_phase_va_calc_C = $totalPhaseVaCs  + $pair_circuit_phase_va_calc_C;   // Takes prvious_total_phase_va
+
+				 $pair_circuit_phase_watts_calc_C = $pair_ratio_calc_C * $per_phase_watts_calc;
+
+
+				 $pair_total_phase_watts_calc_C = $totalPhaseWattsCs + $pair_circuit_phase_watts_calc_C;  // Takes prvious_total_phase_watts
+
+				 echo 'This is for Phase C'.' pair_ratio_calc_C: '.$pair_ratio_calc_C.' pair_allowed_watts_calc_C: '.$pair_allowed_watts_calc_C.' pair_total_watts_calc_C: '.$pair_total_watts_calc_C.' pair_circuit_phase_va_calc_C: '.$pair_circuit_phase_va_calc_C.' pair_total_phase_va_calc_C: '.$pair_total_phase_va_calc_C.' pair_circuit_phase_watts_calc_C: '.$pair_circuit_phase_watts_calc_C.' pair_total_phase_watts_calc_C: '.$pair_total_phase_watts_calc_C.'<br>'.'<br>';
+
+			}
+			else {
+				echo 'Something wong here';
+			}
+		
+		} // end of for
+
+	} else {
+	    echo "sID is not in the Primary Phase Table".'<br>';
+		}
+	}
+	else {
+		echo 'No previous values here'.'<br>';
+		$ratio_calc = min($circuit_watts_calc,($circuit_watts_calc-max($circuit_watts_calc-$mau,0)))/$circuit_watts_calc; // will need to add previous current values of total watts here: max(PREVIOUS_TOTAL_WATTS + $circuit_watts_calc-$mau,0)
+	    $allowed_watts_calc =  $ratio_calc * $circuit_watts_calc;
+	    $total_watts_calc =  $ratio_calc * $circuit_watts_calc; // will need to add previous current values of total watts here: PREVIOUS_TOTAL_WATTS + $ratio_calc * $circuit_watts_calc
+	    $circuit_phase_va_calc = $ratio_calc * $per_phase_va_calc; // Number for subtraction
+	    $total_phase_va_calc = $circuit_phase_va_calc;// number for subtraction.  Will need to add previous current values of total phase va here: PREVIOUS_TOTAL_PHASE_VA  + $circuit_phase_va
+	    $circuit_phase_watts_calc = $ratio_calc * $per_phase_watts_calc;
+	    $total_phase_watts_calc = $circuit_phase_watts_calc;// will need to add previous current values of total phase watts here: TOTAL_PHASE_WATTS + $circuit_phase_watts.
+	}
+
+
+   // echo '# of Phases: '.$numOfPhases.'<br>'.'# of amps: '.$primaryAmps.'<br>'.'MAU: '.$mau.'<br>'.'Circuit Watts: '.$circuit_watts_calc.'<br>'. 'Per phase va: '.$per_phase_va_calc.'<br>'.'Per phase watts: '.$per_phase_va_calc.'<br>'.'Ratio: '.$ratio_calc.'<br>'. 'Allowed watts: '.$allowed_watts_calc.'<br>'.'Total watts: '.$total_watts_calc.'<br>'.'Circuit phase va: '.$circuit_phase_va_calc.'<br>'.'Total phase va: '.$total_phase_va_calc.'<br>'.'Circuit phase watts: '.$circuit_phase_watts_calc.'<br>'.'Total phase watts: '.$total_phase_watts_calc.'<br>'; 
+
+
+    $sql = "INSERT INTO primaryphase (cID, sID, amps, numberOfPhases, phaseLetter, circuitWatts, perPhaseVa, perPhaseWatts,ratio_A, allowedWatts_A, totalWatts_A, circuitPhaseVa_A, totalPhaseVa_A, circuitPhaseWatts_A, totalPhaseWatts_A, ratio_B, allowedWatts_B , totalWatts_B , circuitPhaseVa_B , totalPhaseVa_B , circuitPhaseWatts_B , totalPhaseWatts_B , ratio_C, allowedWatts_C , totalWatts_C , circuitPhaseVa_C , totalPhaseVa_C , circuitPhaseWatts_C , totalPhaseWatts_C)VALUES(?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+   
+
+	// echo '# of Phases: '.$numOfPhases . ' # of AMPs: '.$amps.' MAU: '.$mau;
 
 	 if($stmt = mysqli_prepare($connection, $sql)){
     // Bind variables to the prepared statement as parameters
-    mysqli_stmt_bind_param($stmt,"ssssisss", $cID,$sID,$panelName,$power_type,$mau,$location,$row,$cab);
+	mysqli_stmt_bind_param($stmt,"ssiisdddddddddddddddddddddddd", $cID, $sID, $amps, $numberOfPhases, $phaseLetter, $circuitWatts, $perPhaseVa, $perPhaseWatts, $ratio_A, $allowedWatts_A, $totalWatts_A, $circuitPhaseVa_A, $totalPhaseVa_A, $circuitPhaseWatts_A, $totalPhaseWatts_A, $ratio_B, $allowedWatts_B , $totalWatts_B , $circuitPhaseVa_B , $totalPhaseVa_B , $circuitPhaseWatts_B , $totalPhaseWatts_B , $ratio_C, $allowedWatts_C , $totalWatts_C , $circuitPhaseVa_C , $totalPhaseVa_C , $circuitPhaseWatts_C , $totalPhaseWatts_C);
 
-    
 
-    		$cID = $primaryCid;
-			$sID = $primarySid;
-			$panelName = $primaryPanel;
-			$power_type = $primaryPowerType;
-			$mau = $primaryMau;
-			$location = $primaryLocation;
-			$row = $primaryRow;
-			$cab = $primaryCab;
+
+		$cID = $primaryCid;
+		$sID = $primarySid;
+		$amps = $primaryAmps;
+		$numberOfPhases = $numOfPhases;
+		$phaseLetter = $primaryPhaseLetters; // $primaryPhaseLetters with an s at the end is coming from GUI. $primaryPhaseLetter w/o the s is an array to for the foreach below.
+		$circuitWatts = $circuit_watts_calc;
+		$perPhaseVa = $per_phase_va_calc;
+		$perPhaseWatts = $per_phase_watts_calc; 
+
+		// Assigns which phases get values in the DB
+		foreach($primaryPhaseLetter as $item){
+			echo 'Phase '.$item.'<br>';			
+
+			if($item == 'A'){
+				if ($previousValueA == true){
+					echo 'New pair of A has been set'.'<br>';
+
+					$ratio_A = $pair_ratio_calc_A;
+					$allowedWatts_A = $pair_allowed_watts_calc_A;
+					$totalWatts_A = $pair_total_watts_calc_A;
+					$circuitPhaseVa_A = $pair_circuit_phase_va_calc_A;
+					$totalPhaseVa_A = $pair_total_phase_va_calc_A;
+					$circuitPhaseWatts_A = $pair_circuit_phase_watts_calc_A;
+					$totalPhaseWatts_A = $pair_total_phase_watts_calc_A;
+
+				} else{
+					echo 'Values of A has been set'.'<br>';
+					$ratio_A = $ratio_calc;
+					$allowedWatts_A = $allowed_watts_calc;
+					$totalWatts_A = $total_watts_calc;
+					$circuitPhaseVa_A = $circuit_phase_va_calc;
+					$totalPhaseVa_A = $total_phase_va_calc;
+					$circuitPhaseWatts_A = $circuit_phase_watts_calc;
+					$totalPhaseWatts_A = $total_phase_watts_calc;
+
+					echo 'Values of A has been set'.' ratio_A '.$ratio_A.' allowedWatts_A '.$allowedWatts_A.' totalWatts_A '.$totalWatts_A.' circuitPhaseVa_A '.$circuitPhaseVa_A.' totalPhaseVa_A '.$totalPhaseVa_A.' circuitPhaseWatts_A '.$circuitPhaseWatts_A.' totalPhaseWatts_A '.$totalPhaseWatts_A.'<br>';
+				}
+			}
+			else if ($item == 'B'){
+				if ($previousValueB == true){
+					echo 'New pair of B has been set'.'<br>';
+
+					$ratio_B = $pair_ratio_calc_B;
+					$allowedWatts_B = $pair_allowed_watts_calc_B;
+					$totalWatts_B = $pair_total_watts_calc_B;
+					$circuitPhaseVa_B = $pair_circuit_phase_va_calc_B;
+					$totalPhaseVa_B = $pair_total_phase_va_calc_B;
+					$circuitPhaseWatts_B = $pair_circuit_phase_watts_calc_B;
+					$totalPhaseWatts_B = $pair_total_phase_watts_calc_B;
+
+				}else{
+					echo 'Values of B has been set'.'<br>';
+					$ratio_B = $ratio_calc;
+					$allowedWatts_B = $allowed_watts_calc;
+					$totalWatts_B = $total_watts_calc;
+					$circuitPhaseVa_B = $circuit_phase_va_calc;
+					$totalPhaseVa_B = $total_phase_va_calc;
+					$circuitPhaseWatts_B = $circuit_phase_watts_calc;
+					$totalPhaseWatts_B = $total_phase_watts_calc;
+					echo 'Values of B has been set'.' ratio_B '.$ratio_B.' allowedWatts_B '.$allowedWatts_B.' totalWatts_B '.$totalWatts_B.' circuitPhaseVa_B '.$circuitPhaseVa_B.' totalPhaseVa_B '.$totalPhaseVa_B.' circuitPhaseWatts_B '.$circuitPhaseWatts_B.' totalPhaseWatts_B '.$totalPhaseWatts_B.'<br>';
+				}
+			}
+			else if ($item == 'C'){
+
+				if ($previousValueC == true){
+					echo 'New pair of C has been set'.'<br>';
+					$ratio_C = $pair_ratio_calc_C;
+					$allowedWatts_C = $pair_allowed_watts_calc_C;
+					$totalWatts_C = $pair_total_watts_calc_C;
+					$circuitPhaseVa_C = $pair_circuit_phase_va_calc_C;
+					$totalPhaseVa_C = $pair_total_phase_va_calc_C;
+					$circuitPhaseWatts_C = $pair_circuit_phase_watts_calc_C;
+					$totalPhaseWatts_C = $pair_total_phase_watts_calc_C;
+
+				}else{
+					//echo 'Values of C has been set'.'<br>';
+					$ratio_C = $ratio_calc;
+					$allowedWatts_C = $allowed_watts_calc;
+					$totalWatts_C = $total_watts_calc;
+					$circuitPhaseVa_C = $circuit_phase_va_calc;
+					$totalPhaseVa_C = $total_phase_va_calc;
+					$circuitPhaseWatts_C = $circuit_phase_watts_calc;
+					$totalPhaseWatts_C = $total_phase_watts_calc;
+					echo 'Values of C has been set'.' ratio_C '.$ratio_C.' allowedWatts_C '.$allowedWatts_C.' totalWatts_C '.$totalWatts_C.' circuitPhaseVa_C '.$circuitPhaseVa_C.' totalPhaseVa_C '.$totalPhaseVa_C.' circuitPhaseWatts_C '.$circuitPhaseWatts_C.' totalPhaseWatts_C '.$totalPhaseWatts_C.'<br>';
+				}
+			}
+			else {
+				echo 'Something wong here';
+			}
+		
+		}
+
+/*
+ 	 //To insert NULL VALUES, if not by default		
+		 if($counter != 3 ){
+		 	$differenceInArrays = array_diff($emptyArray,$testPhase);
+			 print_r($differenceInArrays);
+			 echo '<br>';
+			 echo '<br>';
+
+			 // ************************* change this to Switch statements *************************
+		 	foreach($differenceInArrays as $nulls){
+		 		if($nulls == 'A'){
+						echo 'NULL values of A has been set'.'<br>';
+					}
+					else if ($nulls == 'B'){
+						echo 'NULL values of B has been set'.'<br>';
+					}
+					else if ($nulls == 'C'){
+						echo 'NULL values of C has been set'.'<br>';
+					}
+					else {
+						echo 'Something wong here in NULLS';
+					}
+				}
+ 		}
+*/ 
+
+
+
 			mysqli_stmt_execute($stmt);
 
 	    echo "Records inserted successfully.";
-	} else{
+
+	} 
+
+	else{
 	    echo "ERROR: Could not prepare query: $sql. " . mysqli_error($connection);
 	}
 
 	mysqli_stmt_close($stmt);
-*/
+
 
 }
+
+
+
+function calculateSecondaryPower($secondaryCid, $secondarySid, $secondaryPowerType, $secondaryPhaseLetters,$secondaryLocation, $secondaryRow, $secondaryCab, $secondaryMau, $connection){
+
+	$previousValues = false;
+	$previousValueA = false;
+	$previousValueB = false;
+	$previousValueC = false;
+
+	$secondaryPhaseLetter = explode( "," , $secondaryPhaseLetters);
+	$numOfPhases = count($secondaryPhaseLetter);
+	$secondaryAmps = (int)substr($secondaryPowerType,0, -4);
+	$mau = $secondaryMau;
+
+	$circuit_watts_calc = $secondaryAmps*120*pow(sqrt(3),$numOfPhases-1)*0.8;
+	$per_phase_va_calc = 120*$secondaryAmps*0.8;
+	$per_phase_watts_calc = $circuit_watts_calc/$numOfPhases;
+
+
+
+
+
+	// $sql to query the lastest cab power product that was inserted 
+	$checkCabs = "SELECT sID, cID, location, row, cab FROM secondarypowerproduct where cID=$secondaryCid AND location=$secondaryLocation AND row=$secondaryRow AND cab=$secondaryCab ORDER BY sID DESC LIMIT 1" ;
+	$result = $connection->query($checkCabs);
+
+	if ($result->num_rows > 0) { //(
+		$previousValues = true;
+	    // output data of each row
+	    while($row = $result->fetch_assoc()) {
+
+	    	$sid = $row["sID"];
+	    	echo $sid.'<br>';
+	  }
+	} //)
+	
+	if ($previousValues == true){
+	$sqlPhase = "SELECT sID, numberOfPhases, phaseLetter, ratio_A,  totalWatts_A, totalPhaseVa_A, totalPhaseWatts_A, ratio_B,  totalWatts_B ,  totalPhaseVa_B ,  totalPhaseWatts_B , ratio_C,  totalWatts_C , totalPhaseVa_C , totalPhaseWatts_C FROM secondaryphase where sID=$sid";
+
+	$result = $connection->query($sqlPhase);
+
+	if ($result->num_rows > 0) {
+	    // output data of each row
+	    while($row = $result->fetch_assoc()) {
+
+	    $aa =$row["numberOfPhases"];
+		$ratioAs =$row["ratio_A"];
+		$totalWattsAs =$row["totalWatts_A"];
+		$totalPhaseVaAs =$row["totalPhaseVa_A"];
+		$totalPhaseWattsAs =$row["totalPhaseWatts_A"];
+		$ratioBs =$row["ratio_B"];
+		$totalWattsBs =$row["totalWatts_B"];
+		$totalPhaseVaBs =$row["totalPhaseVa_B"];
+		$totalPhaseWattsBs =$row["totalPhaseWatts_B"];
+		$ratioCs =$row["ratio_C"];
+		$totalWattsCs =$row["totalWatts_C"];
+		$totalPhaseVaCs =$row["totalPhaseVa_C"];
+		$totalPhaseWattsCs = $row["totalPhaseWatts_C"];
+		
+
+
+
+		//list($a, $ratioA, $totalWattsA, $totalPhaseVaA, $totalPhaseWattsA, $ratioB, $totalWattsB, $totalPhaseVaB, $totalPhaseWattsB, $ratioC, $totalWattsC, $totalPhaseVaC, $totalPhaseWattsC) = returner($aa, $ratioAs,$totalWattsAs,$totalPhaseVaAs,$totalPhaseWattsAs,$ratioBs,$totalWattsBs,$totalPhaseVaBs,$totalPhaseWattsBs,$ratioCs,$totalWattsCs,$totalPhaseVaCs,$totalPhaseWattsCs);
+
+		list($a,$ratioA,$totalWattsA,$totalPhaseVaA,$totalPhaseWattsA,$ratioB,$totalWattsB,$totalPhaseVaB,$totalPhaseWattsB,$ratioC,$totalWattsC,$totalPhaseVaC,$totalPhaseWattsC) = returner($aa,$ratioAs, $totalWattsAs,$totalPhaseVaAs,$totalPhaseWattsAs,$ratioBs,$totalWattsBs,$totalPhaseVaBs,$totalPhaseWattsBs,$ratioCs,$totalWattsCs,$totalPhaseVaCs,$totalPhaseWattsCs);
+
+	    	//echo "sID: " . $row["sID"]. " numberOfPhases: ".$row["numberOfPhases"]." ratio_A: " . $row["ratio_A"]. " totalWatts_A: " . $row["totalWatts_A"]." totalPhaseVa_A: ".$row["totalPhaseVa_A"]." totalPhaseWatts_A: ".$row["totalPhaseWatts_A"]. " ratio_B: " . $row["ratio_B"]. " totalWatts_B: ".$row["totalWatts_B"]."  totalPhaseVa_B: " . $row["totalPhaseVa_B"]. " totalPhaseWatts_B: " . $row["totalPhaseWatts_B"]." ratio_C: ".$row["ratio_C"]." totalWatts_C: ".$row["totalWatts_C"]."   totalPhaseVa_C: " . $row["totalPhaseVa_C"]. " totalPhaseWatts_C: " . $row["totalPhaseWatts_C"]."<br>";
+
+	  } // end of while
+
+	 //echo 'Singles: '.$a.' '.$ratioA.' '.$totalWattsA.' '.$totalPhaseVaA.' '.$totalPhaseWattsA.' '.$ratioB.' '.$totalWattsB.' '.$totalPhaseVaB.' '.$totalPhaseWattsB.' '.$ratioC.' '.$totalWattsC.' '.$totalPhaseVaC.' '.$totalPhaseWattsC.'<br>';
+
+
+	 	foreach($secondaryPhaseLetter as $item) {		
+
+			if($item == 'A'){
+				//echo 'This is for Phase A '.'<br>';
+				$previousValueA = true;
+
+				 $pair_ratio_calc_A = min($circuit_watts_calc,($circuit_watts_calc-max($totalWattsAs + $circuit_watts_calc-$mau,0)))/$circuit_watts_calc;   // Takes previous_total_watts
+
+				 $pair_allowed_watts_calc_A =  $pair_ratio_calc_A * $circuit_watts_calc;
+
+				 $pair_total_watts_calc_A = $totalWattsAs +  $pair_ratio_calc_A * $circuit_watts_calc;   // Takes previous_total_watts
+
+				 $pair_circuit_phase_va_calc_A = $pair_ratio_calc_A * $per_phase_va_calc;
+
+
+				 $pair_total_phase_va_calc_A = $totalPhaseVaAs  + $pair_circuit_phase_va_calc_A;   // Takes prvious_total_phase_va
+
+				 $pair_circuit_phase_watts_calc_A = $pair_ratio_calc_A * $per_phase_watts_calc;
+
+
+				 $pair_total_phase_watts_calc_A = $totalPhaseWattsAs + $pair_circuit_phase_watts_calc_A;  // Takes prvious_total_phase_watts
+
+				 echo 'This is for Phase A'.' pair_ratio_calc_A: '.$pair_ratio_calc_A.' pair_allowed_watts_calc_A: '.$pair_allowed_watts_calc_A.' pair_total_watts_calc_A: '.$pair_total_watts_calc_A.' pair_circuit_phase_va_calc_A: '.$pair_circuit_phase_va_calc_A.' pair_total_phase_va_calc_A: '.$pair_total_phase_va_calc_A.' pair_circuit_phase_watts_calc_A: '.$pair_circuit_phase_watts_calc_A.' pair_total_phase_watts_calc_A: '.$pair_total_phase_watts_calc_A.'<br>'.'<br>';
+
+			}
+			else if ($item == 'B'){
+				//echo 'This is for Phase B'.'<br>';
+				$previousValueB = true;
+
+				$pair_ratio_calc_B = min($circuit_watts_calc,($circuit_watts_calc-max($totalWattsBs + $circuit_watts_calc-$mau,0)))/$circuit_watts_calc;   // Takes previous_total_watts
+
+				 $pair_allowed_watts_calc_B =  $pair_ratio_calc_B * $circuit_watts_calc;
+
+				 $pair_total_watts_calc_B = $totalWattsBs +  $pair_ratio_calc_B * $circuit_watts_calc;   // Takes previous_total_watts
+
+				 $pair_circuit_phase_va_calc_B = $pair_ratio_calc_B * $per_phase_va_calc;
+
+
+				 $pair_total_phase_va_calc_B = $totalPhaseVaBs  + $pair_circuit_phase_va_calc_B;   // Takes prvious_total_phase_va
+
+				 $pair_circuit_phase_watts_calc_B = $pair_ratio_calc_B * $per_phase_watts_calc;
+
+
+				 $pair_total_phase_watts_calc_B = $totalPhaseWattsBs + $pair_circuit_phase_watts_calc_B;  // Takes prvious_total_phase_watts
+
+				 echo 'This is for Phase B'.' pair_ratio_calc_B: '.$pair_ratio_calc_B.' pair_allowed_watts_calc_B: '.$pair_allowed_watts_calc_B.' pair_total_watts_calc_B: '.$pair_total_watts_calc_B.' pair_circuit_phase_va_calc_B: '.$pair_circuit_phase_va_calc_B.' pair_total_phase_va_calc_B: '.$pair_total_phase_va_calc_B.' pair_circuit_phase_watts_calc_B: '.$pair_circuit_phase_watts_calc_B.' pair_total_phase_watts_calc_B: '.$pair_total_phase_watts_calc_B.'<br>'.'<br>';
+
+			}
+			else if ($item == 'C'){
+				//echo 'This is for Phase C'.'<br>';
+				$previousValueC = true;
+
+				$pair_ratio_calc_C = min($circuit_watts_calc,($circuit_watts_calc-max($totalWattsCs + $circuit_watts_calc-$mau,0)))/$circuit_watts_calc;   // Takes previous_total_watts
+
+				 $pair_allowed_watts_calc_C =  $pair_ratio_calc_C * $circuit_watts_calc;
+
+				 $pair_total_watts_calc_C = $totalWattsCs +  $pair_ratio_calc_C * $circuit_watts_calc;   // Takes previous_total_watts
+
+				 $pair_circuit_phase_va_calc_C = $pair_ratio_calc_C * $per_phase_va_calc;
+
+
+				 $pair_total_phase_va_calc_C = $totalPhaseVaCs  + $pair_circuit_phase_va_calc_C;   // Takes prvious_total_phase_va
+
+				 $pair_circuit_phase_watts_calc_C = $pair_ratio_calc_C * $per_phase_watts_calc;
+
+
+				 $pair_total_phase_watts_calc_C = $totalPhaseWattsCs + $pair_circuit_phase_watts_calc_C;  // Takes prvious_total_phase_watts
+
+				 echo 'This is for Phase C'.' pair_ratio_calc_C: '.$pair_ratio_calc_C.' pair_allowed_watts_calc_C: '.$pair_allowed_watts_calc_C.' pair_total_watts_calc_C: '.$pair_total_watts_calc_C.' pair_circuit_phase_va_calc_C: '.$pair_circuit_phase_va_calc_C.' pair_total_phase_va_calc_C: '.$pair_total_phase_va_calc_C.' pair_circuit_phase_watts_calc_C: '.$pair_circuit_phase_watts_calc_C.' pair_total_phase_watts_calc_C: '.$pair_total_phase_watts_calc_C.'<br>'.'<br>';
+
+			}
+			else {
+				echo 'Something wong here';
+			}
+		
+		} // end of for
+
+	} else {
+	    echo "sID is not in the Secondary Phase Table".'<br>';
+		}
+	}
+	else {
+		echo 'No previous values here'.'<br>';
+		$ratio_calc = min($circuit_watts_calc,($circuit_watts_calc-max($circuit_watts_calc-$mau,0)))/$circuit_watts_calc; // will need to add previous current values of total watts here: max(PREVIOUS_TOTAL_WATTS + $circuit_watts_calc-$mau,0)
+	    $allowed_watts_calc =  $ratio_calc * $circuit_watts_calc;
+	    $total_watts_calc =  $ratio_calc * $circuit_watts_calc; // will need to add previous current values of total watts here: PREVIOUS_TOTAL_WATTS + $ratio_calc * $circuit_watts_calc
+	    $circuit_phase_va_calc = $ratio_calc * $per_phase_va_calc; // Number for subtraction
+	    $total_phase_va_calc = $circuit_phase_va_calc;// number for subtraction.  Will need to add previous current values of total phase va here: PREVIOUS_TOTAL_PHASE_VA  + $circuit_phase_va
+	    $circuit_phase_watts_calc = $ratio_calc * $per_phase_watts_calc;
+	    $total_phase_watts_calc = $circuit_phase_watts_calc;// will need to add previous current values of total phase watts here: TOTAL_PHASE_WATTS + $circuit_phase_watts.
+	}
+
+
+   // echo '# of Phases: '.$numOfPhases.'<br>'.'# of amps: '.$secondaryAmps.'<br>'.'MAU: '.$mau.'<br>'.'Circuit Watts: '.$circuit_watts_calc.'<br>'. 'Per phase va: '.$per_phase_va_calc.'<br>'.'Per phase watts: '.$per_phase_va_calc.'<br>'.'Ratio: '.$ratio_calc.'<br>'. 'Allowed watts: '.$allowed_watts_calc.'<br>'.'Total watts: '.$total_watts_calc.'<br>'.'Circuit phase va: '.$circuit_phase_va_calc.'<br>'.'Total phase va: '.$total_phase_va_calc.'<br>'.'Circuit phase watts: '.$circuit_phase_watts_calc.'<br>'.'Total phase watts: '.$total_phase_watts_calc.'<br>'; 
+
+
+    $sql = "INSERT INTO secondaryphase (cID, sID, amps, numberOfPhases, phaseLetter, circuitWatts, perPhaseVa, perPhaseWatts,ratio_A, allowedWatts_A, totalWatts_A, circuitPhaseVa_A, totalPhaseVa_A, circuitPhaseWatts_A, totalPhaseWatts_A, ratio_B, allowedWatts_B , totalWatts_B , circuitPhaseVa_B , totalPhaseVa_B , circuitPhaseWatts_B , totalPhaseWatts_B , ratio_C, allowedWatts_C , totalWatts_C , circuitPhaseVa_C , totalPhaseVa_C , circuitPhaseWatts_C , totalPhaseWatts_C)VALUES(?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+   
+
+	// echo '# of Phases: '.$numOfPhases . ' # of AMPs: '.$amps.' MAU: '.$mau;
+
+	 if($stmt = mysqli_prepare($connection, $sql)){
+    // Bind variables to the prepared statement as parameters
+	mysqli_stmt_bind_param($stmt,"ssiisdddddddddddddddddddddddd", $cID, $sID, $amps, $numberOfPhases, $phaseLetter, $circuitWatts, $perPhaseVa, $perPhaseWatts, $ratio_A, $allowedWatts_A, $totalWatts_A, $circuitPhaseVa_A, $totalPhaseVa_A, $circuitPhaseWatts_A, $totalPhaseWatts_A, $ratio_B, $allowedWatts_B , $totalWatts_B , $circuitPhaseVa_B , $totalPhaseVa_B , $circuitPhaseWatts_B , $totalPhaseWatts_B , $ratio_C, $allowedWatts_C , $totalWatts_C , $circuitPhaseVa_C , $totalPhaseVa_C , $circuitPhaseWatts_C , $totalPhaseWatts_C);
+
+
+
+		$cID = $secondaryCid;
+		$sID = $secondarySid;
+		$amps = $secondaryAmps;
+		$numberOfPhases = $numOfPhases;
+		$phaseLetter = $secondaryPhaseLetters; // $secondaryPhaseLetters with an s at the end is coming from GUI. $secondaryPhaseLetter w/o the s is an array to for the foreach below.
+		$circuitWatts = $circuit_watts_calc;
+		$perPhaseVa = $per_phase_va_calc;
+		$perPhaseWatts = $per_phase_watts_calc; 
+
+		// Assigns which phases get values in the DB
+		foreach($secondaryPhaseLetter as $item){
+			echo 'Phase '.$item.'<br>';			
+
+			if($item == 'A'){
+				if ($previousValueA == true){
+					echo 'New pair of A has been set'.'<br>';
+
+					$ratio_A = $pair_ratio_calc_A;
+					$allowedWatts_A = $pair_allowed_watts_calc_A;
+					$totalWatts_A = $pair_total_watts_calc_A;
+					$circuitPhaseVa_A = $pair_circuit_phase_va_calc_A;
+					$totalPhaseVa_A = $pair_total_phase_va_calc_A;
+					$circuitPhaseWatts_A = $pair_circuit_phase_watts_calc_A;
+					$totalPhaseWatts_A = $pair_total_phase_watts_calc_A;
+
+				} else{
+					echo 'Values of A has been set'.'<br>';
+					$ratio_A = $ratio_calc;
+					$allowedWatts_A = $allowed_watts_calc;
+					$totalWatts_A = $total_watts_calc;
+					$circuitPhaseVa_A = $circuit_phase_va_calc;
+					$totalPhaseVa_A = $total_phase_va_calc;
+					$circuitPhaseWatts_A = $circuit_phase_watts_calc;
+					$totalPhaseWatts_A = $total_phase_watts_calc;
+
+					echo 'Values of A has been set'.' ratio_A '.$ratio_A.' allowedWatts_A '.$allowedWatts_A.' totalWatts_A '.$totalWatts_A.' circuitPhaseVa_A '.$circuitPhaseVa_A.' totalPhaseVa_A '.$totalPhaseVa_A.' circuitPhaseWatts_A '.$circuitPhaseWatts_A.' totalPhaseWatts_A '.$totalPhaseWatts_A.'<br>';
+				}
+			}
+			else if ($item == 'B'){
+				if ($previousValueB == true){
+					echo 'New pair of B has been set'.'<br>';
+
+					$ratio_B = $pair_ratio_calc_B;
+					$allowedWatts_B = $pair_allowed_watts_calc_B;
+					$totalWatts_B = $pair_total_watts_calc_B;
+					$circuitPhaseVa_B = $pair_circuit_phase_va_calc_B;
+					$totalPhaseVa_B = $pair_total_phase_va_calc_B;
+					$circuitPhaseWatts_B = $pair_circuit_phase_watts_calc_B;
+					$totalPhaseWatts_B = $pair_total_phase_watts_calc_B;
+
+				}else{
+					echo 'Values of B has been set'.'<br>';
+					$ratio_B = $ratio_calc;
+					$allowedWatts_B = $allowed_watts_calc;
+					$totalWatts_B = $total_watts_calc;
+					$circuitPhaseVa_B = $circuit_phase_va_calc;
+					$totalPhaseVa_B = $total_phase_va_calc;
+					$circuitPhaseWatts_B = $circuit_phase_watts_calc;
+					$totalPhaseWatts_B = $total_phase_watts_calc;
+					echo 'Values of B has been set'.' ratio_B '.$ratio_B.' allowedWatts_B '.$allowedWatts_B.' totalWatts_B '.$totalWatts_B.' circuitPhaseVa_B '.$circuitPhaseVa_B.' totalPhaseVa_B '.$totalPhaseVa_B.' circuitPhaseWatts_B '.$circuitPhaseWatts_B.' totalPhaseWatts_B '.$totalPhaseWatts_B.'<br>';
+				}
+			}
+			else if ($item == 'C'){
+
+				if ($previousValueC == true){
+					echo 'New pair of C has been set'.'<br>';
+					$ratio_C = $pair_ratio_calc_C;
+					$allowedWatts_C = $pair_allowed_watts_calc_C;
+					$totalWatts_C = $pair_total_watts_calc_C;
+					$circuitPhaseVa_C = $pair_circuit_phase_va_calc_C;
+					$totalPhaseVa_C = $pair_total_phase_va_calc_C;
+					$circuitPhaseWatts_C = $pair_circuit_phase_watts_calc_C;
+					$totalPhaseWatts_C = $pair_total_phase_watts_calc_C;
+
+				}else{
+					//echo 'Values of C has been set'.'<br>';
+					$ratio_C = $ratio_calc;
+					$allowedWatts_C = $allowed_watts_calc;
+					$totalWatts_C = $total_watts_calc;
+					$circuitPhaseVa_C = $circuit_phase_va_calc;
+					$totalPhaseVa_C = $total_phase_va_calc;
+					$circuitPhaseWatts_C = $circuit_phase_watts_calc;
+					$totalPhaseWatts_C = $total_phase_watts_calc;
+					echo 'Values of C has been set'.' ratio_C '.$ratio_C.' allowedWatts_C '.$allowedWatts_C.' totalWatts_C '.$totalWatts_C.' circuitPhaseVa_C '.$circuitPhaseVa_C.' totalPhaseVa_C '.$totalPhaseVa_C.' circuitPhaseWatts_C '.$circuitPhaseWatts_C.' totalPhaseWatts_C '.$totalPhaseWatts_C.'<br>';
+				}
+			}
+			else {
+				echo 'Something wong here';
+			}
+		
+		}
+
+/*
+ 	 //To insert NULL VALUES, if not by default		
+		 if($counter != 3 ){
+		 	$differenceInArrays = array_diff($emptyArray,$testPhase);
+			 print_r($differenceInArrays);
+			 echo '<br>';
+			 echo '<br>';
+
+			 // ************************* change this to Switch statements *************************
+		 	foreach($differenceInArrays as $nulls){
+		 		if($nulls == 'A'){
+						echo 'NULL values of A has been set'.'<br>';
+					}
+					else if ($nulls == 'B'){
+						echo 'NULL values of B has been set'.'<br>';
+					}
+					else if ($nulls == 'C'){
+						echo 'NULL values of C has been set'.'<br>';
+					}
+					else {
+						echo 'Something wong here in NULLS';
+					}
+				}
+ 		}
+*/ 
+
+
+
+			mysqli_stmt_execute($stmt);
+
+	    echo "Records inserted successfully.";
+
+	} 
+
+	else{
+	    echo "ERROR: Could not prepare query: $sql. " . mysqli_error($connection);
+	}
+
+	mysqli_stmt_close($stmt);
+
+
+}
+
+
+
 
 
 
@@ -193,7 +798,7 @@ function addPrimaryPower($primaryCid,$primarySid,$primaryPanel,$primaryPowerType
 			$cab = $primaryCab;
 			mysqli_stmt_execute($stmt);
 
-	    echo "Records inserted successfully.";
+	    echo 'Records inserted successfully.'.'<br>';
 	} else{
 	    echo "ERROR: Could not prepare query: $sql. " . mysqli_error($connection);
 	}
@@ -233,6 +838,18 @@ function addSecondaryPower($secondaryCid,$secondarySid,$secondaryPanel,$secondar
 	}
 
 	mysqli_stmt_close($stmt);	
+
+}
+
+
+function returner($aa,$ratioAs,$totalWattsAs,$totalPhaseVaAs,$totalPhaseWattsAs,$ratioBs,$totalWattsBs,$totalPhaseVaBs,$totalPhaseWattsBs,$ratioCs,$totalWattsCs,$totalPhaseVaCs,$totalPhaseWattsCs) {
+
+
+
+	// return array($row["numberOfPhases"], $row["ratio_A"], $row["totalWatts_A"], $row["totalPhaseVa_A"],$row["totalPhaseWatts_A"], $row["ratio_B"], $row["totalWatts_B"], $row["totalPhaseVa_B"],$row["totalPhaseWatts_B"], $row["ratio_C"], $row["totalWatts_C"], $row["totalPhaseVa_C"],$row["totalPhaseWatts_C"]);
+
+
+	return array($aa,$ratioAs,$totalWattsAs,$totalPhaseVaAs,$totalPhaseWattsAs,$ratioBs,$totalWattsBs,$totalPhaseVaBs,$totalPhaseWattsBs,$ratioCs,$totalWattsCs,$totalPhaseVaCs,$totalPhaseWattsCs);
 
 }
 
