@@ -49,6 +49,12 @@
                 height: 40px;
                 background-color: #666;
             }
+
+
+            #addAll {
+                /*width: 5em;  */
+                /*height: 2em;*/
+            }
             
 /*
             .content {
@@ -64,37 +70,46 @@
             .active-nav .content {
                 transform: translate3d(200px, 0, 0);
             }
-            /*Used this one */ 
+            /*Use this one */ 
             .active-nav #content {
                 transform: translate3d(200px, 0, 0);
             }
 
+
+            /*
             .primaryPower {
                 padding-top: 10px;
                 height: 275px;
-                width: 285px;
+                width: 300px;
                 background-color: #ccf;
-                text-align: center;
+       
                 transition: transform 0.4s ease;
                 background-color : blue;
                 float: left;
+
+             */    
             }
 
+            
+
             .secondaryPower {
+                /*
+
                 padding-top: 10px;
-                margin-left: 275px; 
+                margin-left: 300px; 
                 height: 275px;
                 width: 300px;
-                background-color: red;
-                text-align: center;
-                transition: transform 0.4s ease;
                 background-color : yellow;
+                text-align: center; 
+                transition: transform 0.4s ease;
+
+                */
                 
                 
             }
 
              #content {
-                background-color : red;
+                background-color : white;
             }
             
 
