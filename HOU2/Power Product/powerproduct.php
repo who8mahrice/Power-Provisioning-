@@ -27,20 +27,25 @@ $mysqli->query(" SQL statement #4 ; ") // now executed!
 
 */
 
-include 'connect.inc.php';
+
 include 'power_product_functions.php';
 //include 'css.css';
 require_once 'navi.php';
 
 
-$connection = new mysqli($db_hostname, $db_username, $db_password, $db_database);
 
-if ($connection->connect_error) die($connection->connect_error);
+
 ?>
 
 <html>
  <head>
   <link rel="stylesheet" type="text/css" href="css/style.css" />
+
+  <!-- For section popover  -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />  
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+
  </head>
 
 
@@ -87,10 +92,31 @@ if ($connection->connect_error) die($connection->connect_error);
             display:block;
 }
 
+/* Style for Primary Check Panel */
+#category10 option{
+            display:none;
+        }
+
+
+#category10 option.label{
+            display:block;
+}
+
+/* Style for Secondary Check Panel */
+#category12 option{
+            display:none;
+        }
+
+
+#category12 option.label{
+            display:block;
+}
+
 
  table {
       
     background-color: #eeeeee;
+    width:300px;
  }
 
  th,td {
@@ -98,18 +124,87 @@ if ($connection->connect_error) die($connection->connect_error);
 
  }
 
+ td{
+   
+    white-space:nowrap;  /*white-space:nowarp goes with <td width="100%"> Panel Name row to fit both drop down menus in one row */
+}
+
+
+.primarypower {
+    float: left;
+    width: 313px;
+    position: relative;   
+}
+
+.secondarypower {
+    float: right;
+    width: calc(100% - 313px);
+    display: inline-block;
+
+    position: absolute;
+}
+
+.checkPrimaryPanel {
+    float: right;
+    width: 313px;
+    padding: 5px 0px 0px 0px; /* top right bottom left */
+    position: absolute;
+
+    background-color: blue;
+    display: inline-block;
+}
+
+.checkSecondaryPanel {
+    float: left;
+    width: calc(100% - 313px);
+    padding: 5px 0px 0px 0px; /* top right bottom left */
+
+    display: inline-block;
+    background-color: yellow;
+    
+
+}
+
+.outputPrimary {
+    float: left;
+    padding: 350px 0px 0px 0px; /* top right bottom left */
+    position: absolute;
+    display: inline-block;
+}
+
+.outputSecondary {
+    float: left;
+    padding: 350px 0px 0px 312px; /* top right bottom left */
+    position: absolute;
+    display: inline-block;
+}
+
+.checkField{
+    width: 313px;
+    height: 0px; 
+
+    padding: 320px 0px 0px 0px; /* top right bottom left */
+    background-color: red;
+
+
+}
+
+
+
  </style>
     <body>
       <section id="content">
         <div><h2> Add power </h2></div>
 
-        <div class="primaryPower">
+        <div class="gui">
+        <form action = 'powerproduct.php' method='post'>
 <!--            <table style="width:100%" border="0" cellpadding="10" cellspacing="4" bgcolor="#eeeeee">
--->
+-->         
+            <div class="primaryPower">
             <table>
              <th colspan="2" align="center">Primary Power</th>
 <!--             <input type="checkbox" name="primaryOnly" value="primaryOnly"> Primary Only -->  
-              <form action = 'powerproduct.php' method='post'>
+            
                 
                 <tr><td>cID </td>
                 <td><input type='text' name='primaryCid'></td></tr>
@@ -118,20 +213,19 @@ if ($connection->connect_error) die($connection->connect_error);
                 <td><input type='text' name='primarySid'></td></tr>
 
                 <tr><td>Panel Name</td>
-                <td>
+                <td width="100%">
                     <select id="category1" size="1" name="primaryRpp">
                         <option value="">-SELECT-</option> 
-                        <option value="RPP-1BA1">RPP-1BA1</option>
-                        <option value="RPP-1BA2">RPP-1BA2</option>
-                        <option value="RPP-1BA3">RPP-1BA3</option>
-                        <option value="RPP-1BA4">RPP-1BA4</option>
-                        <option value="RPP-1BA5">RPP-1BA5</option>
-                        <option value="RPP-1BA6">RPP-1BA6</option>
-                        <option value="RPP-1BA7">RPP-1BA7</option>
-                        <option value="RPP-1BA8">RPP-1BA8</option>
-                        <option value="RPP-1BA9">RPP-1BA9</option>
-                        <option value="RPP-1BA10">RPP-1BA10</option>
-
+                        <option value="RPP-1A-P1">RPP-1A-P1</option>
+                        <option value="RPP-1A-P2">RPP-1A-P2</option>
+                        <option value="RPP-1A-P3">RPP-1A-P3</option>
+                        <option value="RPP-1A-P4">RPP-1A-P4</option>
+                        <option value="RPP-1A-P5">RPP-1A-P5</option>
+                        <option value="RPP-1A-P6">RPP-1A-P6</option>
+                        <option value="RPP-1A-P7">RPP-1A-P7</option>
+                        <option value="RPP-1A-P8">RPP-1A-P8</option>
+                        <option value="RPP-1A-P9">RPP-1A-P9</option>
+                        <option value="RPP-1A-P10">RPP-1A-P10</option>
                     </select>
 <!--                </td>
                 
@@ -139,55 +233,55 @@ if ($connection->connect_error) die($connection->connect_error);
 -->                
                 <select disabled="disabled" id="category2" name="primaryPanel">  
                         <option value="">-SELECT-</option> 
-                        <option rel="RPP-1BA1" value="1A-P1-1">1A-P1-1</option>
-                        <option rel="RPP-1BA1" value="1A-P1-2">1A-P1-2</option>
-                        <option rel="RPP-1BA1" value="1A-P1-3">1A-P1-3</option>
-                        <option rel="RPP-1BA1" value="1A-P1-4">1A-P1-4</option>
+                        <option rel="RPP-1A-P1" value="1A-P1-1">1A-P1-1</option>
+                        <option rel="RPP-1A-P1" value="1A-P1-2">1A-P1-2</option>
+                        <option rel="RPP-1A-P1" value="1A-P1-3">1A-P1-3</option>
+                        <option rel="RPP-1A-P1" value="1A-P1-4">1A-P1-4</option>
 
-                        <option rel="RPP-1BA2" value="1A-P1-5">1A-P1-5</option>
-                        <option rel="RPP-1BA2" value="1A-P1-6">1A-P1-6</option>
-                        <option rel="RPP-1BA2" value="1A-P1-7">1A-P1-7</option>
-                        <option rel="RPP-1BA2" value="1A-P1-8">1A-P1-8</option>
+                        <option rel="RPP-1A-P2" value="1A-P1-5">1A-P1-5</option>
+                        <option rel="RPP-1A-P2" value="1A-P1-6">1A-P1-6</option>
+                        <option rel="RPP-1A-P2" value="1A-P1-7">1A-P1-7</option>
+                        <option rel="RPP-1A-P2" value="1A-P1-8">1A-P1-8</option>
 
-                        <option rel="RPP-1BA3" value="1A-P1-9">1A-P1-9</option>
-                        <option rel="RPP-1BA3" value="1A-P1-10">1A-P1-10</option>
-                        <option rel="RPP-1BA3" value="1A-P2-1">1A-P2-1</option>
-                        <option rel="RPP-1BA3" value="1A-P2-2">1A-P2-2</option>
+                        <option rel="RPP-1A-P3" value="1A-P1-9">1A-P1-9</option>
+                        <option rel="RPP-1A-P3" value="1A-P1-10">1A-P1-10</option>
+                        <option rel="RPP-1A-P3" value="1A-P2-1">1A-P2-1</option>
+                        <option rel="RPP-1A-P3" value="1A-P2-2">1A-P2-2</option>
                         
-                        <option rel="RPP-1BA4" value="1A-P2-3">1A-P2-3</option>
-                        <option rel="RPP-1BA4" value="1A-P2-4">1A-P2-4</option>
-                        <option rel="RPP-1BA4" value="1A-P2-5">1A-P2-5</option>
-                        <option rel="RPP-1BA4" value="1A-P2-6">1A-P2-6</option>
+                        <option rel="RPP-1A-P4" value="1A-P2-3">1A-P2-3</option>
+                        <option rel="RPP-1A-P4" value="1A-P2-4">1A-P2-4</option>
+                        <option rel="RPP-1A-P4" value="1A-P2-5">1A-P2-5</option>
+                        <option rel="RPP-1A-P4" value="1A-P2-6">1A-P2-6</option>
 
-                        <option rel="RPP-1BA5" value="1A-P2-7">1A-P2-7</option>
-                        <option rel="RPP-1BA5" value="1A-P2-8">1A-P2-8</option>
-                        <option rel="RPP-1BA5" value="1A-P2-9">1A-P2-9</option>
-                        <option rel="RPP-1BA5" value="1A-P2-10">1A-P2-10</option>
+                        <option rel="RPP-1A-P5" value="1A-P2-7">1A-P2-7</option>
+                        <option rel="RPP-1A-P5" value="1A-P2-8">1A-P2-8</option>
+                        <option rel="RPP-1A-P5" value="1A-P2-9">1A-P2-9</option>
+                        <option rel="RPP-1A-P5" value="1A-P2-10">1A-P2-10</option>
 
-                        <option rel="RPP-1BA6" value="1A-P3-1">1A-P3-1</option>
-                        <option rel="RPP-1BA6" value="1A-P3-2">1A-P3-2</option>
-                        <option rel="RPP-1BA6" value="1A-P3-3">1A-P3-3</option>
-                        <option rel="RPP-1BA6" value="1A-P3-4">1A-P3-4</option>
+                        <option rel="RPP-1A-P6" value="1A-P3-1">1A-P3-1</option>
+                        <option rel="RPP-1A-P6" value="1A-P3-2">1A-P3-2</option>
+                        <option rel="RPP-1A-P6" value="1A-P3-3">1A-P3-3</option>
+                        <option rel="RPP-1A-P6" value="1A-P3-4">1A-P3-4</option>
 
-                        <option rel="RPP-1BA7" value="1A-P3-5">1A-P3-5</option>
-                        <option rel="RPP-1BA7" value="1A-P3-6">1A-P3-6</option>
-                        <option rel="RPP-1BA7" value="1A-P3-7">1A-P3-7</option>
-                        <option rel="RPP-1BA7" value="1A-P3-8">1A-P3-8</option>
+                        <option rel="RPP-1A-P7" value="1A-P3-5">1A-P3-5</option>
+                        <option rel="RPP-1A-P7" value="1A-P3-6">1A-P3-6</option>
+                        <option rel="RPP-1A-P7" value="1A-P3-7">1A-P3-7</option>
+                        <option rel="RPP-1A-P7" value="1A-P3-8">1A-P3-8</option>
 
-                        <option rel="RPP-1BA8" value="1A-P3-9">1A-P3-9</option>
-                        <option rel="RPP-1BA8" value="1A-P310">1A-P3-10</option>
-                        <option rel="RPP-1BA8" value="1A-P4-1">1A-P4-1</option>
-                        <option rel="RPP-1BA8" value="1A-P4-2">1A-P4-2</option>
+                        <option rel="RPP-1A-P8" value="1A-P3-9">1A-P3-9</option>
+                        <option rel="RPP-1A-P8" value="1A-P3-10">1A-P3-10</option>
+                        <option rel="RPP-1A-P8" value="1A-P4-1">1A-P4-1</option>
+                        <option rel="RPP-1A-P8" value="1A-P4-2">1A-P4-2</option>
 
-                        <option rel="RPP-1BA9" value="1A-P4-3">1A-P4-3</option>
-                        <option rel="RPP-1BA9" value="1A-P4-4">1A-P4-4</option>
-                        <option rel="RPP-1BA9" value="1A-P4-5">1A-P4-5</option>
-                        <option rel="RPP-1BA9" value="1A-P4-6">1A-P4-6</option>
+                        <option rel="RPP-1A-P9" value="1A-P4-3">1A-P4-3</option>
+                        <option rel="RPP-1A-P9" value="1A-P4-4">1A-P4-4</option>
+                        <option rel="RPP-1A-P9" value="1A-P4-5">1A-P4-5</option>
+                        <option rel="RPP-1A-P9" value="1A-P4-6">1A-P4-6</option>
 
-                        <option rel="RPP-1BA10" value="1A-P4-7">1A-P4-7</option>
-                        <option rel="RPP-1BA10" value="1A-P4-8">1A-P4-8</option>
-                        <option rel="RPP-1BA10" value="1A-P4-9">1A-P4-9</option>
-                        <option rel="RPP-1BA10" value="1A-P4-10">1A-P4-10</option>
+                        <option rel="RPP-1A-P10" value="1A-P4-7">1A-P4-7</option>
+                        <option rel="RPP-1A-P10" value="1A-P4-8">1A-P4-8</option>
+                        <option rel="RPP-1A-P10" value="1A-P4-9">1A-P4-9</option>
+                        <option rel="RPP-1A-P10" value="1A-P4-10">1A-P4-10</option>
                 </select>
                 </td>
                 </tr>
@@ -220,31 +314,47 @@ if ($connection->connect_error) die($connection->connect_error);
                         <option rel="30-120" value="C">C</option>
 
 
-                        <option rel="20-208" value="AB">A,B</option>
-                        <option rel="20-208" value="AC">A,C</option>
-                        <option rel="20-208" value="BC">B,C</option>
+                        <option rel="20-208" value="A,B">A,B</option>
+                        <option rel="20-208" value="A,C">A,C</option>
+                        <option rel="20-208" value="B,C">B,C</option>
 
-                        <option rel="30-208" value="AB">A,B</option>
-                        <option rel="30-208" value="AC">A,C</option>
-                        <option rel="30-208" value="BC">B,C</option>
+                        <option rel="30-208" value="A,B">A,B</option>
+                        <option rel="30-208" value="A,C">A,C</option>
+                        <option rel="30-208" value="B,C">B,C</option>
 
-                        <option rel="50-208" value="AB">A,B</option>
-                        <option rel="50-208" value="AC">A,C</option>
-                        <option rel="50-208" value="BC">B,C</option>
+                        <option rel="50-208" value="A,B">A,B</option>
+                        <option rel="50-208" value="A,C">A,C</option>
+                        <option rel="50-208" value="B,C">B,C</option>
 
-                        <option rel="60-208" value="AB">A,B</option>
-                        <option rel="60-208" value="AC">A,C</option>
-                        <option rel="60-208" value="BC">B,C</option>
+                        <option rel="60-208" value="A,B">A,B</option>
+                        <option rel="60-208" value="A,C">A,C</option>
+                        <option rel="60-208" value="B,C">B,C</option>
 
-                        <option rel="30-208-3ph" value="ABC">A,B,C</option>
+                        <option rel="30-208-3ph" value="A,B,C">A,B,C</option>
 
-                        <option rel="50-208-3ph" value="ABC">A,B,C</option>
+                        <option rel="50-208-3ph" value="A,B,C">A,B,C</option>
 
-                        <option rel="60-208-3ph" value="ABC">A,B,C</option>  
+                        <option rel="60-208-3ph" value="A,B,C">A,B,C</option>  
 
                     </select>
                 </td>
                 </tr>
+
+<!-- For section popover 
+                <?php  
+            /*    
+                          while($row = mysqli_fetch_array($forSection))  
+                          {  
+                          ?>  
+                          <tr>  
+                               <td><a href="#" class="hover" id="<?php echo $row["panelName"]; ?>"></a></td>  
+                          </tr>  
+                          <?php  
+                          }  
+            */              
+                          ?>  
+
+-->
 
                 <tr><td>Location </td>
                 <td><input type='text' name='primaryLocation'></td></tr>
@@ -262,19 +372,103 @@ if ($connection->connect_error) die($connection->connect_error);
                 <td><input type='text' name='primaryMau'></td></tr>
 
                 <tr><td><input type="submit" value="Add product" align="left" name="primaryAdd"></td></tr>
+        </table>
+                        <!-- =================== Primary Panel Check =================== -->              
+                <div class='checkPrimaryPanel'><table> <tr><td>PPC:</td>
+                <td width="100%">
+                    <select id="category9" size="1" name="primaryCheckRpp">
+                        <option value="">-SELECT-</option> 
+                        <option value="RPP-1A-P1">RPP-1A-P1</option>
+                        <option value="RPP-1A-P2">RPP-1A-P2</option>
+                        <option value="RPP-1A-P3">RPP-1A-P3</option>
+                        <option value="RPP-1A-P4">RPP-1A-P4</option>
+                        <option value="RPP-1A-P5">RPP-1A-P5</option>
+                        <option value="RPP-1A-P6">RPP-1A-P6</option>
+                        <option value="RPP-1A-P7">RPP-1A-P7</option>
+                        <option value="RPP-1A-P8">RPP-1A-P8</option>
+                        <option value="RPP-1A-P9">RPP-1A-P9</option>
+                        <option value="RPP-1A-P10">RPP-1A-P10</option>
+                    </select>
+<!--                </td>
                 
-                </form>
-                </table>
-            </div>
+                <td>
+-->                
+                <select disabled="disabled" id="category10" name="primaryCheckPanel">  
+                        <option value="">-SELECT-</option> 
+                        <option rel="RPP-1A-P1" value="1A-P1-1">1A-P1-1</option>
+                        <option rel="RPP-1A-P1" value="1A-P1-2">1A-P1-2</option>
+                        <option rel="RPP-1A-P1" value="1A-P1-3">1A-P1-3</option>
+                        <option rel="RPP-1A-P1" value="1A-P1-4">1A-P1-4</option>
+
+                        <option rel="RPP-1A-P2" value="1A-P1-5">1A-P1-5</option>
+                        <option rel="RPP-1A-P2" value="1A-P1-6">1A-P1-6</option>
+                        <option rel="RPP-1A-P2" value="1A-P1-7">1A-P1-7</option>
+                        <option rel="RPP-1A-P2" value="1A-P1-8">1A-P1-8</option>
+
+                        <option rel="RPP-1A-P3" value="1A-P1-9">1A-P1-9</option>
+                        <option rel="RPP-1A-P3" value="1A-P1-10">1A-P1-10</option>
+                        <option rel="RPP-1A-P3" value="1A-P2-1">1A-P2-1</option>
+                        <option rel="RPP-1A-P3" value="1A-P2-2">1A-P2-2</option>
+                        
+                        <option rel="RPP-1A-P4" value="1A-P2-3">1A-P2-3</option>
+                        <option rel="RPP-1A-P4" value="1A-P2-4">1A-P2-4</option>
+                        <option rel="RPP-1A-P4" value="1A-P2-5">1A-P2-5</option>
+                        <option rel="RPP-1A-P4" value="1A-P2-6">1A-P2-6</option>
+
+                        <option rel="RPP-1A-P5" value="1A-P2-7">1A-P2-7</option>
+                        <option rel="RPP-1A-P5" value="1A-P2-8">1A-P2-8</option>
+                        <option rel="RPP-1A-P5" value="1A-P2-9">1A-P2-9</option>
+                        <option rel="RPP-1A-P5" value="1A-P2-10">1A-P2-10</option>
+
+                        <option rel="RPP-1A-P6" value="1A-P3-1">1A-P3-1</option>
+                        <option rel="RPP-1A-P6" value="1A-P3-2">1A-P3-2</option>
+                        <option rel="RPP-1A-P6" value="1A-P3-3">1A-P3-3</option>
+                        <option rel="RPP-1A-P6" value="1A-P3-4">1A-P3-4</option>
+
+                        <option rel="RPP-1A-P7" value="1A-P3-5">1A-P3-5</option>
+                        <option rel="RPP-1A-P7" value="1A-P3-6">1A-P3-6</option>
+                        <option rel="RPP-1A-P7" value="1A-P3-7">1A-P3-7</option>
+                        <option rel="RPP-1A-P7" value="1A-P3-8">1A-P3-8</option>
+
+                        <option rel="RPP-1A-P8" value="1A-P3-9">1A-P3-9</option>
+                        <option rel="RPP-1A-P8" value="1A-P3-10">1A-P3-10</option>
+                        <option rel="RPP-1A-P8" value="1A-P4-1">1A-P4-1</option>
+                        <option rel="RPP-1A-P8" value="1A-P4-2">1A-P4-2</option>
+
+                        <option rel="RPP-1A-P9" value="1A-P4-3">1A-P4-3</option>
+                        <option rel="RPP-1A-P9" value="1A-P4-4">1A-P4-4</option>
+                        <option rel="RPP-1A-P9" value="1A-P4-5">1A-P4-5</option>
+                        <option rel="RPP-1A-P9" value="1A-P4-6">1A-P4-6</option>
+
+                        <option rel="RPP-1A-P10" value="1A-P4-7">1A-P4-7</option>
+                        <option rel="RPP-1A-P10" value="1A-P4-8">1A-P4-8</option>
+                        <option rel="RPP-1A-P10" value="1A-P4-9">1A-P4-9</option>
+                        <option rel="RPP-1A-P10" value="1A-P4-10">1A-P4-10</option>
+                </select>
+                </td>
+
+                <td><input type="submit" value="Check" align="left" name="primaryCheck">
+
+                </td>
+                </tr></table>
+                
+                </div>
+                </div> <!-- END OF PRIMARY POWER DIV -->
 
 
-<!-- -------------SECONDARY POWER---------------- -->
-        <div class="secondaryPower">
-            <table border="0" bgcolor="#eeeeee">
-               <th colspan="2" align="left">Secondary Power</th>
-            <form action = 'powerproduct.php' method='post'>
-                
-                <tr><td>cID </td>
+
+
+  
+<!--                
+                <tr><td><td width="100%"><input type="submit" id="addAll" value="Add All" align="left" name="addAll" style="height: 18px; width: 180px; left: 250; top: 250;"></td></td></tr>
+-->
+
+
+<!-- ----------------------------Secondary Power-----------------------------     -->
+                <div class="secondaryPower">
+                <table>
+                <th colspan="2" align="center">Secondary Power</th>
+                 <tr><td>cID </td>
                 <td><input type='text' name='secondaryCid'></td></tr>
 
                 <tr><td>sID </td>
@@ -284,16 +478,17 @@ if ($connection->connect_error) die($connection->connect_error);
                 <td>
                     <select id="category5" name="secondaryRpp">
                         <option value="">-SELECT-</option> 
-                        <option value="RPP-1BA1">RPP-1BA1</option>
-                        <option value="RPP-1BA2">RPP-1BA2</option>
-                        <option value="RPP-1BA3">RPP-1BA3</option>
-                        <option value="RPP-1BA4">RPP-1BA4</option>
-                        <option value="RPP-1BA5">RPP-1BA5</option>
-                        <option value="RPP-1BA6">RPP-1BA6</option>
-                        <option value="RPP-1BA7">RPP-1BA7</option>
-                        <option value="RPP-1BA8">RPP-1BA8</option>
-                        <option value="RPP-1BA9">RPP-1BA9</option>
-                        <option value="RPP-1BA10">RPP-1BA10</option>
+                        <option value="RPP-1A-S1">RPP-1A-S1</option>
+                        <option value="RPP-1A-S2">RPP-1A-S2</option>
+                        <option value="RPP-1A-S3">RPP-1A-S3</option>
+                        <option value="RPP-1A-S4">RPP-1A-S4</option>
+                        <option value="RPP-1A-S5">RPP-1A-S5</option>
+                        <option value="RPP-1A-S6">RPP-1A-S6</option>
+                        <option value="RPP-1A-S7">RPP-1A-S7</option>
+                        <option value="RPP-1A-S8">RPP-1A-S8</option>
+                        <option value="RPP-1A-S9">RPP-1A-S9</option>
+                        <option value="RPP-1A-S10">RPP-1A-S10</option>
+
 
                     </select>
 <!--                </td>
@@ -302,55 +497,55 @@ if ($connection->connect_error) die($connection->connect_error);
 -->                
                 <select disabled="disabled" id="category6" name="secondaryPanel">  
                         <option value="">-SELECT-</option> 
-                        <option rel="RPP-1BA1" value="1A-S1-1">1A-S1-1</option>
-                        <option rel="RPP-1BA1" value="1A-S1-2">1A-S1-2</option>
-                        <option rel="RPP-1BA1" value="1A-S1-3">1A-S1-3</option>
-                        <option rel="RPP-1BA1" value="1A-S1-4">1A-S1-4</option>
+                        <option rel="RPP-1A-S1" value="1A-S1-1">1A-S1-1</option>
+                        <option rel="RPP-1A-S1" value="1A-S1-2">1A-S1-2</option>
+                        <option rel="RPP-1A-S1" value="1A-S1-3">1A-S1-3</option>
+                        <option rel="RPP-1A-S1" value="1A-S1-4">1A-S1-4</option>
 
-                        <option rel="RPP-1BA2" value="1A-S1-5">1A-S1-5</option>
-                        <option rel="RPP-1BA2" value="1A-S1-6">1A-S1-6</option>
-                        <option rel="RPP-1BA2" value="1A-S1-7">1A-S1-7</option>
-                        <option rel="RPP-1BA2" value="1A-S1-8">1A-S1-8</option>
+                        <option rel="RPP-1A-S2" value="1A-S1-5">1A-S1-5</option>
+                        <option rel="RPP-1A-S2" value="1A-S1-6">1A-S1-6</option>
+                        <option rel="RPP-1A-S2" value="1A-S1-7">1A-S1-7</option>
+                        <option rel="RPP-1A-S2" value="1A-S1-8">1A-S1-8</option>
 
-                        <option rel="RPP-1BA3" value="1A-S1-9">1A-S1-9</option>
-                        <option rel="RPP-1BA3" value="1A-S1-10">1A-S1-10</option>
-                        <option rel="RPP-1BA3" value="1A-S2-1">1A-S2-1</option>
-                        <option rel="RPP-1BA3" value="1A-S2-2">1A-S2-2</option>
+                        <option rel="RPP-1A-S3" value="1A-S1-9">1A-S1-9</option>
+                        <option rel="RPP-1A-S3" value="1A-S1-10">1A-S1-10</option>
+                        <option rel="RPP-1A-S3" value="1A-S2-1">1A-S2-1</option>
+                        <option rel="RPP-1A-S3" value="1A-S2-2">1A-S2-2</option>
                         
-                        <option rel="RPP-1BA4" value="1A-S2-3">1A-S2-3</option>
-                        <option rel="RPP-1BA4" value="1A-S2-4">1A-S2-4</option>
-                        <option rel="RPP-1BA4" value="1A-S2-5">1A-S2-5</option>
-                        <option rel="RPP-1BA4" value="1A-S2-6">1A-S2-6</option>
+                        <option rel="RPP-1A-S4" value="1A-S2-3">1A-S2-3</option>
+                        <option rel="RPP-1A-S4" value="1A-S2-4">1A-S2-4</option>
+                        <option rel="RPP-1A-S4" value="1A-S2-5">1A-S2-5</option>
+                        <option rel="RPP-1A-S4" value="1A-S2-6">1A-S2-6</option>
 
-                        <option rel="RPP-1BA5" value="1A-S2-7">1A-S2-7</option>
-                        <option rel="RPP-1BA5" value="1A-S2-8">1A-S2-8</option>
-                        <option rel="RPP-1BA5" value="1A-S2-9">1A-S2-9</option>
-                        <option rel="RPP-1BA5" value="1A-S2-10">1A-S2-10</option>
+                        <option rel="RPP-1A-S5" value="1A-S2-7">1A-S2-7</option>
+                        <option rel="RPP-1A-S5" value="1A-S2-8">1A-S2-8</option>
+                        <option rel="RPP-1A-S5" value="1A-S2-9">1A-S2-9</option>
+                        <option rel="RPP-1A-S5" value="1A-S2-10">1A-S2-10</option>
 
-                        <option rel="RPP-1BA6" value="1A-S3-1">1A-S3-1</option>
-                        <option rel="RPP-1BA6" value="1A-S3-2">1A-S3-2</option>
-                        <option rel="RPP-1BA6" value="1A-S3-3">1A-S3-3</option>
-                        <option rel="RPP-1BA6" value="1A-S3-4">1A-S3-4</option>
+                        <option rel="RPP-1A-S6" value="1A-S3-1">1A-S3-1</option>
+                        <option rel="RPP-1A-S6" value="1A-S3-2">1A-S3-2</option>
+                        <option rel="RPP-1A-S6" value="1A-S3-3">1A-S3-3</option>
+                        <option rel="RPP-1A-S6" value="1A-S3-4">1A-S3-4</option>
 
-                        <option rel="RPP-1BA7" value="1A-S3-5">1A-S3-5</option>
-                        <option rel="RPP-1BA7" value="1A-S3-6">1A-S3-6</option>
-                        <option rel="RPP-1BA7" value="1A-S3-7">1A-S3-7</option>
-                        <option rel="RPP-1BA7" value="1A-S3-8">1A-S3-8</option>
+                        <option rel="RPP-1A-S7" value="1A-S3-5">1A-S3-5</option>
+                        <option rel="RPP-1A-S7" value="1A-S3-6">1A-S3-6</option>
+                        <option rel="RPP-1A-S7" value="1A-S3-7">1A-S3-7</option>
+                        <option rel="RPP-1A-S7" value="1A-S3-8">1A-S3-8</option>
 
-                        <option rel="RPP-1BA8" value="1A-S3-9">1A-S3-9</option>
-                        <option rel="RPP-1BA8" value="1A-S3-10">1A-S3-10</option>
-                        <option rel="RPP-1BA8" value="1A-S4-1">1A-S4-1</option>
-                        <option rel="RPP-1BA8" value="1A-S4-2">1A-S4-2</option>
+                        <option rel="RPP-1A-S8" value="1A-S3-9">1A-S3-9</option>
+                        <option rel="RPP-1A-S8" value="1A-S3-10">1A-S3-10</option>
+                        <option rel="RPP-1A-S8" value="1A-S4-1">1A-S4-1</option>
+                        <option rel="RPP-1A-S8" value="1A-S4-2">1A-S4-2</option>
 
-                        <option rel="RPP-1BA9" value="1A-S4-3">1A-S4-3</option>
-                        <option rel="RPP-1BA9" value="1A-S4-4">1A-S4-4</option>
-                        <option rel="RPP-1BA9" value="1A-S4-5">1A-S4-5</option>
-                        <option rel="RPP-1BA9" value="1A-S4-6">1A-S4-6</option>
+                        <option rel="RPP-1A-S9" value="1A-S4-3">1A-S4-3</option>
+                        <option rel="RPP-1A-S9" value="1A-S4-4">1A-S4-4</option>
+                        <option rel="RPP-1A-S9" value="1A-S4-5">1A-S4-5</option>
+                        <option rel="RPP-1A-S9" value="1A-S4-6">1A-S4-6</option>
 
-                        <option rel="RPP-1BA10" value="1A-S4-7">1A-S4-7</option>
-                        <option rel="RPP-1BA10" value="1A-S4-8">1A-S4-8</option>
-                        <option rel="RPP-1BA10" value="1A-S4-9">1A-S4-9</option>
-                        <option rel="RPP-1BA10" value="1A-S4-10">1A-S4-10</option>
+                        <option rel="RPP-1A-S10" value="1A-S4-7">1A-S4-7</option>
+                        <option rel="RPP-1A-S10" value="1A-S4-8">1A-S4-8</option>
+                        <option rel="RPP-1A-S10" value="1A-S4-9">1A-S4-9</option>
+                        <option rel="RPP-1A-S10" value="1A-S4-10">1A-S4-10</option>
                 </select>
                 </td>
                 </tr>
@@ -383,27 +578,27 @@ if ($connection->connect_error) die($connection->connect_error);
                         <option rel="30-120" value="C">C</option>
 
 
-                        <option rel="20-208" value="AB">A,B</option>
-                        <option rel="20-208" value="AC">A,C</option>
-                        <option rel="20-208" value="BC">B,C</option>
+                        <option rel="20-208" value="A,B">A,B</option>
+                        <option rel="20-208" value="A,C">A,C</option>
+                        <option rel="20-208" value="B,C">B,C</option>
 
-                        <option rel="30-208" value="AB">A,B</option>
-                        <option rel="30-208" value="AC">A,C</option>
-                        <option rel="30-208" value="BC">B,C</option>
+                        <option rel="30-208" value="A,B">A,B</option>
+                        <option rel="30-208" value="A,C">A,C</option>
+                        <option rel="30-208" value="B,C">B,C</option>
 
-                        <option rel="50-208" value="AB">A,B</option>
-                        <option rel="50-208" value="AC">A,C</option>
-                        <option rel="50-208" value="BC">B,C</option>
+                        <option rel="50-208" value="A,B">A,B</option>
+                        <option rel="50-208" value="A,C">A,C</option>
+                        <option rel="50-208" value="B,C">B,C</option>
 
-                        <option rel="60-208" value="AB">A,B</option>
-                        <option rel="60-208" value="AC">A,C</option>
-                        <option rel="60-208" value="BC">B,C</option>
+                        <option rel="60-208" value="A,B">A,B</option>
+                        <option rel="60-208" value="A,C">A,C</option>
+                        <option rel="60-208" value="B,C">B,C</option>
 
-                        <option rel="30-208-3ph" value="ABC">A,B,C</option>
+                        <option rel="30-208-3ph" value="A,B,C">A,B,C</option>
 
-                        <option rel="50-208-3ph" value="ABC">A,B,C</option>
+                        <option rel="50-208-3ph" value="A,B,C">A,B,C</option>
 
-                        <option rel="60-208-3ph" value="ABC">A,B,C</option>  
+                        <option rel="60-208-3ph" value="A,B,C">A,B,C</option>  
 
                     </select>
                 </td>
@@ -424,18 +619,136 @@ if ($connection->connect_error) die($connection->connect_error);
                 <tr><td>MAU </td>
                 <td><input type='text' name='secondaryMau'></td></tr>
 
-                <tr><td><input type="submit" value="Add product" align="left" name="secondaryAdd"></td></tr>
-                
-                </form>
+                <tr><td><input type="submit" value="Add product" align="left" name="secondaryAdd"></td>
+
+                <td width="100%"><input type="submit" id="addAll" value="Add All" align="left" name="addAll" style="height: 18px; width: 200px; left: 250; top: 250;"></td></tr>
+                <!--
+                <tr><td><td width="100%"><input type="submit" id="addAll" value="Add All" align="left" name="addAll" style="height: 18px; width: 180px; left: 250; top: 250;"></td></td></tr>
+                -->
                 </table>
-            </div>
-               
-                 
-      </section>
+
+                               <!-- =================== Secondary Panel Check =================== -->              
+                <div class='checkSecondaryPanel'><table> <tr><td>SPC:</td>
+                <td width="100%">
+                    <select id="category11" name="secondaryCheckRpp">
+                        <option value="">-SELECT-</option> 
+                        <option value="RPP-1A-S1">RPP-1A-S1</option>
+                        <option value="RPP-1A-S2">RPP-1A-S2</option>
+                        <option value="RPP-1A-S3">RPP-1A-S3</option>
+                        <option value="RPP-1A-S4">RPP-1A-S4</option>
+                        <option value="RPP-1A-S5">RPP-1A-S5</option>
+                        <option value="RPP-1A-S6">RPP-1A-S6</option>
+                        <option value="RPP-1A-S7">RPP-1A-S7</option>
+                        <option value="RPP-1A-S8">RPP-1A-S8</option>
+                        <option value="RPP-1A-S9">RPP-1A-S9</option>
+                        <option value="RPP-1A-S10">RPP-1A-S10</option>
+
+
+                    </select>
+<!--                </td>
+                
+                <td>
+-->                
+                <select disabled="disabled" id="category12" name="secondaryCheckPanel">  
+                        <option value="">-SELECT-</option> 
+                        <option rel="RPP-1A-S1" value="1A-S1-1">1A-S1-1</option>
+                        <option rel="RPP-1A-S1" value="1A-S1-2">1A-S1-2</option>
+                        <option rel="RPP-1A-S1" value="1A-S1-3">1A-S1-3</option>
+                        <option rel="RPP-1A-S1" value="1A-S1-4">1A-S1-4</option>
+
+                        <option rel="RPP-1A-S2" value="1A-S1-5">1A-S1-5</option>
+                        <option rel="RPP-1A-S2" value="1A-S1-6">1A-S1-6</option>
+                        <option rel="RPP-1A-S2" value="1A-S1-7">1A-S1-7</option>
+                        <option rel="RPP-1A-S2" value="1A-S1-8">1A-S1-8</option>
+
+                        <option rel="RPP-1A-S3" value="1A-S1-9">1A-S1-9</option>
+                        <option rel="RPP-1A-S3" value="1A-S1-10">1A-S1-10</option>
+                        <option rel="RPP-1A-S3" value="1A-S2-1">1A-S2-1</option>
+                        <option rel="RPP-1A-S3" value="1A-S2-2">1A-S2-2</option>
+                        
+                        <option rel="RPP-1A-S4" value="1A-S2-3">1A-S2-3</option>
+                        <option rel="RPP-1A-S4" value="1A-S2-4">1A-S2-4</option>
+                        <option rel="RPP-1A-S4" value="1A-S2-5">1A-S2-5</option>
+                        <option rel="RPP-1A-S4" value="1A-S2-6">1A-S2-6</option>
+
+                        <option rel="RPP-1A-S5" value="1A-S2-7">1A-S2-7</option>
+                        <option rel="RPP-1A-S5" value="1A-S2-8">1A-S2-8</option>
+                        <option rel="RPP-1A-S5" value="1A-S2-9">1A-S2-9</option>
+                        <option rel="RPP-1A-S5" value="1A-S2-10">1A-S2-10</option>
+
+                        <option rel="RPP-1A-S6" value="1A-S3-1">1A-S3-1</option>
+                        <option rel="RPP-1A-S6" value="1A-S3-2">1A-S3-2</option>
+                        <option rel="RPP-1A-S6" value="1A-S3-3">1A-S3-3</option>
+                        <option rel="RPP-1A-S6" value="1A-S3-4">1A-S3-4</option>
+
+                        <option rel="RPP-1A-S7" value="1A-S3-5">1A-S3-5</option>
+                        <option rel="RPP-1A-S7" value="1A-S3-6">1A-S3-6</option>
+                        <option rel="RPP-1A-S7" value="1A-S3-7">1A-S3-7</option>
+                        <option rel="RPP-1A-S7" value="1A-S3-8">1A-S3-8</option>
+
+                        <option rel="RPP-1A-S8" value="1A-S3-9">1A-S3-9</option>
+                        <option rel="RPP-1A-S8" value="1A-S3-10">1A-S3-10</option>
+                        <option rel="RPP-1A-S8" value="1A-S4-1">1A-S4-1</option>
+                        <option rel="RPP-1A-S8" value="1A-S4-2">1A-S4-2</option>
+
+                        <option rel="RPP-1A-S9" value="1A-S4-3">1A-S4-3</option>
+                        <option rel="RPP-1A-S9" value="1A-S4-4">1A-S4-4</option>
+                        <option rel="RPP-1A-S9" value="1A-S4-5">1A-S4-5</option>
+                        <option rel="RPP-1A-S9" value="1A-S4-6">1A-S4-6</option>
+
+                        <option rel="RPP-1A-S10" value="1A-S4-7">1A-S4-7</option>
+                        <option rel="RPP-1A-S10" value="1A-S4-8">1A-S4-8</option>
+                        <option rel="RPP-1A-S10" value="1A-S4-9">1A-S4-9</option>
+                        <option rel="RPP-1A-S10" value="1A-S4-10">1A-S4-10</option>
+                </select>
+                </td>
+
+                <td><input type="submit" value="Check" align="left" name="secondaryCheck">
+
+                </td>
+                </tr></table>
+                
+                </div>
+                </div>
+
+ 
+
+                </form>
+              </div>
+
+        <!--   </div>             -->
+        </section>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
       <script src="powerproduct.js"></script>
     </body>
 </html>
+
+<!--
+     <script>  
+          $(document).ready(function(){  
+               $('.hover').popover({  
+                    title:fetchData,  
+                    html:true,  
+                    placement:'right'  
+               });  
+               function fetchData(){  
+                    var fetch_data = '';  
+                    var element = $(this);  
+                    var id = element.attr("popup");  
+                    $.ajax({  
+                         url:"fetch.php",  
+                         method:"POST",  
+                         async:false,  
+                         data:{id:id},  
+                         success:function(data){  
+                              fetch_data = data;  
+                         }  
+                    });  
+                    return fetch_data;  
+               }  
+          });  
+     </script>  
+-->
 
 
 
