@@ -1,108 +1,29 @@
------------PRIMARY & SECONDARY MAINS---------------------------------------------------------
-INSERT INTO primarymain(mainName,phaseA,phaseB,phaseC) VALUES('1A-P1','166.667','166.667','166.667');
-INSERT INTO primarymain(mainName,phaseA,phaseB,phaseC) VALUES('1A-P2','166.667','166.667','166.667');
-INSERT INTO primarymain(mainName,phaseA,phaseB,phaseC) VALUES('1A-P3','166.667','166.667','166.667');
-INSERT INTO primarymain(mainName,phaseA,phaseB,phaseC) VALUES('1A-P4','166.667','166.667','166.667');
 
+MAINS:
+INSERT INTO primarymain values ('1A-P1',166.70,166.70,166.70),('1A-P2',166.70,166.70,166.70),('1A-P3',166.70,166.70,166.70),('1A-P4',166.70,166.70,166.70);
 
-INSERT INTO secondarymain(secondaryName,phaseA,phaseB,phaseC) VALUES('1A-S1','166.667','166.667','166.667');
-INSERT INTO secondarymain(secondaryName,phaseA,phaseB,phaseC) VALUES('1A-S2','166.667','166.667','166.667');
-INSERT INTO secondarymain(secondaryName,phaseA,phaseB,phaseC) VALUES('1A-S3','166.667','166.667','166.667');
-INSERT INTO secondarymain(secondaryName,phaseA,phaseB,phaseC) VALUES('1A-S4','166.667','166.667','166.667');
+INSERT INTO secondarymain values ('1A-S1',166.70,166.70,166.70),('1A-S2',166.70,166.70,166.70),('1A-S3',166.70,166.70,166.70),('1A-S4',166.70,166.70,166.70);
 
 
 
-----------PRIMARY & SECONDARY PANELS---------------------------------------
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P1-1','1A-P1');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P1-2','1A-P1');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P1-3','1A-P1');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P1-4','1A-P1');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P1-5','1A-P1');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P1-6','1A-P1');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P1-7','1A-P1');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P1-8','1A-P1');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P1-9','1A-P1');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P1-10','1A-P1');
-
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P2-1','1A-P2');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P2-2','1A-P2');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P2-3','1A-P2');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P2-4','1A-P2');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P2-5','1A-P2');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P2-6','1A-P2');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P2-7','1A-P2');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P2-8','1A-P2');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P2-9','1A-P2');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P2-10','1A-P2');
-
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P3-1','1A-P3');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P3-2','1A-P3');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P3-3','1A-P3');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P3-4','1A-P3');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P3-5','1A-P3');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P3-6','1A-P3');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P3-7','1A-P3');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P3-8','1A-P3');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P3-9','1A-P3');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P3-10','1A-P3');
-
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P4-1','1A-P4');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P4-2','1A-P4');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P4-3','1A-P4');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P4-4','1A-P4');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P4-5','1A-P4');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P4-6','1A-P4');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P4-7','1A-P4');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P4-8','1A-P4');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P4-9','1A-P4');
-INSERT INTO primarypanel(panelName,mainName) VALUES('1A-P4-10','1A-P4');
+PANELS:
+INSERT INTO primarypanel values ('1A-P1-1', '1A-P1'),('1A-P1-2', '1A-P1'),('1A-P1-3', '1A-P1'),('1A-P1-4', '1A-P1'),('1A-P1-5', '1A-P1'),('1A-P1-6', '1A-P1'),('1A-P1-7', '1A-P1'),('1A-P1-8', '1A-P1'),('1A-P1-9', '1A-P1'),('1A-P1-10', '1A-P1'),('1A-P2-1', '1A-P2'),('1A-P2-2', '1A-P2'),('1A-P2-3', '1A-P2'),('1A-P2-4', '1A-P2'),('1A-P2-5', '1A-P2'),('1A-P2-6', '1A-P2'),('1A-P2-7', '1A-P2'),('1A-P2-8', '1A-P2'),('1A-P2-9', '1A-P2'),('1A-P2-10', '1A-P2'),('1A-P3-1', '1A-P3'),('1A-P3-2', '1A-P3'),('1A-P3-3', '1A-P3'),('1A-P3-4', '1A-P3'),('1A-P3-5', '1A-P3'),('1A-P3-6', '1A-P3'),('1A-P3-7', '1A-P3'),('1A-P3-8', '1A-P3'),('1A-P3-9', '1A-P3'),('1A-P3-10', '1A-P3'),('1A-P4-1', '1A-P4'),('1A-P4-2', '1A-P4'),('1A-P4-3', '1A-P4'),('1A-P4-4', '1A-P4'),('1A-P4-5', '1A-P4'),('1A-P4-6', '1A-P4'),('1A-P4-7', '1A-P4'),('1A-P4-8', '1A-P4'),('1A-P4-9', '1A-P4'),('1A-P4-10', '1A-P4');
 
 
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S1-1','1A-S1');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S1-2','1A-S1');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S1-3','1A-S1');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S1-4','1A-S1');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S1-5','1A-S1');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S1-6','1A-S1');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S1-7','1A-S1');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S1-8','1A-S1');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S1-9','1A-S1');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S1-10','1A-S1');
+INSERT INTO secondarypanel values ('1A-S1-1', '1A-S1'),('1A-S1-2', '1A-S1'),('1A-S1-3', '1A-S1'),('1A-S1-4', '1A-S1'),('1A-S1-5', '1A-S1'),('1A-S1-6', '1A-S1'),('1A-S1-7', '1A-S1'),('1A-S1-8', '1A-S1'),('1A-S1-9', '1A-S1'),('1A-S1-10', '1A-S1'),('1A-S2-1', '1A-S2'),('1A-S2-2', '1A-S2'),('1A-S2-3', '1A-S2'),('1A-S2-4', '1A-S2'),('1A-S2-5', '1A-S2'),('1A-S2-6', '1A-S2'),('1A-S2-7', '1A-S2'),('1A-S2-8', '1A-S2'),('1A-S2-9', '1A-S2'),('1A-S2-10', '1A-S2'),('1A-S3-1', '1A-S3'),('1A-S3-2', '1A-S3'),('1A-S3-3', '1A-S3'),('1A-S3-4', '1A-S3'),('1A-S3-5', '1A-S3'),('1A-S3-6', '1A-S3'),('1A-S3-7', '1A-S3'),('1A-S3-8', '1A-S3'),('1A-S3-9', '1A-S3'),('1A-S3-10', '1A-S3'),('1A-S4-1', '1A-S4'),('1A-S4-2', '1A-S4'),('1A-S4-3', '1A-S4'),('1A-S4-4', '1A-S4'),('1A-S4-5', '1A-S4'),('1A-S4-6', '1A-S4'),('1A-S4-7', '1A-S4'),('1A-S4-8', '1A-S4'),('1A-S4-9', '1A-S4'),('1A-S4-10', '1A-S4');
 
 
 
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S2-1','1A-S2');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S2-2','1A-S2');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S2-3','1A-S2');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S2-4','1A-S2');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S2-5','1A-S2');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S2-6','1A-S2');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S2-7','1A-S2');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S2-8','1A-S2');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S2-9','1A-S2');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S2-10','1A-S2');
+RPPS:
+INSERT INTO primaryrpp VALUES ('RPP-1A-P1','1A-P1-1'),('RPP-1A-P1','1A-P1-2'),('RPP-1A-P1','1A-P1-3'),('RPP-1A-P1','1A-P1-4'),('RPP-1A-P2','1A-P1-5'),('RPP-1A-P2','1A-P1-6'),('RPP-1A-P2','1A-P1-7'),('RPP-1A-P2','1A-P1-8'),('RPP-1A-P3','1A-P1-9'),('RPP-1A-P3','1A-P1-10'),('RPP-1A-P3','1A-P2-1'),('RPP-1A-P3','1A-P2-2'),('RPP-1A-P4','1A-P2-3'),('RPP-1A-P4','1A-P2-4'),('RPP-1A-P4','1A-P2-5'),('RPP-1A-P4','1A-P2-6'),('RPP-1A-P5','1A-P2-7'),('RPP-1A-P5','1A-P2-8'),('RPP-1A-P5','1A-P2-9'),('RPP-1A-P5','1A-P2-10'),('RPP-1A-P6','1A-P3-1'),('RPP-1A-P6','1A-P3-2'),('RPP-1A-P6','1A-P3-3'),('RPP-1A-P6','1A-P3-4'),('RPP-1A-P7','1A-P3-5'),('RPP-1A-P7','1A-P3-6'),('RPP-1A-P7','1A-P3-7'),('RPP-1A-P7','1A-P3-8'),('RPP-1A-P8','1A-P3-9'),('RPP-1A-P8','1A-P3-10'),('RPP-1A-P8','1A-P4-1'),('RPP-1A-P8','1A-P4-2'),('RPP-1A-P9','1A-P4-3'),('RPP-1A-P9','1A-P4-4'),('RPP-1A-P9','1A-P4-5'),('RPP-1A-P9','1A-P4-6'),('RPP-1A-P10','1A-P4-7'),('RPP-1A-P10','1A-P4-8'),('RPP-1A-P10','1A-P4-9'),('RPP-1A-P10','1A-P4-10');
 
-
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S3-1','1A-S3');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S3-2','1A-S3');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S3-3','1A-S3');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S3-4','1A-S3');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S3-5','1A-S3');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S3-6','1A-S3');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S3-7','1A-S3');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S3-8','1A-S3');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S3-9','1A-S3');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S3-10','1A-S3');
+INSERT INTO secondaryrpp VALUES ('RPP-1A-S1','1A-S1-1'),('RPP-1A-S1','1A-S1-2'),('RPP-1A-S1','1A-S1-3'),('RPP-1A-S1','1A-S1-4'),('RPP-1A-S2','1A-S1-5'),('RPP-1A-S2','1A-S1-6'),('RPP-1A-S2','1A-S1-7'),('RPP-1A-S2','1A-S1-8'),('RPP-1A-S3','1A-S1-9'),('RPP-1A-S3','1A-S1-10'),('RPP-1A-S3','1A-S2-1'),('RPP-1A-S3','1A-S2-2'),('RPP-1A-S4','1A-S2-3'),('RPP-1A-S4','1A-S2-4'),('RPP-1A-S4','1A-S2-5'),('RPP-1A-S4','1A-S2-6'),('RPP-1A-S5','1A-S2-7'),('RPP-1A-S5','1A-S2-8'),('RPP-1A-S5','1A-S2-9'),('RPP-1A-S5','1A-S2-10'),('RPP-1A-S6','1A-S3-1'),('RPP-1A-S6','1A-S3-2'),('RPP-1A-S6','1A-S3-3'),('RPP-1A-S6','1A-S3-4'),('RPP-1A-S7','1A-S3-5'),('RPP-1A-S7','1A-S3-6'),('RPP-1A-S7','1A-S3-7'),('RPP-1A-S7','1A-S3-8'),('RPP-1A-S8','1A-S3-9'),('RPP-1A-S8','1A-S3-10'),('RPP-1A-S8','1A-S4-1'),('RPP-1A-S8','1A-S4-2'),('RPP-1A-S9','1A-S4-3'),('RPP-1A-S9','1A-S4-4'),('RPP-1A-S9','1A-S4-5'),('RPP-1A-S9','1A-S4-6'),('RPP-1A-S10','1A-S4-7'),('RPP-1A-S10','1A-S4-8'),('RPP-1A-S10','1A-S4-9'),('RPP-1A-S10','1A-S4-10');
 
 
 
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S4-1','1A-S4');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S4-2','1A-S4');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S4-3','1A-S4');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S4-4','1A-S4');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S4-5','1A-S4');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S4-6','1A-S4');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S4-7','1A-S4');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S4-8','1A-S4');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S4-9','1A-S4');
-INSERT INTO secondarypanel(panelName,mainName) VALUES('1A-S4-10','1A-S4');
+SECTIONS:
+INSERT INTO primarysection VALUES ('1A-P1-1',14,14,14,14,14,12,14,24,24,24),('1A-P1-2',14,14,14,14,14,12,14,24,24,24),('1A-P1-3',14,14,14,14,14,12,14,24,24,24),('1A-P1-4',14,14,14,14,14,12,14,24,24,24),('1A-P1-5',14,14,14,14,14,12,14,24,24,24),('1A-P1-6',14,14,14,14,14,12,14,24,24,24),('1A-P1-7',14,14,14,14,14,12,14,24,24,24),('1A-P1-8',14,14,14,14,14,12,14,24,24,24),('1A-P1-9',14,14,14,14,14,12,14,24,24,24),('1A-P1-10',14,14,14,14,14,12,14,24,24,24),('1A-P2-1',14,14,14,14,14,12,14,24,24,24),('1A-P2-2',14,14,14,14,14,12,14,24,24,24),('1A-P2-3',14,14,14,14,14,12,14,24,24,24),('1A-P2-4',14,14,14,14,14,12,14,24,24,24),('1A-P2-5',14,14,14,14,14,12,14,24,24,24),('1A-P2-6',14,14,14,14,14,12,14,24,24,24),('1A-P2-7',14,14,14,14,14,12,14,24,24,24),('1A-P2-8',14,14,14,14,14,12,14,24,24,24),('1A-P2-9',14,14,14,14,14,12,14,24,24,24),('1A-P2-10',14,14,14,14,14,12,14,24,24,24),('1A-P3-1',14,14,14,14,14,12,14,24,24,24),('1A-P3-2',14,14,14,14,14,12,14,24,24,24),('1A-P3-3',14,14,14,14,14,12,14,24,24,24),('1A-P3-4',14,14,14,14,14,12,14,24,24,24),('1A-P3-5',14,14,14,14,14,12,14,24,24,24),('1A-P3-6',14,14,14,14,14,12,14,24,24,24),('1A-P3-7',14,14,14,14,14,12,14,24,24,24),('1A-P3-8',14,14,14,14,14,12,14,24,24,24),('1A-P3-9',14,14,14,14,14,12,14,24,24,24),('1A-P3-10',14,14,14,14,14,12,14,24,24,24),('1A-P4-1',14,14,14,14,14,12,14,24,24,24),('1A-P4-2',14,14,14,14,14,12,14,24,24,24),('1A-P4-3',14,14,14,14,14,12,14,24,24,24),('1A-P4-4',14,14,14,14,14,12,14,24,24,24),('1A-P4-5',14,14,14,14,14,12,14,24,24,24),('1A-P4-6',14,14,14,14,14,12,14,24,24,24),('1A-P4-7',14,14,14,14,14,12,14,24,24,24),('1A-P4-8',14,14,14,14,14,12,14,24,24,24),('1A-P4-9',14,14,14,14,14,12,14,24,24,24),('1A-P4-10',14,14,14,14,14,12,14,24,24,24);
+
+INSERT INTO secondarysection VALUES ('1A-S1-1',14,14,14,14,14,12,14,24,24,24),('1A-S1-2',14,14,14,14,14,12,14,24,24,24),('1A-S1-3',14,14,14,14,14,12,14,24,24,24),('1A-S1-4',14,14,14,14,14,12,14,24,24,24),('1A-S1-5',14,14,14,14,14,12,14,24,24,24),('1A-S1-6',14,14,14,14,14,12,14,24,24,24),('1A-S1-7',14,14,14,14,14,12,14,24,24,24),('1A-S1-8',14,14,14,14,14,12,14,24,24,24),('1A-S1-9',14,14,14,14,14,12,14,24,24,24),('1A-S1-10',14,14,14,14,14,12,14,24,24,24),('1A-S2-1',14,14,14,14,14,12,14,24,24,24),('1A-S2-2',14,14,14,14,14,12,14,24,24,24),('1A-S2-3',14,14,14,14,14,12,14,24,24,24),('1A-S2-4',14,14,14,14,14,12,14,24,24,24),('1A-S2-5',14,14,14,14,14,12,14,24,24,24),('1A-S2-6',14,14,14,14,14,12,14,24,24,24),('1A-S2-7',14,14,14,14,14,12,14,24,24,24),('1A-S2-8',14,14,14,14,14,12,14,24,24,24),('1A-S2-9',14,14,14,14,14,12,14,24,24,24),('1A-S2-10',14,14,14,14,14,12,14,24,24,24),('1A-S3-1',14,14,14,14,14,12,14,24,24,24),('1A-S3-2',14,14,14,14,14,12,14,24,24,24),('1A-S3-3',14,14,14,14,14,12,14,24,24,24),('1A-S3-4',14,14,14,14,14,12,14,24,24,24),('1A-S3-5',14,14,14,14,14,12,14,24,24,24),('1A-S3-6',14,14,14,14,14,12,14,24,24,24),('1A-S3-7',14,14,14,14,14,12,14,24,24,24),('1A-S3-8',14,14,14,14,14,12,14,24,24,24),('1A-S3-9',14,14,14,14,14,12,14,24,24,24),('1A-S3-10',14,14,14,14,14,12,14,24,24,24),('1A-S4-1',14,14,14,14,14,12,14,24,24,24),('1A-S4-2',14,14,14,14,14,12,14,24,24,24),('1A-S4-3',14,14,14,14,14,12,14,24,24,24),('1A-S4-4',14,14,14,14,14,12,14,24,24,24),('1A-S4-5',14,14,14,14,14,12,14,24,24,24),('1A-S4-6',14,14,14,14,14,12,14,24,24,24),('1A-S4-7',14,14,14,14,14,12,14,24,24,24),('1A-S4-8',14,14,14,14,14,12,14,24,24,24),('1A-S4-9',14,14,14,14,14,12,14,24,24,24),('1A-S4-10',14,14,14,14,14,12,14,24,24,24);
+
+
