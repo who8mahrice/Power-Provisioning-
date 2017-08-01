@@ -10,14 +10,14 @@ PRIMARY KEY(mainName))ENGINE MyISAM;
 
 
 CREATE TABLE SecondaryMain(
-secondaryName VARCHAR(6),
+mainName VARCHAR(6),
 phaseA FLOAT(6,3),
 phaseB FLOAT(6,3),
 phaseC FLOAT(6,3),
 INDEX(phaseA),
 INDEX(phaseB),
 INDEX(phaseC),
-PRIMARY KEY(SecondaryName))ENGINE MyISAM;
+PRIMARY KEY(mainName))ENGINE MyISAM;
 
 
 
@@ -37,16 +37,14 @@ PRIMARY KEY(panelName)) ENGINE MyISAM;
 
 
 CREATE TABLE PrimaryRPP(
-rppName VARCHAR(8),
-panelName VARCHAR(7),
-INDEX(panelName),
-PRIMARY KEY(rppName)) ENGINE MyISAM;
+rppName varchar(10),
+panelName VARCHAR(8),
+INDEX(panelName)) ENGINE MyISAM;
 
 CREATE TABLE SecondaryRPP(
-rppName VARCHAR(8),
+rppName varchar(10),
 panelName VARCHAR(8),
-INDEX(panelName),
-PRIMARY KEY(rppName)) ENGINE MyISAM;
+INDEX(panelName)) ENGINE MyISAM;
 
 
 CREATE TABLE PrimarySection(
@@ -54,9 +52,13 @@ panelName VARCHAR(8),
 PhaseA SMALLINT(2),
 PhaseB SMALLINT(2),
 PhaseC SMALLINT(2),
-Phase_Left_A SMALLINT(2),
-Phase_Left_B SMALLINT(2),
-Phase_Left_C SMALLINT(2),
+PhaseAB SMALLINT(2),
+PhaseBC SMALLINT(2),
+PhaseAC SMALLINT(2),
+PhaseABC SMALLINT(2),
+Phase_Left_A float(5,3),
+Phase_Left_B float(5,3),
+Phase_Left_C float(5,3),
 INDEX(panelName))ENGINE MyISAM;
 
 CREATE TABLE SecondarySection(
@@ -64,110 +66,115 @@ panelName VARCHAR(8),
 PhaseA SMALLINT(2),
 PhaseB SMALLINT(2),
 PhaseC SMALLINT(2),
-Phase_Left_A SMALLINT(2),
-Phase_Left_B SMALLINT(2),
-Phase_Left_C SMALLINT(2),
+PhaseAB SMALLINT(2),
+PhaseBC SMALLINT(2),
+PhaseAC SMALLINT(2),
+PhaseABC SMALLINT(2),
+Phase_Left_A float(5,3),
+Phase_Left_B float(5,3),
+Phase_Left_C float(5,3),
 INDEX(panelName))ENGINE MyISAM;
 
 CREATE TABLE PrimaryPowerProduct(
-sID SMALLINT(6),
-cID SMALLINT(6),
+ID int NOT NULL AUTO_INCREMENT,
+cID VARCHAR(6),
+sID VARCHAR(6),
 panelName VARCHAR(8),
-productName VARCHAR(18),
-mau FLOAT(5,3),
-mac FLOAT(5,3),
-cage FLOAT(4,1),
-row SMALLINT(2),
-cab SMALLINT(2),
-numberOfPhases SMALLINT(2),
+power_type VARCHAR(11),
+phaseLetter varchar(6),
+mau SMALLINT(5),
+location VARCHAR(5),
+row VARCHAR(2),
+cab VARCHAR(2),
+INDEX(sID),
 INDEX(mau),
-INDEX(mac),
 INDEX(row),
 INDEX(cab),
-PRIMARY KEY(sID))ENGINE MyISAM;
+Primary KEY(ID)) ENGINE MyISAM;
 
 
 CREATE TABLE SecondaryPowerProduct(
-sID SMALLINT(6),
-cID SMALLINT(6),
+ID int NOT NULL AUTO_INCREMENT,
+cID VARCHAR(6),
+sID VARCHAR(6),
 panelName VARCHAR(8),
-productName VARCHAR(18),
-mau FLOAT(5,3),
-mac FLOAT(5,3),
-cage FLOAT(4,1),
-row SMALLINT(2),
-cab SMALLINT(2),
-numberOfPhases SMALLINT(2),
+power_type VARCHAR(11),
+phaseLetter varchar(6),
+mau SMALLINT(5),
+location VARCHAR(5),
+row VARCHAR(2),
+cab VARCHAR(2),
+INDEX(sID),
 INDEX(mau),
-INDEX(mac),
 INDEX(row),
 INDEX(cab),
-PRIMARY KEY(sID))ENGINE MyISAM;
+Primary KEY(ID)) ENGINE MyISAM;
+
 
 
 CREATE TABLE PrimaryPhase(
-sID SMALLINT(6),
-cID SMALLINT(6),
+cID varchar(6),
+sID varchar(6),
 amps SMALLINT(2),
 numberOfPhases SMALLINT(2),
-phaseLetter VARCHAR(3),
-circuitWatts FLOAT(7,3),
-perPhaseVa FLOAT(7,3),
-perPhaseWatts FLOAT(7,3),
+phaseLetter varchar(6),
+circuitWatts FLOAT(9,3),
+perPhaseVa FLOAT(9,3),
+perPhaseWatts FLOAT(9,3),
 ratio_A FLOAT(4,3),
-allowedWatts_A FLOAT(7,3),
-totalWatts_A FLOAT(7,3),
-circuitPhaseVa_A FLOAT(7,3),
-totalPhaseVa_A FLOAT(7,3),
-circuitPhaseWatts_A FLOAT(7,3),
-totalPhaseWatts_A FLOAT(7,3),
+allowedWatts_A FLOAT(9,3),
+totalWatts_A FLOAT(9,3),
+circuitPhaseVa_A FLOAT(9,3),
+totalPhaseVa_A FLOAT(9,3),
+circuitPhaseWatts_A FLOAT(9,3),
+totalPhaseWatts_A FLOAT(9,3),
 ratio_B FLOAT(4,3),
-allowedWatts_B FLOAT(7,3),
-totalWatts_B FLOAT(7,3),
-circuitPhaseVa_B FLOAT(7,3),
-totalPhaseVa_B FLOAT(7,3),
-circuitPhaseWatts_B FLOAT(7,3),
-totalPhaseWatts_B FLOAT(7,3),
+allowedWatts_B FLOAT(9,3),
+totalWatts_B FLOAT(9,3),
+circuitPhaseVa_B FLOAT(9,3),
+totalPhaseVa_B FLOAT(9,3),
+circuitPhaseWatts_B FLOAT(9,3),
+totalPhaseWatts_B FLOAT(9,3),
 ratio_C FLOAT(4,3),
-allowedWatts_C FLOAT(7,3),
-totalWatts_C FLOAT(7,3),
-circuitPhaseVa_C FLOAT(7,3),
-totalPhaseVa_C FLOAT(7,3),
-circuitPhaseWatts_C FLOAT(7,3),
-totalPhaseWatts_C FLOAT(7,3),
+allowedWatts_C FLOAT(9,3),
+totalWatts_C FLOAT(9,3),
+circuitPhaseVa_C FLOAT(9,3),
+totalPhaseVa_C FLOAT(9,3),
+circuitPhaseWatts_C FLOAT(9,3),
+totalPhaseWatts_C FLOAT(9,3),
 INDEX(sID),
 INDEX(cID))ENGINE MyISAM;
 
 CREATE TABLE SecondaryPhase(
-sID SMALLINT(6),
-cID SMALLINT(6),
+cID varchar(6),
+sID varchar(6),
 amps SMALLINT(2),
 numberOfPhases SMALLINT(2),
-phaseLetter VARCHAR(3),
-circuitWatts FLOAT(7,3),
-perPhaseVa FLOAT(7,3),
-perPhaseWatts FLOAT(7,3),
+phaseLetter varchar(6),
+circuitWatts FLOAT(9,3),
+perPhaseVa FLOAT(9,3),
+perPhaseWatts FLOAT(9,3),
 ratio_A FLOAT(4,3),
-allowedWatts_A FLOAT(7,3),
-totalWatts_A FLOAT(7,3),
-circuitPhaseVa_A FLOAT(7,3),
-totalPhaseVa_A FLOAT(7,3),
-circuitPhaseWatts_A FLOAT(7,3),
-totalPhaseWatts_A FLOAT(7,3),
+allowedWatts_A FLOAT(9,3),
+totalWatts_A FLOAT(9,3),
+circuitPhaseVa_A FLOAT(9,3),
+totalPhaseVa_A FLOAT(9,3),
+circuitPhaseWatts_A FLOAT(9,3),
+totalPhaseWatts_A FLOAT(9,3),
 ratio_B FLOAT(4,3),
-allowedWatts_B FLOAT(7,3),
-totalWatts_B FLOAT(7,3),
-circuitPhaseVa_B FLOAT(7,3),
-totalPhaseVa_B FLOAT(7,3),
-circuitPhaseWatts_B FLOAT(7,3),
-totalPhaseWatts_B FLOAT(7,3),
+allowedWatts_B FLOAT(9,3),
+totalWatts_B FLOAT(9,3),
+circuitPhaseVa_B FLOAT(9,3),
+totalPhaseVa_B FLOAT(9,3),
+circuitPhaseWatts_B FLOAT(9,3),
+totalPhaseWatts_B FLOAT(9,3),
 ratio_C FLOAT(4,3),
-allowedWatts_C FLOAT(7,3),
-totalWatts_C FLOAT(7,3),
-circuitPhaseVa_C FLOAT(7,3),
-totalPhaseVa_C FLOAT(7,3),
-circuitPhaseWatts_C FLOAT(7,3),
-totalPhaseWatts_C FLOAT(7,3),
+allowedWatts_C FLOAT(9,3),
+totalWatts_C FLOAT(9,3),
+circuitPhaseVa_C FLOAT(9,3),
+totalPhaseVa_C FLOAT(9,3),
+circuitPhaseWatts_C FLOAT(9,3),
+totalPhaseWatts_C FLOAT(9,3),
 INDEX(sID),
 INDEX(cID))ENGINE MyISAM;
 
@@ -195,11 +202,7 @@ INDEX(sID))ENGINE MyISAM;
 -----------------------------------------------------------------------------------------------------------------
 												NOTES
 -----------------------------------------------------------------------------------------------------------------
--For circuitPhaseWatts and fields that have FLOAT(7,3), float value might need to be changed later on.
--cab SMALLLINT(2), might need to be changed later on for a possible 3 digits? might cause an issue later on.
--numberOfPhases needs to be changed to SMALLINT(1).
--panelName changed from VARCHAR(7) to VARCHAR(8) because 1A-P1-10 is 8 chars
- ALTER TABLE primarypanel MODIFY panelName VARCHAR(8);
+
 
 
 
@@ -245,70 +248,4 @@ SELECT name,author,title FROM customers NATURAL JOIN classics;
 
 
 
-
-ALTER TABLE primarypowerproduct ADD mac FLOAT(5,3);
-
-ALTER TABLE primarypowerproduct ADD mau FLOAT(5,3);
-
-ALTER TABLE primarypowerproduct ADD cage FLOAT(4,1);
-
-ALTER TABLE primarypowerproduct ADD row SMALLINT(2);
-
-ALTER TABLE primarypowerproduct ADD numberOfPhases SMALLINT(2);
-
-
-ALTER TABLE secondarypowerproduct ADD mac FLOAT(5,3);
-
-ALTER TABLE secondarypowerproduct ADD mau FLOAT(5,3);
-
-ALTER TABLE secondarypowerproduct ADD cage FLOAT(4,1);
-
-ALTER TABLE secondarypowerproduct ADD row SMALLINT(2);
-
-ALTER TABLE secondarypowerproduct ADD numberOfPhases SMALLINT(2);
-
-
-ALTER TABLE spaceproduct ADD mac FLOAT(5,3);
-
-ALTER TABLE spaceproduct ADD mau FLOAT(5,3);
-
-
-
-
-ALTER TABLE primarypowerproduct CHANGE sID power_sID smallint(6);
-
-ALTER TABLE primarypowerproduct CHANGE productName powerType varchar(11);
-
-ALTER TABLE secondarypowerproduct CHANGE sID power_sID smallint(6);
-
-ALTER TABLE secondarypowerproduct CHANGE productName power_type varchar(11);
-
-ALTER TABLE primaryphase CHANGE sID power_sID smallint(6);
-
-ALTER TABLE secondaryphase CHANGE sID power_sID smallint(6);
-
-ALTER TABLE customer DROP spaceID;
-
-ALTER TABLE customer DROP sID;
-
-
-
-ALTER TABLE spaceproduct CHANGE cage spaceType float(4,1);
-
-ALTER TABLE spaceproduct CHANGE spaceID space_sID smallint(6);
-
-ALTER TABLE primarypowerproduct CHANGE power_type powerType varchar(11);
-
-ALTER TABLE secondarypowerproduct CHANGE power_type powerType varchar(11);
-
-ADD COLUMN location VARCHAR(7) after spaceType;
-
-ALTER TABLE customer CHANGE name customerName varchar(55);
-
-
-
-ALTER TABLE classics ADD id INT UNSIGNED NOT NULL AUTO_INCREMENT KEY;
-
-
-ALTER TABLE spaceproduct ADD COLUMN mau float(5,2) AFTER spaceType;
 
