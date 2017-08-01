@@ -22,7 +22,11 @@ if ($connection->connect_error) die($connection->connect_error);
                 <p><label>Panel Name : '.$row['panelName'].'</label></p>  
                 <p><label>PhaseA : </label>'.$row['PhaseA'].'</p>  
                 <p><label>PhaseB : </label>'.$row['PhaseB'].'</p>  
-                <p><label>PhaseC : </label>'.$row['PhaseC'].'</p>  
+                <p><label>PhaseC : </label>'.$row['PhaseC'].'</p>
+                <p><label>PhaseAB : </label>'.$row['PhaseAB'].'</p>  
+                <p><label>PhaseBC : </label>'.$row['PhaseBC'].'</p>  
+                <p><label>PhaseAC : </label>'.$row['PhaseAC'].'</p>
+                <p><label>PhaseABC : </label>'.$row['PhaseABC'].'</p>      
                 <p><label>Phase_Left_A : </label>'.$row['Phase_Left_A'].'</p>  
                 <p><label>Phase_Left_B : </label>'.$row['Phase_Left_B'].'</p> 
                 <p><label>Phase_Left_C : </label>'.$row['Phase_Left_C'].'</p> 
@@ -48,7 +52,11 @@ if ($connection->connect_error) die($connection->connect_error);
                 <p><label>Panel Name : '.$row['panelName'].'</label></p>  
                 <p><label>PhaseA : </label>'.$row['PhaseA'].'</p>  
                 <p><label>PhaseB : </label>'.$row['PhaseB'].'</p>  
-                <p><label>PhaseC : </label>'.$row['PhaseC'].'</p>  
+                <p><label>PhaseC : </label>'.$row['PhaseC'].'</p>
+                <p><label>PhaseAB : </label>'.$row['PhaseAB'].'</p>  
+                <p><label>PhaseBC : </label>'.$row['PhaseBC'].'</p>  
+                <p><label>PhaseAC : </label>'.$row['PhaseAC'].'</p>
+                <p><label>PhaseABC : </label>'.$row['PhaseABC'].'</p>      
                 <p><label>Phase_Left_A : </label>'.$row['Phase_Left_A'].'</p>  
                 <p><label>Phase_Left_B : </label>'.$row['Phase_Left_B'].'</p> 
                 <p><label>Phase_Left_C : </label>'.$row['Phase_Left_C'].'</p> 
@@ -62,7 +70,7 @@ if ($connection->connect_error) die($connection->connect_error);
 
 
 
-
+/* ************************* Add Primary and Secondary *************************  */
 if (isset($_POST['addAll'])) {
 	if (isset($_POST['primaryCid']) && !empty($_POST['primaryCid']) 
 		&& isset($_POST['primarySid']) &&  !empty($_POST['primarySid'])
@@ -89,7 +97,7 @@ if (isset($_POST['addAll'])) {
 			
 			calculatePrimaryPower($primaryCid, $primarySid, $primaryPowerType, $primaryPhaseLetters,$primaryLocation, $primaryRow, $primaryCab, $primaryMau, $connection, $primaryRpp, $primaryPanel);
 
-			addPrimaryPower($primaryCid,$primarySid,$primaryPanel,$primaryPowerType,$primaryMau,$primaryLocation,$primaryRow,$primaryCab,$connection);
+			addPrimaryPower($primaryCid,$primarySid,$primaryPanel,$primaryPowerType,$primaryPhaseLetters,$primaryMau,$primaryLocation,$primaryRow,$primaryCab,$connection);
 		} 
 		else{
 			echo 'Please fill in all of the Primary fields';
@@ -121,18 +129,19 @@ if (isset($_POST['addAll'])) {
 
 		calculateSecondaryPower($secondaryCid, $secondarySid, $secondaryPowerType, $secondaryPhaseLetters,$secondaryLocation, $secondaryRow, $secondaryCab, $secondaryMau, $connection,$secondaryRpp,$secondaryPanel);
 
-		addSecondaryPower($secondaryCid,$secondarySid,$secondaryPanel,$secondaryPowerType,$secondaryMau,$secondaryLocation,$secondaryRow,$secondaryCab,$connection);
+		addSecondaryPower($secondaryCid,$secondarySid,$secondaryPanel,$secondaryPowerType, $secondaryPhaseLetters, $secondaryMau,$secondaryLocation,$secondaryRow,$secondaryCab,$connection);
 
 		//calculateSecondaryPower($secondaryCid, $secondarySid, $secondaryPowerType, $secondaryPhaseLetters, $secondaryMau, $connection);
 
 		}
 		else{
-			echo 'Please fill in the fields';
+			echo 'Please fill in the Secondary fields';
 		}
 
 }
 
 
+/* ************************* Primary Add Only *************************  */
 if (isset($_POST['primaryAdd'])){
 	if (isset($_POST['primaryCid']) && !empty($_POST['primaryCid']) 
 		&& isset($_POST['primarySid']) &&  !empty($_POST['primarySid'])
@@ -159,7 +168,9 @@ if (isset($_POST['primaryAdd'])){
 			
 			calculatePrimaryPower($primaryCid, $primarySid, $primaryPowerType, $primaryPhaseLetters,$primaryLocation, $primaryRow, $primaryCab, $primaryMau, $connection, $primaryRpp, $primaryPanel);
 
-			addPrimaryPower($primaryCid,$primarySid,$primaryPanel,$primaryPowerType,$primaryMau,$primaryLocation,$primaryRow,$primaryCab,$connection);
+			addPrimaryPower($primaryCid,$primarySid,$primaryPanel,$primaryPowerType,$primaryPhaseLetters,$primaryMau,$primaryLocation,$primaryRow,$primaryCab,$connection);
+
+			reserveSecondary($primaryCid,$primarySid,$primaryPanel,$primaryPowerType,$primaryPhaseLetters, $primaryMau,$primaryLocation,$primaryRow,$primaryCab,$connection);
 		} 
 		else{
 			echo 'Please fill in all the Primary fields';
@@ -170,7 +181,7 @@ if (isset($_POST['primaryAdd'])){
 	
 
 
-
+/* ************************* Secondary Add Only *************************  */
 if (isset($_POST['secondaryAdd'])){
 	if (isset($_POST['secondaryCid']) && !empty($_POST['secondaryCid']) 
 		&& isset($_POST['secondarySid']) &&  !empty($_POST['secondarySid'])
@@ -199,7 +210,7 @@ if (isset($_POST['secondaryAdd'])){
 
 		calculateSecondaryPower($secondaryCid, $secondarySid, $secondaryPowerType, $secondaryPhaseLetters,$secondaryLocation, $secondaryRow, $secondaryCab, $secondaryMau, $connection,$secondaryRpp,$secondaryPanel);
 
-		addSecondaryPower($secondaryCid,$secondarySid,$secondaryPanel,$secondaryPowerType,$secondaryMau,$secondaryLocation,$secondaryRow,$secondaryCab,$connection);
+		addSecondaryPower($secondaryCid,$secondarySid,$secondaryPanel,$secondaryPowerType,$secondaryPhaseLetters, $secondaryMau,$secondaryLocation,$secondaryRow,$secondaryCab,$connection);
 
 		//calculateSecondaryPower($secondaryCid, $secondarySid, $secondaryPowerType, $secondaryPhaseLetters, $secondaryMau, $connection);
 
@@ -209,7 +220,7 @@ if (isset($_POST['secondaryAdd'])){
 		}
 }
 
-//function calculatePrimaryPower($primaryCid,$primarySid,$primaryPowerType,$primaryPhaseLetters,$primaryMau){
+
 
 function calculatePrimaryPower($primaryCid, $primarySid, $primaryPowerType, $primaryPhaseLetters,$primaryLocation, $primaryRow, $primaryCab, $primaryMau, $connection, $primaryRpp, $primaryPanel){
 
@@ -218,6 +229,7 @@ function calculatePrimaryPower($primaryCid, $primarySid, $primaryPowerType, $pri
 	$previousValueB = false;
 	$previousValueC = false;
 
+	$ppl = $primaryPhaseLetters;
 	$primaryPhaseLetter = explode( "," , $primaryPhaseLetters);
 	$numOfPhases = count($primaryPhaseLetter);
 	$primaryAmps = (int)substr($primaryPowerType,0, -4);
@@ -251,7 +263,7 @@ function calculatePrimaryPower($primaryCid, $primarySid, $primaryPowerType, $pri
 	}
 
 	/* =========================================== Section =========================================== */
-	$grabSection = "SELECT panelName, PhaseA, PhaseB, PhaseC, Phase_Left_A, Phase_Left_B, Phase_Left_C FROM primarysection where panelName='$name'";
+	$grabSection = "SELECT panelName, PhaseA, PhaseB, PhaseC, PhaseAB, PhaseBC, PhaseAC, PhaseABC, Phase_Left_A, Phase_Left_B, Phase_Left_C FROM primarysection where panelName='$name'";
 
 	$resultSection = $connection->query($grabSection);
 
@@ -262,11 +274,15 @@ function calculatePrimaryPower($primaryCid, $primarySid, $primaryPowerType, $pri
 	    	$PhaseA_Section = $row["PhaseA"];
 	    	$PhaseB_Section = $row["PhaseB"];
 	    	$PhaseC_Section = $row["PhaseC"];
+	    	$PhaseAB_Section = $row["PhaseAB"];
+	    	$PhaseBC_Section = $row["PhaseBC"];
+	    	$PhaseAC_Section = $row["PhaseAC"];
+	    	$PhaseABC_Section = $row["PhaseABC"];
 	    	$Phase_Left_A = $row["Phase_Left_A"];
 	    	$Phase_Left_B = $row["Phase_Left_B"];
 	    	$Phase_Left_C = $row["Phase_Left_C"];
 
-	    	echo 'Panel: '.$panel.' Phase A: '.$PhaseA_Section.' Phase B: '.$PhaseB_Section.' Phase C: '.$PhaseC_Section.' Phase_Left_A: '.$Phase_Left_A.' Phase_Left_B: '.$Phase_Left_B.' Phase_Left_C: '.$Phase_Left_C.'<br>'.'<br>';
+	    	echo 'Panel: '.$panel.' Phase A: '.$PhaseA_Section.' Phase B: '.$PhaseB_Section.' Phase C: '.$PhaseC_Section.' Phase AB: '.$PhaseAB_Section.' Phase BC: '.$PhaseBC_Section.' Phase AC: '.$PhaseAC_Section.' Phase ABC: '.$PhaseABC_Section.' Phase_Left_A: '.$Phase_Left_A.' Phase_Left_B: '.$Phase_Left_B.' Phase_Left_C: '.$Phase_Left_C.'<br>'.'<br>';
 	  }
 	} //)
 	else {
@@ -471,6 +487,8 @@ function calculatePrimaryPower($primaryCid, $primarySid, $primaryPowerType, $pri
 		$perPhaseVa = $per_phase_va_calc;
 		$perPhaseWatts = $per_phase_watts_calc; 
 
+
+
 		// Assigns which phases get values in the DB
 		foreach($primaryPhaseLetter as $item){
 			echo 'Phase '.$item.'<br>';			
@@ -498,7 +516,9 @@ function calculatePrimaryPower($primaryCid, $primarySid, $primaryPowerType, $pri
 
 
 					// Minus the number of phase letters left
-					$PhaseA_Section = $PhaseA_Section - 1;
+					//$PhaseA_Section = $PhaseA_Section - 1;
+
+
 
 					echo "--------------- The phase main BEFORE: ".$phaseA_Main;
 					// For main values:
@@ -520,7 +540,7 @@ function calculatePrimaryPower($primaryCid, $primarySid, $primaryPowerType, $pri
 					// For section values:
 					$Phase_Left_A = $Phase_Left_A - ($newTotalPhaseVaSection/1000); // final result value, to be updated in DB. For new values
 					// Minus the number of phase letters left
-					$PhaseA_Section = $PhaseA_Section - 1;
+					//$PhaseA_Section = $PhaseA_Section - 1;
 
 					// For main values:
 					$phaseA_Main = $phaseA_Main - ($newTotalPhaseVaSection/1000);
@@ -553,7 +573,7 @@ function calculatePrimaryPower($primaryCid, $primarySid, $primaryPowerType, $pri
 
 
 					// Minus the number of phase letters left
-					$PhaseB_Section = $PhaseB_Section - 1;
+					//$PhaseB_Section = $PhaseB_Section - 1;
 
 					echo "--------------- The phase main BEFORE: ".$phaseB_Main;
 					// For main values:
@@ -573,7 +593,7 @@ function calculatePrimaryPower($primaryCid, $primarySid, $primaryPowerType, $pri
 					// For section values:
 					$Phase_Left_B = $Phase_Left_B - ($newTotalPhaseVaSection/1000); // final result value, to be updated in DB. For new values
 					// Minus the number of phase letters left
-					$PhaseB_Section = $PhaseB_Section - 1;
+					//$PhaseB_Section = $PhaseB_Section - 1;
 
 					// For main values:
 					$phaseB_Main = $phaseB_Main - ($newTotalPhaseVaSection/1000);
@@ -604,7 +624,7 @@ function calculatePrimaryPower($primaryCid, $primarySid, $primaryPowerType, $pri
 
 
 					// Minus the number of phase letters left
-					$PhaseC_Section = $PhaseC_Section - 1;
+					//$PhaseC_Section = $PhaseC_Section - 1;
 
 					echo "--------------- The phase main BEFORE: ".$phaseC_Main;
 					// For main values:
@@ -626,7 +646,7 @@ function calculatePrimaryPower($primaryCid, $primarySid, $primaryPowerType, $pri
 					// For section values:
 					$Phase_Left_C = $Phase_Left_C - ($newTotalPhaseVaSection/1000); // final result value, to be updated in DB. For new values
 					// Minus the number of phase letters left
-					$PhaseC_Section = $PhaseC_Section - 1;
+					//$PhaseC_Section = $PhaseC_Section - 1;
 
 					// For main values:
 					$phaseC_Main = $phaseC_Main - ($newTotalPhaseVaSection/1000);
@@ -665,20 +685,76 @@ function calculatePrimaryPower($primaryCid, $primarySid, $primaryPowerType, $pri
 				}
  		}
 */ 
+ 		//minus section here
+ 		switch ($ppl) {
+	    case "A":
+	        $PhaseA_Section = $PhaseA_Section - 1;
+	        $PhaseAB_Section = $PhaseAB_Section - 1;
+	        $PhaseAC_Section = $PhaseAC_Section - 1;
+			$PhaseABC_Section = $PhaseABC_Section - 1;
+	        break;
+	    case "B":
+	        $PhaseB_Section = $PhaseB_Section - 1;
+	        $PhaseAB_Section = $PhaseAB_Section - 1;
+			$PhaseBC_Section = $PhaseBC_Section - 1;
+			$PhaseABC_Section = $PhaseABC_Section - 1;
+	        break;
+	    case "C":
+	        $PhaseC_Section = $PhaseC_Section - 1;
+	        $PhaseBC_Section = $PhaseBC_Section - 1;
+			$PhaseAC_Section = $PhaseAC_Section - 1;
+			$PhaseABC_Section = $PhaseABC_Section - 1;
+	        break;        		
+	    case "A,B":
+	        $PhaseA_Section = $PhaseA_Section - 1;
+	        $PhaseB_Section = $PhaseB_Section - 1;
+	        $PhaseAB_Section = $PhaseAB_Section - 1;
+			$PhaseBC_Section = $PhaseBC_Section - 1;
+			$PhaseAC_Section = $PhaseAC_Section - 1;
+			$PhaseABC_Section = $PhaseABC_Section - 1;
+	        break;
+	    case "B,C":
+	    	$PhaseB_Section = $PhaseB_Section - 1;
+	    	$PhaseC_Section = $PhaseC_Section - 1;
+	        $PhaseAB_Section = $PhaseAB_Section - 1;
+	        $PhaseBC_Section = $PhaseBC_Section - 1;
+			$PhaseAC_Section = $PhaseAC_Section - 1;
+			$PhaseABC_Section = $PhaseABC_Section - 1;
+	        break;
+	    case "A,C":
+	        $PhaseA_Section = $PhaseA_Section - 1;
+	        $PhaseC_Section = $PhaseC_Section - 1;
+	        $PhaseAB_Section = $PhaseAB_Section - 1;
+	        $PhaseBC_Section = $PhaseBC_Section - 1;
+			$PhaseAC_Section = $PhaseAC_Section - 1;
+			$PhaseABC_Section = $PhaseABC_Section - 1;
+	        break;
+	    case "A,B,C":
+	        $PhaseA_Section = $PhaseA_Section - 1;
+	        $PhaseB_Section = $PhaseB_Section - 1;
+	    	$PhaseC_Section = $PhaseC_Section - 1;
+			$PhaseAB_Section = $PhaseAB_Section - 1;
+			$PhaseBC_Section = $PhaseBC_Section - 1;
+			$PhaseAC_Section = $PhaseAC_Section - 1;
+			$PhaseABC_Section = $PhaseABC_Section - 1;
+	        break;    
+	    default:
+	        echo "No Phase Letter Selected".'<br>';
+}
 
 
 
 			mysqli_stmt_execute($stmt);
 
 			// UPDATE SECTION
-			$updateSection = "UPDATE primarysection SET PhaseA=?, PhaseB=?, PhaseC=?, Phase_Left_A=?, Phase_Left_B=?, Phase_Left_C=? WHERE panelName=?";
+			$updateSection = "UPDATE primarysection SET PhaseA=?, PhaseB=?, PhaseC=?, PhaseAB=?, PhaseBC=?, PhaseAC=?, PhaseABC=?, Phase_Left_A=?, Phase_Left_B=?, Phase_Left_C=? WHERE panelName=?";
 
  //$section = "update primarysection set (PhaseA,PhaseB,PhaseC,Phase_Left_A,Phase_Left_B,Phase_Left_C) VALUES(?,?,?,?,?,?) where ";
 
 
     if($stmtSection = mysqli_prepare($connection, $updateSection)){
     // Bind variables to the prepared statement as parameters
-	mysqli_stmt_bind_param($stmtSection,"iiiddds", $PhaseA_Section,$PhaseB_Section,$PhaseC_Section,$Phase_Left_A,$Phase_Left_B,$Phase_Left_C,$panel);
+	mysqli_stmt_bind_param($stmtSection,"iiiiiiiddds", $PhaseA_Section,$PhaseB_Section,$PhaseC_Section,$PhaseAB_Section, $PhaseBC_Section, $PhaseAC_Section, $PhaseABC_Section, $Phase_Left_A,$Phase_Left_B,$Phase_Left_C,$panel);
 
 			mysqli_stmt_execute($stmtSection);
 }
@@ -724,6 +800,7 @@ function calculateSecondaryPower($secondaryCid, $secondarySid, $secondaryPowerTy
 	$previousValueB = false;
 	$previousValueC = false;
 
+	$ppl = $secondaryPhaseLetters;
 	$secondaryPhaseLetter = explode( "," , $secondaryPhaseLetters);
 	$numOfPhases = count($secondaryPhaseLetter);
 	$secondaryAmps = (int)substr($secondaryPowerType,0, -4);
@@ -758,22 +835,26 @@ function calculateSecondaryPower($secondaryCid, $secondarySid, $secondaryPowerTy
 
 
 	/* =========================================== Section =========================================== */
-	$grabSection = "SELECT panelName, PhaseA, PhaseB, PhaseC, Phase_Left_A, Phase_Left_B, Phase_Left_C FROM secondarysection where panelName='$name'";
+	$grabSection = "SELECT panelName, PhaseA, PhaseB, PhaseC, PhaseAB, PhaseBC, PhaseAC, PhaseABC, Phase_Left_A, Phase_Left_B, Phase_Left_C FROM secondarysection where panelName='$name'";
 
 	$resultSection = $connection->query($grabSection);
 
 		if ($resultSection->num_rows > 0) { //(
 		    while($row = $resultSection->fetch_assoc()) {
 
-		    	$panel = $row["panelName"];
-		    	$PhaseA_Section = $row["PhaseA"];
-		    	$PhaseB_Section = $row["PhaseB"];
-		    	$PhaseC_Section = $row["PhaseC"];
-		    	$Phase_Left_A = $row["Phase_Left_A"];
-		    	$Phase_Left_B = $row["Phase_Left_B"];
-		    	$Phase_Left_C = $row["Phase_Left_C"];
+		    $panel = $row["panelName"];
+	    	$PhaseA_Section = $row["PhaseA"];
+	    	$PhaseB_Section = $row["PhaseB"];
+	    	$PhaseC_Section = $row["PhaseC"];
+	    	$PhaseAB_Section = $row["PhaseAB"];
+	    	$PhaseBC_Section = $row["PhaseBC"];
+	    	$PhaseAC_Section = $row["PhaseAC"];
+	    	$PhaseABC_Section = $row["PhaseABC"];
+	    	$Phase_Left_A = $row["Phase_Left_A"];
+	    	$Phase_Left_B = $row["Phase_Left_B"];
+	    	$Phase_Left_C = $row["Phase_Left_C"];
 
-		    	echo 'Panel: '.$panel.' Phase A: '.$PhaseA_Section.' Phase B: '.$PhaseB_Section.' Phase C: '.$PhaseC_Section.' Phase_Left_A: '.$Phase_Left_A.' Phase_Left_B: '.$Phase_Left_B.' Phase_Left_C: '.$Phase_Left_C.'<br>'.'<br>';
+		    echo 'Panel: '.$panel.' Phase A: '.$PhaseA_Section.' Phase B: '.$PhaseB_Section.' Phase C: '.$PhaseC_Section.' Phase AB: '.$PhaseAB_Section.' Phase BC: '.$PhaseBC_Section.' Phase AC: '.$PhaseAC_Section.' Phase ABC: '.$PhaseABC_Section.' Phase_Left_A: '.$Phase_Left_A.' Phase_Left_B: '.$Phase_Left_B.' Phase_Left_C: '.$Phase_Left_C.'<br>'.'<br>';
 			  }
 		} //)
 		else {
@@ -994,7 +1075,7 @@ function calculateSecondaryPower($secondaryCid, $secondarySid, $secondaryPowerTy
 
 
 					// Minus the number of phase letters left
-					$PhaseA_Section = $PhaseA_Section - 1;
+					//$PhaseA_Section = $PhaseA_Section - 1;
 
 
 
@@ -1017,7 +1098,7 @@ function calculateSecondaryPower($secondaryCid, $secondarySid, $secondaryPowerTy
 					// For section values:
 					$Phase_Left_A = $Phase_Left_A - ($newTotalPhaseVaSection/1000); // final result value, to be updated in DB. For new values
 					// Minus the number of phase letters left
-					$PhaseA_Section = $PhaseA_Section - 1;
+					//$PhaseA_Section = $PhaseA_Section - 1;
 
 					// For main values:
 					$phaseA_Main = $phaseA_Main - ($newTotalPhaseVaSection/1000);
@@ -1048,7 +1129,7 @@ function calculateSecondaryPower($secondaryCid, $secondarySid, $secondaryPowerTy
 
 
 					// Minus the number of phase letters left
-					$PhaseB_Section = $PhaseB_Section - 1;
+					//$PhaseB_Section = $PhaseB_Section - 1;
 
 					echo "--------------- The phase main BEFORE: ".$phaseB_Main;
 					// For main values:
@@ -1068,7 +1149,7 @@ function calculateSecondaryPower($secondaryCid, $secondarySid, $secondaryPowerTy
 					// For section values:
 					$Phase_Left_B = $Phase_Left_B - ($newTotalPhaseVaSection/1000); // final result value, to be updated in DB. For new values
 					// Minus the number of phase letters left
-					$PhaseB_Section = $PhaseB_Section - 1;
+					//$PhaseB_Section = $PhaseB_Section - 1;
 
 					// For main values:
 					$phaseB_Main = $phaseB_Main - ($newTotalPhaseVaSection/1000);
@@ -1099,7 +1180,7 @@ function calculateSecondaryPower($secondaryCid, $secondarySid, $secondaryPowerTy
 
 
 					// Minus the number of phase letters left
-					$PhaseC_Section = $PhaseC_Section - 1;
+					//$PhaseC_Section = $PhaseC_Section - 1;
 
 
 					echo "--------------- The phase main BEFORE: ".$phaseC_Main;
@@ -1120,7 +1201,7 @@ function calculateSecondaryPower($secondaryCid, $secondarySid, $secondaryPowerTy
 					// For section values:
 					$Phase_Left_C = $Phase_Left_C - ($newTotalPhaseVaSection/1000); // final result value, to be updated in DB. For new values
 					// Minus the number of phase letters left
-					$PhaseC_Section = $PhaseC_Section - 1;
+					//$PhaseC_Section = $PhaseC_Section - 1;
 
 					// For main values:
 					$phaseC_Main = $phaseC_Main - ($newTotalPhaseVaSection/1000);
@@ -1160,19 +1241,76 @@ function calculateSecondaryPower($secondaryCid, $secondarySid, $secondaryPowerTy
  		}
 */ 
 
+ 		//minus section here
+ 		switch ($ppl) {
+	    case "A":
+	        $PhaseA_Section = $PhaseA_Section - 1;
+	        $PhaseAB_Section = $PhaseAB_Section - 1;
+	        $PhaseAC_Section = $PhaseAC_Section - 1;
+			$PhaseABC_Section = $PhaseABC_Section - 1;
+	        break;
+	    case "B":
+	        $PhaseB_Section = $PhaseB_Section - 1;
+	        $PhaseAB_Section = $PhaseAB_Section - 1;
+			$PhaseBC_Section = $PhaseBC_Section - 1;
+			$PhaseABC_Section = $PhaseABC_Section - 1;
+	        break;
+	    case "C":
+	        $PhaseC_Section = $PhaseC_Section - 1;
+	        $PhaseBC_Section = $PhaseBC_Section - 1;
+			$PhaseAC_Section = $PhaseAC_Section - 1;
+			$PhaseABC_Section = $PhaseABC_Section - 1;
+	        break;        		
+	    case "A,B":
+	        $PhaseA_Section = $PhaseA_Section - 1;
+	        $PhaseB_Section = $PhaseB_Section - 1;
+	        $PhaseAB_Section = $PhaseAB_Section - 1;
+			$PhaseBC_Section = $PhaseBC_Section - 1;
+			$PhaseAC_Section = $PhaseAC_Section - 1;
+			$PhaseABC_Section = $PhaseABC_Section - 1;
+	        break;
+	    case "B,C":
+	    	$PhaseB_Section = $PhaseB_Section - 1;
+	    	$PhaseC_Section = $PhaseC_Section - 1;
+	        $PhaseAB_Section = $PhaseAB_Section - 1;
+	        $PhaseBC_Section = $PhaseBC_Section - 1;
+			$PhaseAC_Section = $PhaseAC_Section - 1;
+			$PhaseABC_Section = $PhaseABC_Section - 1;
+	        break;
+	    case "A,C":
+	        $PhaseA_Section = $PhaseA_Section - 1;
+	        $PhaseC_Section = $PhaseC_Section - 1;
+	        $PhaseAB_Section = $PhaseAB_Section - 1;
+	        $PhaseBC_Section = $PhaseBC_Section - 1;
+			$PhaseAC_Section = $PhaseAC_Section - 1;
+			$PhaseABC_Section = $PhaseABC_Section - 1;
+	        break;
+	    case "A,B,C":
+	        $PhaseA_Section = $PhaseA_Section - 1;
+	        $PhaseB_Section = $PhaseB_Section - 1;
+	    	$PhaseC_Section = $PhaseC_Section - 1;
+			$PhaseAB_Section = $PhaseAB_Section - 1;
+			$PhaseBC_Section = $PhaseBC_Section - 1;
+			$PhaseAC_Section = $PhaseAC_Section - 1;
+			$PhaseABC_Section = $PhaseABC_Section - 1;
+	        break;    
+	    default:
+	        echo "No Phase Letter Selected".'<br>';
+}
+
 
 
 			mysqli_stmt_execute($stmt);
 
 			// UPDATE SECTION
-			$updateSection = "UPDATE secondarysection SET PhaseA=?, PhaseB=?, PhaseC=?, Phase_Left_A=?, Phase_Left_B=?, Phase_Left_C=? WHERE panelName=?";
+			$updateSection = "UPDATE secondarysection SET PhaseA=?, PhaseB=?, PhaseC=?, PhaseAB=?, PhaseBC=?, PhaseAC=?, PhaseABC=?, Phase_Left_A=?, Phase_Left_B=?, Phase_Left_C=? WHERE panelName=?";
 
 			 //$section = "update secondarySection set (PhaseA,PhaseB,PhaseC,Phase_Left_A,Phase_Left_B,Phase_Left_C) VALUES(?,?,?,?,?,?) where ";
 
 
 			    if($stmtSection = mysqli_prepare($connection, $updateSection)){
 			    // Bind variables to the prepared statement as parameters
-				mysqli_stmt_bind_param($stmtSection,"iiiddds", $PhaseA_Section,$PhaseB_Section,$PhaseC_Section,$Phase_Left_A,$Phase_Left_B,$Phase_Left_C,$panel);
+				mysqli_stmt_bind_param($stmtSection,"iiiiiiiddds", $PhaseA_Section,$PhaseB_Section,$PhaseC_Section,$PhaseAB_Section, $PhaseBC_Section, $PhaseAC_Section, $PhaseABC_Section, $Phase_Left_A,$Phase_Left_B,$Phase_Left_C,$panel);
 
 						mysqli_stmt_execute($stmtSection);
 					}
@@ -1215,15 +1353,15 @@ function calculateSecondaryPower($secondaryCid, $secondarySid, $secondaryPowerTy
 
 
 
-function addPrimaryPower($primaryCid,$primarySid,$primaryPanel,$primaryPowerType,$primaryMau,$primaryLocation,$primaryRow,$primaryCab,$connection){
+function addPrimaryPower($primaryCid,$primarySid,$primaryPanel,$primaryPowerType,$primaryPhaseLetters, $primaryMau,$primaryLocation,$primaryRow,$primaryCab,$connection){
 
 
- $sql = "INSERT INTO primarypowerproduct (cID, sID, panelName, power_type, mau, location, row, cab)VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+ $sql = "INSERT INTO primarypowerproduct (cID, sID, panelName, power_type, phaseLetter, mau, location, row, cab)VALUES(?, ?, ?, ?, ?,?, ?, ?, ?)";
 
 //iissdsii
    if($stmt = mysqli_prepare($connection, $sql)){
     // Bind variables to the prepared statement as parameters
-    mysqli_stmt_bind_param($stmt,"ssssisss", $cID,$sID,$panelName,$power_type,$mau,$location,$row,$cab);
+    mysqli_stmt_bind_param($stmt,"sssssisss", $cID,$sID,$panelName,$power_type,$phaseLetter, $mau,$location,$row,$cab);
 
     
 
@@ -1231,6 +1369,7 @@ function addPrimaryPower($primaryCid,$primarySid,$primaryPanel,$primaryPowerType
 			$sID = $primarySid;
 			$panelName = $primaryPanel;
 			$power_type = $primaryPowerType;
+			$phaseLetter = $primaryPhaseLetters;
 			$mau = $primaryMau;
 			$location = $primaryLocation;
 			$row = $primaryRow;
@@ -1248,16 +1387,16 @@ function addPrimaryPower($primaryCid,$primarySid,$primaryPanel,$primaryPowerType
     //echo "<meta http-equiv='refresh' content='2'>";
 }
 
-function addSecondaryPower($secondaryCid,$secondarySid,$secondaryPanel,$secondaryPowerType,$secondaryMau,$secondaryLocation,$secondaryRow,$secondaryCab,$connection){
+function addSecondaryPower($secondaryCid,$secondarySid,$secondaryPanel,$secondaryPowerType,$secondaryPhaseLetters, $secondaryMau,$secondaryLocation,$secondaryRow,$secondaryCab,$connection){
 
 
-    $sql = "INSERT INTO secondarypowerproduct (cID, sID, panelName, power_type, mau, location, row, cab)VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO secondarypowerproduct (cID, sID, panelName, power_type, phaseLetter, mau, location, row, cab)VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 			
 
    if($stmt = mysqli_prepare($connection, $sql)){
     // Bind variables to the prepared statement as parameters
-    mysqli_stmt_bind_param($stmt,"ssssisss", $cID,$sID,$panelName,$power_type,$mau,$location,$row,$cab);
+    mysqli_stmt_bind_param($stmt,"sssssisss", $cID,$sID,$panelName,$power_type,$phaseLetter,$mau,$location,$row,$cab);
 
     
 
@@ -1265,6 +1404,7 @@ function addSecondaryPower($secondaryCid,$secondarySid,$secondaryPanel,$secondar
 		$sID = $secondarySid;
 		$panelName = $secondaryPanel;
 		$power_type = $secondaryPowerType;
+		$phaseLetter = $secondaryPhaseLetters;
 		$mau = $secondaryMau;
 		$location = $secondaryLocation;
 		$row = $secondaryRow;
@@ -1290,6 +1430,146 @@ function returner($aa,$ratioAs,$totalWattsAs,$totalPhaseVaAs,$totalPhaseWattsAs,
 
 	return array($aa,$ratioAs,$totalWattsAs,$totalPhaseVaAs,$totalPhaseWattsAs,$ratioBs,$totalWattsBs,$totalPhaseVaBs,$totalPhaseWattsBs,$ratioCs,$totalWattsCs,$totalPhaseVaCs,$totalPhaseWattsCs);
 
+}
+
+// To add a RESERVE sID for possible Secondary Power Product in the future
+function reserveSecondary($primaryCid,$primarySid,$primaryPanel,$primaryPowerType,$primaryPhaseLetters, $primaryMau,$primaryLocation,$primaryRow,$primaryCab,$connection){
+
+	
+	// Insert into Secondary Power Product
+	$secondaryPowerProduct = "INSERT INTO secondarypowerproduct (cID, sID, panelName, power_type, phaseLetter, mau, location, row, cab)VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+
+   if($setPowerProduct = mysqli_prepare($connection, $secondaryPowerProduct)){
+    // Bind variables to the prepared statement as parameters
+    mysqli_stmt_bind_param($setPowerProduct,"sssssisss", $cID,$sID,$panelName,$power_type,$phaseLetter, $mau,$location,$row,$cab);
+
+    
+
+    		$cID = $primaryCid;
+			$sID = $primarySid;
+			$panelName = $primaryPanel;
+			$power_type = $primaryPowerType;
+			$phaseLetter = $primaryPhaseLetters;
+			$mau = $primaryMau;
+			$location = $primaryLocation;
+			$row = $primaryRow;
+			$cab = $primaryCab;
+
+			$sID = "reserv";
+			$mau = 0;
+
+			mysqli_stmt_execute($setPowerProduct);
+
+	    echo 'Records inserted successfully.'.'<br>';
+	} else{
+	    echo "ERROR: Could not prepare query: $sql. " . mysqli_error($connection);
+	}
+
+	mysqli_stmt_close($setPowerProduct);
+
+	// Regex for converting primaryPanel to secondaryPanel;
+	$convertToSecondaryPanel = $primaryPanel;
+	$secondaryPanel = str_replace("-P","-S", $convertToSecondaryPanel);
+
+	// secondary phase letters
+	$ppl = $phaseLetter;
+
+	//echo 'This is the Phase '.$ppl.' in Panel '.$secondaryPanel;
+
+	// Query Secondary Section --------------------------------------------------
+	$grabSection = "SELECT panelName, PhaseA, PhaseB, PhaseC, PhaseAB, PhaseBC, PhaseAC, PhaseABC, Phase_Left_A, Phase_Left_B, Phase_Left_C FROM secondarysection where panelName='$secondaryPanel'";
+
+	$resultSection = $connection->query($grabSection);
+
+	if ($resultSection->num_rows > 0) { //(
+	    while($row = $resultSection->fetch_assoc()) {
+
+	    	$panel = $row["panelName"];
+	    	$PhaseA_Section = $row["PhaseA"];
+	    	$PhaseB_Section = $row["PhaseB"];
+	    	$PhaseC_Section = $row["PhaseC"];
+	    	$PhaseAB_Section = $row["PhaseAB"];
+	    	$PhaseBC_Section = $row["PhaseBC"];
+	    	$PhaseAC_Section = $row["PhaseAC"];
+	    	$PhaseABC_Section = $row["PhaseABC"];
+	    	$Phase_Left_A = $row["Phase_Left_A"];
+	    	$Phase_Left_B = $row["Phase_Left_B"];
+	    	$Phase_Left_C = $row["Phase_Left_C"];
+
+	    	//echo 'Panel: '.$panel.' Phase A: '.$PhaseA_Section.' Phase B: '.$PhaseB_Section.' Phase C: '.$PhaseC_Section.' Phase AB: '.$PhaseAB_Section.' Phase BC: '.$PhaseBC_Section.' Phase AC: '.$PhaseAC_Section.' Phase ABC: '.$PhaseABC_Section.' Phase_Left_A: '.$Phase_Left_A.' Phase_Left_B: '.$Phase_Left_B.' Phase_Left_C: '.$Phase_Left_C.'<br>'.'<br>';
+	  }
+	} //)
+	else {
+		echo 'No panel here'.'<br>';
+	}
+
+	// Update values into Secondary Section --------------------------------------------------
+	switch ($ppl) {
+	    case "A":
+	        $PhaseA_Section = $PhaseA_Section - 1;
+	        $PhaseAB_Section = $PhaseAB_Section - 1;
+	        $PhaseAC_Section = $PhaseAC_Section - 1;
+			$PhaseABC_Section = $PhaseABC_Section - 1;
+	        break;
+	    case "B":
+	        $PhaseB_Section = $PhaseB_Section - 1;
+	        $PhaseAB_Section = $PhaseAB_Section - 1;
+			$PhaseBC_Section = $PhaseBC_Section - 1;
+			$PhaseABC_Section = $PhaseABC_Section - 1;
+	        break;
+	    case "C":
+	        $PhaseC_Section = $PhaseC_Section - 1;
+	        $PhaseBC_Section = $PhaseBC_Section - 1;
+			$PhaseAC_Section = $PhaseAC_Section - 1;
+			$PhaseABC_Section = $PhaseABC_Section - 1;
+	        break;        		
+	    case "A,B":
+	        $PhaseA_Section = $PhaseA_Section - 1;
+	        $PhaseB_Section = $PhaseB_Section - 1;
+	        $PhaseAB_Section = $PhaseAB_Section - 1;
+			$PhaseBC_Section = $PhaseBC_Section - 1;
+			$PhaseAC_Section = $PhaseAC_Section - 1;
+			$PhaseABC_Section = $PhaseABC_Section - 1;
+	        break;
+	    case "B,C":
+	    	$PhaseB_Section = $PhaseB_Section - 1;
+	    	$PhaseC_Section = $PhaseC_Section - 1;
+	        $PhaseAB_Section = $PhaseAB_Section - 1;
+	        $PhaseBC_Section = $PhaseBC_Section - 1;
+			$PhaseAC_Section = $PhaseAC_Section - 1;
+			$PhaseABC_Section = $PhaseABC_Section - 1;
+	        break;
+	    case "A,C":
+	        $PhaseA_Section = $PhaseA_Section - 1;
+	        $PhaseC_Section = $PhaseC_Section - 1;
+	        $PhaseAB_Section = $PhaseAB_Section - 1;
+	        $PhaseBC_Section = $PhaseBC_Section - 1;
+			$PhaseAC_Section = $PhaseAC_Section - 1;
+			$PhaseABC_Section = $PhaseABC_Section - 1;
+	        break;
+	    case "A,B,C":
+	        $PhaseA_Section = $PhaseA_Section - 1;
+	        $PhaseB_Section = $PhaseB_Section - 1;
+	    	$PhaseC_Section = $PhaseC_Section - 1;
+			$PhaseAB_Section = $PhaseAB_Section - 1;
+			$PhaseBC_Section = $PhaseBC_Section - 1;
+			$PhaseAC_Section = $PhaseAC_Section - 1;
+			$PhaseABC_Section = $PhaseABC_Section - 1;
+	        break;    
+	    default:
+	        echo "No Phase Letter Selected".'<br>';
+}
+
+	// No updates to $Phase_Left_A, $Phase_Left_B, and $Phase_Left_C in this function. -- go back to here maybe later?
+	$secondarySection = "UPDATE secondarysection SET PhaseA=?, PhaseB=?, PhaseC=?, PhaseAB=?, PhaseBC=?, PhaseAC=?, PhaseABC=?, Phase_Left_A=?, Phase_Left_B=?, Phase_Left_C=? WHERE panelName=?";
+
+	if($setSection = mysqli_prepare($connection, $secondarySection)){
+    // Bind variables to the prepared statement as parameters
+	mysqli_stmt_bind_param($setSection,"iiiiiiiddds", $PhaseA_Section,$PhaseB_Section,$PhaseC_Section,$PhaseAB_Section, $PhaseBC_Section, $PhaseAC_Section, $PhaseABC_Section, $Phase_Left_A,$Phase_Left_B,$Phase_Left_C,$secondaryPanel);
+
+			mysqli_stmt_execute($setSection);
+     }
 }
 
 
