@@ -1,69 +1,92 @@
 <?php
 
-include 'connect.inc.php';
-require_once 'navi.php';
-
-$connection = new mysqli($db_hostname, $db_username, $db_password, $db_database);
-
-//checks connection
-if ($connection->connect_error) die($connection->connect_error);
-
-echo <<<_END
-<div class=content>
-<style>
-    table{
-        border: 1px solid black;
-    }
-    
-    th {
-        text-decoration: underline;
-    }
-</style>
-<body>
-<table border="0" cellpadding="10" cellspacing="5" bgcolor="#eeeeee">
-    <th colspan="2" align="center">New Customer</th>
-    <form action = 'new_customer.php' method='post'>
-    <tr><td>cID </td>
-    <td><input type='text' name='cID'></td></tr>
-    <tr><td>Customer Name </td>
-    <td><input type='text' name='customerName'></td></tr>
-    <tr><td><input type="submit" value="Add Customer" name="newCustomer"></td></tr>
-</form>
-</div>
-</body>
-
-_END;
-
-if(isset($_POST['cID']) && isset($_POST['customerName']) && isset($_POST['newCustomer'])){
-
-    //Prepare and bind
-    $stmt = $connection->prepare("INSERT INTO customer(cID,customerName) VALUES(?,?)");
-    $stmt->bind_param('is', $_POST['cID'],$_POST['customerName']);
-    //Parameters are already set, execute
-    $stmt->execute();
-
-    $stmt = $connection->prepare("SELECT cID, customerName FROM customer ");
-    $stmt->execute();
-    $stmt->bind_result($cID,$customerName);
-    //fetch values
-    while ($stmt->fetch()) {
-    echo "$cID $customerName"."<br>";
-    }
 
 
-    //close statement
-    $stmt->close();
-    
-}
+include 'new_customer_functions.php';
+//include 'css.css';
+//require_once 'navi.php';
+require_once 'newNav.php';
 
-    $connection->close();
-
-//To prevent SQL injections
-/*
-function get_post($connection, $var)
-    {
-            return $connection->real_escape_string($_POST['$var']);
-    }
-*/
 
 ?>
+
+<html>
+ <head>
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>  
+
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
+  <script type="text/javascript" src="assets/jquery-1.11.3-jquery.min.js"></script>
+  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" media="screen"> 
+<link href="assets/datatables.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" type="text/css" href="css/new_customer.css" />
+ </head>
+<!--
+             <style>
+                div #newCust {
+                   margin: 0 auto;
+                }
+            </style>
+-->            
+    <body>   
+        <!-- <div><h2> Add Customer </h2></div> -->
+       <!-- <div class="content container-fluid" id="newCustomer">
+       -->
+            <div class="container" id="content">
+              <div><h2> Add Customer </h2></div>
+                <div class="row">
+                    <div class="col-xs-5" id="custUI">
+                    <form action = 'new_customer.php' method='post'>
+                    <div class="header"><h3>New Customer </h3></div>
+                    <hr class="half-rule"/>
+                        <div class="form-group">
+                            <label for="cID">Customer ID</label>
+                            <input class="form-control" type='text' class="form-control" id="cID" name='cID'>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerName">Customer Name</label>
+                            <input class="form-control" type='text' id="customerName" name='customerName'>
+                        </div>
+                            <div class="form-group">
+                                 <!--
+                                 <input class="form-control" type="submit" value="Add Customer" name="newCustomer"> 
+                                 -->
+                                 <button type="submit" class="btn btn-primary" name="newCustomer" id="newCustomer" style="height: 37px; width: 100%; left: 250; top: 250;">Add Customer
+                                 </button> 
+                                
+
+                             </div>
+                    </form>
+                    </div>
+                </div> <!-- row -->
+        </div>
+    </body>
+</html>
+
+
+<!-- OLD new customer
+
+<body>
+        
+        <div><h2> Add Customer </h2></div>
+        <div class="content">
+
+            <table border="0" cellpadding="10" cellspacing="5" bgcolor="#eeeeee">
+                <th colspan="2" align="center">New Customer</th>
+                <form action = 'new_customer.php' method='post'>
+                <tr><td>cID </td>
+                <td><input type='text' name='cID'></td></tr>
+                <tr><td>Customer Name </td>
+                <td><input type='text' name='customerName'></td></tr>
+                <tr><td><td><input type="submit" value="Add Customer" name="newCustomer"></td></td></tr>
+                </form>
+        </div>
+        
+    </body>
+
+
+-->
+
