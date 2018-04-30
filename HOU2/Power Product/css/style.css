@@ -1,0 +1,233 @@
+/* 
+CSS for powerproduct.php
+
+Need to change to index.css down the line
+
+
+ */
+ @import "http://fonts.googleapis.com/css?family=Raleway";
+ 
+
+div #content {
+    margin: 0 auto;
+
+}
+
+/*START Add Customer UI */
+.header {
+    /* background-color: #D3D3D3; */
+    text-align: center;
+}
+
+.half-rule { 
+    margin-left: 0;
+    text-align: left;
+    width: 100%;
+ }
+
+
+#custUI {
+    border-radius:10px;
+    border:2px solid gray;
+    /* padding: 10px 20px 10px 20px; */
+}
+/*END Add Customer UI */
+
+
+.gui {
+width:900px;
+height:610px;
+margin: auto 800px auto 0px;
+font-family:'Raleway',sans-serif
+background-color: yellow;
+float:left;
+display: inline-block;
+ /* background-color: red; */
+}
+
+
+/*START Add Power*/
+div.customer{
+width:306px;
+padding: 10px 10px 10px 10px;
+border:2px solid gray;
+border-radius:10px;
+font-family:raleway;
+float:left;
+}
+
+.primarypower {
+width: 306px;
+height: 550px;
+margin-top: 10px;
+margin-right: 5px;
+padding: 15px 10px;
+border:2px solid gray;
+border-radius:10px;
+font-family:raleway;
+float:left;
+
+/*background-color: blue;*/
+}
+
+.secondarypower {
+width: 306px;
+height: 550px;
+margin-top: 10px;
+padding: 15px 10px;
+border:2px solid gray;
+border-radius:10px;
+font-family:raleway;
+float:left
+/* background-color: yellow; */
+}
+/*END Add Power*/
+
+
+/* Above line is used for online google font */
+/*
+h2 {
+background-color:#FEFFED;
+padding:30px 35px;
+margin:-10px -50px;
+text-align:center;
+border-radius:10px 10px 0 0
+}
+*/
+span {
+display:block;
+margin-top:10px;
+color:red
+}
+
+hr {
+margin:10px -50px;
+border:0;
+border-top:1px solid #ccc;
+margin-bottom:25px
+}
+
+/*
+div.container {
+width:900px;
+height:610px;
+margin:35px auto;
+font-family:'Raleway',sans-serif
+}
+
+div.main {
+width:306px;
+padding:10px 50px;
+border:2px solid gray;
+border-radius:10px;
+font-family:raleway;
+float:left
+}
+*/
+input[type=text] {
+width:100%;
+height:40px;
+padding:5px;
+margin-bottom:25px;
+margin-top:5px;
+border:2px solid #ccc;
+color:#4f4f4f;
+font-size:16px;
+border-radius:5px
+}
+
+input[type=radio] {
+margin:10px 10px 0
+}
+
+label {
+color:#464646;
+text-shadow:0 1px 0 #fff;
+font-size:14px;
+font-weight:700
+}
+
+input[type=submit] {
+font-size:16px;
+ background:linear-gradient(#ffbc00 5%,#ffdd7f 100%); 
+border:1px solid #e5a900;
+ color:#4E4D4B;
+
+font-weight:700;
+cursor:pointer;
+width:100%;
+border-radius:5px;
+padding:10px 0;
+outline:none
+}
+
+select {
+
+    border:2px solid #ccc;
+    border-radius:5px;
+    padding:5px;
+}
+
+input[type=submit]:hover {
+background:linear-gradient(#ffdd7f 5%,#ffbc00 100%)
+}
+
+ #category2 option{
+            display:none;
+        }
+
+
+        #category2 option.label{
+            display:block;
+        }
+
+/* Style for Primary Power Type for Phases */
+ #category4 option{
+            display:none;
+        }
+
+
+#category4 option.label{
+            display:block;
+}
+
+/* Style for Secondary Panel Name */
+ #category6 option{
+            display:none;
+        }
+
+
+#category6 option.label{
+            display:block;
+}
+
+
+/* Style for Secondary Power Type for Phases */
+ #category8 option{
+            display:none;
+        }
+
+
+#category8 option.label{
+            display:block;
+}
+
+
+#customerLocation option{
+            display:none;
+        }
+
+
+#customerLocation option.label{
+            display:block;
+}
+
+#primaryAdd {
+    display: none;
+}
+
+#secondaryAdd {
+    display: none;
+}
+
+

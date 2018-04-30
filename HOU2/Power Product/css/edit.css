@@ -1,0 +1,18 @@
+#category2 option{
+            display:none;
+        }
+
+
+        #category2 option.label{
+            display:block;
+        }
+
+/* Style for Primary Power Type for Phases */
+ #category4 option{
+            display:none;
+        }
+
+
+#category4 option.label{
+            display:block;
+}
