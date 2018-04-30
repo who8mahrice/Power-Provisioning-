@@ -256,7 +256,7 @@ function calculatePrimaryPower($primaryCid, $primarySid, $primaryPowerType, $pri
 		
 
 
-
+		// Returning an array to get multiple values
 		list($a,$ratioA,$totalWattsA,$totalPhaseVaA,$totalPhaseWattsA,$ratioB,$totalWattsB,$totalPhaseVaB,$totalPhaseWattsB,$ratioC,$totalWattsC,$totalPhaseVaC,$totalPhaseWattsC,$phaseValue_A,$phaseValue_B,$phaseValue_C) = returner($aa,$ratioAs, $totalWattsAs,$totalPhaseVaAs,$totalPhaseWattsAs,$ratioBs,$totalWattsBs,$totalPhaseVaBs,$totalPhaseWattsBs,$ratioCs,$totalWattsCs,$totalPhaseVaCs,$totalPhaseWattsCs,$phaseValue_As,$phaseValue_Bs,$phaseValue_Cs);
 
 	    	//echo "sID: " . $row["sID"]. " numberOfPhases: ".$row["numberOfPhases"]." ratio_A: " . $row["ratio_A"]. " totalWatts_A: " . $row["totalWatts_A"]." totalPhaseVa_A: ".$row["totalPhaseVa_A"]." totalPhaseWatts_A: ".$row["totalPhaseWatts_A"]. " ratio_B: " . $row["ratio_B"]. " totalWatts_B: ".$row["totalWatts_B"]."  totalPhaseVa_B: " . $row["totalPhaseVa_B"]. " totalPhaseWatts_B: " . $row["totalPhaseWatts_B"]." ratio_C: ".$row["ratio_C"]." totalWatts_C: ".$row["totalWatts_C"]."   totalPhaseVa_C: " . $row["totalPhaseVa_C"]. " totalPhaseWatts_C: " . $row["totalPhaseWatts_C"]."<br>";
@@ -774,7 +774,7 @@ function addPrimaryPower($primaryCid,$primarySid,$primaryPanel,$primaryPowerType
     //echo "<meta http-equiv='refresh' content='2'>";
 }
 
-
+// Returning an array to get multiple values
 function returner($aa,$ratioAs,$totalWattsAs,$totalPhaseVaAs,$totalPhaseWattsAs,$ratioBs,$totalWattsBs,$totalPhaseVaBs,$totalPhaseWattsBs,$ratioCs,$totalWattsCs,$totalPhaseVaCs,$totalPhaseWattsCs,$phaseValue_As,$phaseValue_Bs,$phaseValue_Cs) {
 
 
@@ -1048,6 +1048,7 @@ function reserveSecondary($primaryCid,$primarySid,$primaryPanel,$primaryPowerTyp
 
 		//list($a, $ratioA, $totalWattsA, $totalPhaseVaA, $totalPhaseWattsA, $ratioB, $totalWattsB, $totalPhaseVaB, $totalPhaseWattsB, $ratioC, $totalWattsC, $totalPhaseVaC, $totalPhaseWattsC) = returner($aa, $ratioAs,$totalWattsAs,$totalPhaseVaAs,$totalPhaseWattsAs,$ratioBs,$totalWattsBs,$totalPhaseVaBs,$totalPhaseWattsBs,$ratioCs,$totalWattsCs,$totalPhaseVaCs,$totalPhaseWattsCs);
 
+		// Returning an array to get multiple values
 		list($a,$ratioA,$totalWattsA,$totalPhaseVaA,$totalPhaseWattsA,$ratioB,$totalWattsB,$totalPhaseVaB,$totalPhaseWattsB,$ratioC,$totalWattsC,$totalPhaseVaC,$totalPhaseWattsC,$phaseValue_A,$phaseValue_B,$phaseValue_C) = returner($aa,$ratioAs, $totalWattsAs,$totalPhaseVaAs,$totalPhaseWattsAs,$ratioBs,$totalWattsBs,$totalPhaseVaBs,$totalPhaseWattsBs,$ratioCs,$totalWattsCs,$totalPhaseVaCs,$totalPhaseWattsCs,$phaseValue_As,$phaseValue_Bs,$phaseValue_Cs);
 
 	    	//echo "sID: " . $row["sID"]. " numberOfPhases: ".$row["numberOfPhases"]." ratio_A: " . $row["ratio_A"]. " totalWatts_A: " . $row["totalWatts_A"]." totalPhaseVa_A: ".$row["totalPhaseVa_A"]." totalPhaseWatts_A: ".$row["totalPhaseWatts_A"]. " ratio_B: " . $row["ratio_B"]. " totalWatts_B: ".$row["totalWatts_B"]."  totalPhaseVa_B: " . $row["totalPhaseVa_B"]. " totalPhaseWatts_B: " . $row["totalPhaseWatts_B"]." ratio_C: ".$row["ratio_C"]." totalWatts_C: ".$row["totalWatts_C"]."   totalPhaseVa_C: " . $row["totalPhaseVa_C"]. " totalPhaseWatts_C: " . $row["totalPhaseWatts_C"]."<br>";
