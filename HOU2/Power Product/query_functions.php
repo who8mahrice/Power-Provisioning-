@@ -1,171 +1,138 @@
 <?php
-include 'connect.inc.php';
+//echo '<div class="content-loader">';
+require_once 'dbconfig.php';
+
+$customer = $_POST['customer'];
+//echo $customer;
+$location = $_POST['location'];
+//echo $location;
+
+//echo'<body>';
+echo '<div class="content-loader">';
+echo '<table cellspacing="0" width="100%" id="example" class="table table-striped table-hover table-responsive">';
+echo '<thead>';
+echo '<tr>
+        <th>Cus sID</th>
+        <th>Panel Name</th>
+        <th>Power Type</th>
+        <th>Phase Letter</th>
+        <th>MAU</th>
+        <th>Location</th>
+        <th>Row</th>
+        <th>Cab</th>
+        <th>Edit</th>
+        <th>Delete</th>
+        </tr>';
+echo '</thead>';
+echo '<tbody>';
+//$stmt = $db_con->prepare("SELECT * FROM primarypowerproduct WHERE cID='$customer' AND location='$location'");
+$stmt = $db_con->prepare("SELECT * FROM primarypowerproduct WHERE cID='$customer' AND location='$location' UNION SELECT * FROM secondarypowerproduct WHERE cID='$customer' AND location='$location' ORDER BY id");
+
+        $stmt->execute();
+    while($row=$stmt->fetch(PDO::FETCH_ASSOC))
+    {
+echo '<tr>';
+echo '<td>';
+echo $row['sID'];
+echo '</td>';
+echo '<td>';
+echo $row['panelName'];
+echo '</td>';
+echo '<td>';
+echo $row['power_type'];
+echo '</td>';
+echo '<td>';
+echo $row['phaseLetter'];
+echo '</td>';
+echo '<td>';
+echo $row['mau'];
+echo '</td>';
+echo '<td>';
+echo $row['location'];
+echo '</td>';
+echo '<td>';
+echo $row['row'];
+echo '</td>';
+echo '<td>';
+echo $row['cab'];
+echo '</td>';
+
+//echo '<td>';
+echo '<td align="center">';
+echo '<a id="';
+echo $row['sID'];
+echo '" class="edit-link" href="#" title="Edit">';
+//debug_to_console($row['sID']);
+echo '<img src="edit.ico" width="20px" />';
+echo '</a>';
+echo '</td>';
 
 
-$connection = new mysqli($db_hostname, $db_username, $db_password, $db_database);
-
-//checks connection
-if ($connection->connect_error) die($connection->connect_error);
-
-if(isset($_POST["queryCustomer"]))  
- {  
- 	if (isset($_POST['customer']) && !empty($_POST['customer'])
- 	&& isset($_POST['location']) && !empty($_POST['location'])
- 	&& isset($_POST['searchsID']) && !empty($_POST['searchsID']))
- 	{
- 		$cIDs = $_POST['customer'];
-	 	$locations =  $_POST['location'];
-	 	$searchsID = $_POST['searchsID'];
-
-	 	echo $searchsID;
-
-
- 	}
- 	else {
-	 	if (isset($_POST['customer']) && !empty($_POST['customer'])
-	 	&& isset($_POST['location']) && !empty($_POST['location']))
-	 	{
-	 		$cIDs = $_POST['customer'];
-	 		$locations =  $_POST['location'];
-
-	 	}
-	 	searchCustomer($cIDs,$locations,$connection);
- 	}
-
- }
-
-
-
-
-function searchCustomer($cIDs,$locations,$connection){
-
-//$grabPrimaryCustomer = "SELECT sID, power_type, panelName, location, row, cab FROM primarypowerproduct WHERE cID='$cIDs' AND location='$locations'";
-
-$grabPrimaryCustomer = "SELECT primarypowerproduct.sID, primarypowerproduct.power_type, primaryphase.phaseLetter, primarypowerproduct.panelName,  primarypowerproduct.location, primarypowerproduct.row, primarypowerproduct.cab
-FROM primarypowerproduct
-INNER JOIN `primaryphase` on primaryphase.sID = primarypowerproduct.sID and primarypowerproduct.cID='$cIDs' and primarypowerproduct.location='$locations'";
-
-
-//$grabSecondaryCustomer = "SELECT sID, power_type, panelName, location, row, cab FROM secondarypowerproduct WHERE cID='$cIDs' AND location='$locations'";
-
-
-$grabSecondaryCustomer = "SELECT DISTINCT secondarypowerproduct.sID, secondarypowerproduct.power_type, secondaryphase.phaseLetter,secondarypowerproduct.panelName, secondarypowerproduct.location, secondarypowerproduct.row, secondarypowerproduct.cab
-FROM secondarypowerproduct
-INNER JOIN `secondaryphase` on secondaryphase.sID = secondarypowerproduct.sID and secondarypowerproduct.cID='$cIDs' and secondarypowerproduct.location='$locations'";
-
-
-$primaryRow ="0";
-$primaryCab ="0";
-$secondaryRow ="0";
-$secondaryCab ="0";
-
-$primaryCustomers = mysqli_query($connection, $grabPrimaryCustomer);  
-
-$secondaryCustomers = mysqli_query($connection, $grabSecondaryCustomer);  
-//$resultCustomer = $connection->query($grabCustomer);
-			echo'<div class="wholeOutput">';	
-	    	echo'<div class="outputPrimaryCustomer">';	
-	    	echo "<table>";
-	    	echo '<th>sID</th>
-	    	<th>Power Type</th>
-	    	<th>Phase</th>
-	    	<th>Panel</th>
-	    	<th>Location</th>
-	    	<th>Row</th>
-	    	<th>Cabinet</th>';
-
-
-while($primaryCustomer = mysqli_fetch_array($primaryCustomers)){
-			$rows = $primaryCustomer['row'];
-			$cabs = $primaryCustomer['cab'];
-
-			if($primaryRow === $rows && $primaryCab === $cabs) {
-
-		    	echo "<tr><td>".$primaryCustomer['sID']."</td>
-		    	<td>".$primaryCustomer['power_type']."</td>
-		    	<td>".$primaryCustomer['phaseLetter']."</td>
-		    	<td>".$primaryCustomer['panelName']."</td>
-		    	<td>".$primaryCustomer['location']."</td>
-		    	<td>".$primaryCustomer['row']."</td>
-		    	<td>".$primaryCustomer['cab']."</td>
-		    	</tr>";
-		    }
-	    	else {
-
-
-	    		$primaryRow = $rows;
-	    		$primaryCab = $cabs;
-	    		echo "<tr><td>".' '."</td></tr>";
-	    		echo "<tr><td>".' '."</td></tr>";
-	    		echo "<tr><td>".' '."</td></tr>";
-	    		echo "<tr><td>".' '."</td></tr>";
-	    		echo "<tr><td>".$primaryCustomer['sID']."</td>
-		    	<td>".$primaryCustomer['power_type']."</td>
-		    	<td>".$primaryCustomer['phaseLetter']."</td>
-		    	<td>".$primaryCustomer['panelName']."</td>
-		    	<td>".$primaryCustomer['location']."</td>
-		    	<td>".$primaryCustomer['row']."</td>
-		    	<td>".$primaryCustomer['cab']."</td>
-		    	</tr>";
-
-	    	}
-
-	    }
-
-	    	echo "</table>";
-	    	echo"</div>";
-
-
-	    	echo'<div class="outputSecondaryCustomer">';	
-	    	echo "<table>";
-	    	echo '<th>sID</th>
-	    	<th>Power Type</th>
-	    	<th>Phase</th>
-	    	<th>Panel</th>
-	    	<th>Location</th>
-	    	<th>Row</th>
-	    	<th>Cabinet</th>';
-
-while($secondaryCustomer = mysqli_fetch_array($secondaryCustomers)){
-			$rows = $secondaryCustomer['row'];
-			$cabs = $secondaryCustomer['cab'];
-
-			if($secondaryRow === $rows && $secondaryCab === $cabs) {
-
-	    	echo "<tr><td>".$secondaryCustomer['sID']."</td>
-	    	<td>".$secondaryCustomer['power_type']."</td>
-	    	<td>".$secondaryCustomer['phaseLetter']."</td>
-	    	<td>".$secondaryCustomer['panelName']."</td>
-	    	<td>".$secondaryCustomer['location']."</td>
-	    	<td>".$secondaryCustomer['row']."</td>
-	    	<td>".$secondaryCustomer['cab']."</td>
-	    	</tr>";
-	    }
-	    	else {
-
-
-	    		$secondaryRow = $rows;
-	    		$secondaryCab = $cabs;
-	    		echo "<tr><td>".' '."</td></tr>";
-	    		echo "<tr><td>".' '."</td></tr>";
-	    		echo "<tr><td>".' '."</td></tr>";
-	    		echo "<tr><td>".' '."</td></tr>";
-	    		echo "<tr><td>".$secondaryCustomer['sID']."</td>
-	    	<td>".$secondaryCustomer['power_type']."</td>
-	    	<td>".$secondaryCustomer['phaseLetter']."</td>
-	    	<td>".$secondaryCustomer['panelName']."</td>
-	    	<td>".$secondaryCustomer['location']."</td>
-	    	<td>".$secondaryCustomer['row']."</td>
-	    	<td>".$secondaryCustomer['cab']."</td>
-	    	</tr>";
-
-	    	}
-
-	    	}
-
-	    	echo "</table>";
-	    	echo"</div>";	
-	    	echo"</div>";	  //div for wholeOutput    	
+echo '<td align="center">';
+echo '<a id="';
+echo $row['sID'];
+echo '" class="delete-link" href="#" title="Delete">';
+//echo '"'; 
+//echo $row['panelName'];
+//echo '"';
+//echo 'class="delete-link" href="#" title="Delete">;';
+echo '<img src="delete.png" width="20px" />';
+echo '</a>';
+echo '</td>';
+echo '</tr>';
 }
+echo '</tbody>';
+
+echo '</table>';
+echo '</div>';
+
+echo'<script type="text/javascript" src="js/query.js"></script>';
+echo '<script type="text/javascript" charset="utf-8">';
+echo '$(document).ready(function() {';
+echo "$('#example').DataTable();";
+echo "$('#example').removeClass( 'display' ).addClass('table table-bordered');});";
+echo '</script>';
+
+echo '<div id="output"></div>';
+
+function debug_to_console( $data ) {
+    $output = $data;
+    if ( is_array( $output ) )
+        $output = implode( ',', $output);
+
+    echo "<script>console.log( 'Debug Objects: " . $output . "' );</script>";
+}
+//echo '</body>';
+
+/*
+echo '';
+echo '';
+echo '';
+echo '';
+echo '';
+echo '';
+echo '';
+echo '';
+echo '';
+echo '';
+echo '';
+echo '';
+echo '';
+echo '';
+echo '';
+echo '';
+echo '';
+echo '';
+echo '';
+echo '';
+echo '';
+echo '';
+echo '';
+echo '';
+echo '';
+echo '';
+*/
+
+
 
 ?>
