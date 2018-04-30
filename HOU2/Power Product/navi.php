@@ -26,13 +26,16 @@
                 transform: translate3d(-200px, 0, 0);
                 transition: transform 0.4s ease;
             }
+
             .active-nav nav {
                 transform: translate3d(0, 0, 0);
             }
+
             nav ul {
                 list-style: none;
                 margin-top: 100px;
             }
+
             nav ul li a {
                 text-decoration: none;
                 display: block;
@@ -51,62 +54,18 @@
             }
 
 
-            #addAll {
-                /*width: 5em;  */
-                /*height: 2em;*/
-            }
-            
-/*
-            .content {
-                padding-top: 10px;
-                height: 2000px;
-                background-color: #ccf;
-                text-align: center;
-                transition: transform 0.4s ease;
-            }
-*/
-
-            /*This is the old active-nav transition, new one is .active-nav #content    */
+            /*START This is the old active-nav transition, new one is .active-nav #content */
             .active-nav .content {
                 transform: translate3d(200px, 0, 0);
             }
+            /*END This is the old active-nav transition, new one is .active-nav #content */
+            
             /*Use this one */ 
             .active-nav #content {
                 transform: translate3d(200px, 0, 0);
             }
-
-
-            /*
-            .primaryPower {
-                padding-top: 10px;
-                height: 275px;
-                width: 300px;
-                background-color: #ccf;
-       
-                transition: transform 0.4s ease;
-                background-color : blue;
-                float: left;
-
-             */    
-            }
-
             
 
-            .secondaryPower {
-                /*
-
-                padding-top: 10px;
-                margin-left: 300px; 
-                height: 275px;
-                width: 300px;
-                background-color : yellow;
-                text-align: center; 
-                transition: transform 0.4s ease;
-
-                */
-                
-                
-            }
 
              #content {
                 background-color : white;
@@ -124,6 +83,7 @@
             
         </style>
     </head>
+
     <body>
         
         <nav>
@@ -132,21 +92,13 @@
             
             <ul>
                 <li><a href="new_customer.php">New Customer</a></li>
-                <!--
-                <li><a href="http://localhost/powerprovision/database/powerproduct.php">Add Power</a></li>
-                -->
                 <li><a href="spaceproduct.php">Add Space</a></li>
                 <li><a href='powerproduct.php'>Add Power</a></li>
-                <li><a href="#">Query Customer</a></li>
+                <li><a href="query.php">Query Customer</a></li>
             </ul>
             
         </nav>
         
-<!--       
-        <div class="content">
-           
-        </div>
--->
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script type="text/javascript">
@@ -160,13 +112,8 @@
                 bodyEl.toggleClass('active-nav');
                 e.preventDefault();
             });
-            
-            
-            
-        })();
-        
-        
-    </script>
+        })();  
 
+    </script>
     </body>
 </html>
