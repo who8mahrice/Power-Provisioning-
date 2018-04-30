@@ -142,6 +142,9 @@ circuitPhaseVa_C FLOAT(9,3),
 totalPhaseVa_C FLOAT(9,3),
 circuitPhaseWatts_C FLOAT(9,3),
 totalPhaseWatts_C FLOAT(9,3),
+phaseValue_A FLOAT(5,3),
+phaseValue_B FLOAT(5,3),
+phaseValue_C FLOAT(5,3),
 INDEX(sID),
 INDEX(cID))ENGINE MyISAM;
 
@@ -175,29 +178,26 @@ circuitPhaseVa_C FLOAT(9,3),
 totalPhaseVa_C FLOAT(9,3),
 circuitPhaseWatts_C FLOAT(9,3),
 totalPhaseWatts_C FLOAT(9,3),
+phaseValue_A FLOAT(5,3),
+phaseValue_B FLOAT(5,3),
+phaseValue_C FLOAT(5,3),
 INDEX(sID),
 INDEX(cID))ENGINE MyISAM;
 
 CREATE TABLE SpaceProduct(
-spaceID SMALLINT(6),
-cID SMALLINT(6),
-cage FLOAT(4,1),
-row SMALLINT(2),
-cab SMALLINT(2),
-mau FLOAT(5,3),
-mac FLOAT(5,3),
+cID VARCHAR(6),
+sID VARCHAR(6),
+spaceType VARCHAR(6),
+location VARCHAR(5),
 INDEX(cID),
-INDEX(row),
-INDEX(cab),
-PRIMARY KEY(spaceID)) ENGINE MyISAM;
+INDEX(location),
+PRIMARY KEY(sID)) ENGINE MyISAM;
 
 CREATE TABLE Customer(
+ID int NOT NULL AUTO_INCREMENT,
 cID SMALLINT(6),
 name VARCHAR(55),
-sID SMALLINT(6),
-spaceID SMALLINT(6),
-INDEX(cID),
-INDEX(sID))ENGINE MyISAM;
+INDEX(ID))ENGINE MyISAM;
 
 -----------------------------------------------------------------------------------------------------------------
 												NOTES
