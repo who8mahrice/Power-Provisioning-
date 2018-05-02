@@ -57,6 +57,19 @@ if($_GET['edit_id'])
 	$stmt2->execute(array(':panel'=>$panel_current));
 	$row2=$stmt2->fetch(PDO::FETCH_ASSOC);
 
+
+	// Get section from $panel_current aka panelName -- test panel
+	$stmt3=$db_con->prepare("SELECT * FROM primarysection WHERE panelName=:panel UNION SELECT * FROM secondarysection WHERE panelName=:panel");
+	$stmt3->execute(array(':panel'=>$panel_current));
+	$row3=$stmt3->fetch(PDO::FETCH_ASSOC);
+
+	$phase_left_As = $row3['Phase_Left_A'];
+	$phase_left_Bs = $row3['Phase_Left_B'];
+	$phase_left_Cs = $row3['Phase_Left_C'];
+
+	debug_to_console("Phase A ".$phase_left_As." Phase B ".$phase_left_Bs." Phase C ".$phase_left_Cs);
+
+
 	$rppName = $row2['rppName'];
 
 	if($isPrimary == true) {
@@ -66,9 +79,9 @@ if($_GET['edit_id'])
 	} else if ($isSecondary == true) {
 
 	} else
-	echo "Messed UP in checking for RPP";
+	//echo "Messed UP in checking for RPP";
 
-	echo "CURRENT: ".$cID_current.' sID: '.$sID_current.' Panel Name: '.$panel_current.' Power Type: '.$power_current.' Phase Letter: ' . $phaseLetter_current . ' MAU: ' . $mau_current . ' Location: ' . $location_current . ' Row: ' . $row_current . ' Cab: ' . $cab_current;
+	debug_to_console("CURRENT: ".$cID_current.' sID: '.$sID_current.' Panel Name: '.$panel_current.' Power Type: '.$power_current.' Phase Letter: ' . $phaseLetter_current . ' MAU: ' . $mau_current . ' Location: ' . $location_current . ' Row: ' . $row_current . ' Cab: ' . $cab_current);
 }
 
 
@@ -189,7 +202,16 @@ function debug_to_console( $data ) {
 						<option rel="RPP-1A-P10" value="1A-P4-10">1A-P4-10</option>
 					</select>
 				</td>
+				
 			</tr>
+			<!-- START --test phase -->
+			<tr id="primary_phases_left">
+				<td></td>
+				<td id="phases_here">
+					<span> <?php echo "Phase_A_Left: ".$phase_left_As ." Phase_B_Left: ".$phase_left_Bs ." Phase_C_Left: ".$phase_left_Cs; ?> </span>
+				</td>
+			</tr>
+			<!-- END --test phase -->
 
 			<?php
 		}
@@ -271,6 +293,14 @@ function debug_to_console( $data ) {
 						<option rel="RPP-1A-S10" value="1A-S4-10">1A-S4-10</option>
 					</select>
 				</td>
+				<!-- START --test phase -->
+				<tr id="secondary_phases_left">
+				<td></td>
+				<td id="phases_here">
+					<span> <?php echo "Phase_A_Left: ".$phase_left_As ." Phase_B_Left: ".$phase_left_Bs ." Phase_C_Left: ".$phase_left_Cs; ?> </span>
+				</td>
+			</tr>
+				<!-- END --test phase -->
 			</tr>
 			<?php
 			} 
