@@ -26,8 +26,15 @@ if($_GET['edit_id'])
 	$location_current = $row['location'];
 	$row_current = $row['row'];
 	$cab_current = $row['cab'];
+	
 	$_SESSION['customer'] = $cID_current;
 	$_SESSION['location'] = $location_current;
+	$_SESSION['sid'] = $sID_current;
+	$_SESSION['panel'] = $panel_current;
+	$_SESSION['power'] = $power_current;
+	$_SESSION['phase'] = $phaseLetter_current;
+	$_SESSION['mau'] = $mau_current;
+
 
 	debug_to_console("Session Customer: ".$_SESSION['customer']);
 	debug_to_console("Session Location: ".$_SESSION['location']);
