@@ -26,7 +26,7 @@ if($_GET['edit_id'])
 	$location_current = $row['location'];
 	$row_current = $row['row'];
 	$cab_current = $row['cab'];
-	
+
 	$_SESSION['customer'] = $cID_current;
 	$_SESSION['location'] = $location_current;
 	$_SESSION['sid'] = $sID_current;
@@ -109,7 +109,7 @@ function debug_to_console( $data ) {
 
 			<tr>
 				<td>sID</td>
-				<td><input type='text' name='editSid' class='form-control' value='<?php  echo $sID_current; ?>' required></td>
+				<td><input type='text' name='editSid' id='editSid' class='form-control' value='<?php  echo $sID_current; ?>' required></td>
 			</tr>
 			<?php
 
@@ -335,18 +335,18 @@ function debug_to_console( $data ) {
 
 		<tr>
 			<td>Row</td>
-			<td><input type='text' name='editRow' value='<?php  echo $row_current; ?>' required></td>
+			<td><input type='text' name='editRow' id='editRow' value='<?php  echo $row_current; ?>' required></td>
 		</tr>
 
 
 		<tr>
 			<td>Cab</td>
-			<td><input type='text' name='editCab' value='<?php  echo $cab_current; ?>' required></td>
+			<td><input type='text' name='editCab' id='editCab' value='<?php  echo $cab_current; ?>' required></td>
 		</tr>
 
 		<tr>
 			<td>MAU</td>
-			<td><input type='text' name='editMau' value='<?php  echo $mau_current; ?>' required></td>
+			<td><input type='text' name='editMau' id='editMau' value='<?php  echo $mau_current; ?>' required></td>
 		</tr>
 
 		<tr>
