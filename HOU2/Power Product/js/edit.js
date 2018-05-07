@@ -123,27 +123,27 @@ $(document).ready(function(){
 
 
 /* =============== START [SEE FIX1 in workflowy] ***TEMP FIX*** for making category[24] disabled to be false (to show true if only cat[24] has values) =============== */
-// $(document).ready(function(){
-//  	var $cat2 = $("#category2");
-// 	var $cat2val = $cat2.val();
+$(document).ready(function(){
+ 	var $cat2 = $("#category2");
+	var $cat2val = $cat2.val();
 
-// 	if( $cat2val != ""){
-// 		$cat2.prop("disabled",false); // Set  to true if cat2 has value
-// 	} else {
-// 		console.log("There is no value given to category2");
-// 	}
+	if( $cat2val != ""){
+		$cat2.prop("disabled",false); // Set  to true if cat2 has value
+	} else {
+		console.log("There is no value given to category2");
+	}
 
-// 	var $cat4 = $("#category4");
-// 	var $cat4val = $cat4.val();
+	var $cat4 = $("#category4");
+	var $cat4val = $cat4.val();
 
-// 	if( $cat4val != ""){
-// 		$cat4.prop("disabled",false);
-// 	} else {
-// 		console.log("There is no value given to category4");
-// 	}
+	if( $cat4val != ""){
+		$cat4.prop("disabled",false);
+	} else {
+		console.log("There is no value given to category4");
+	}
 
 
-// });	
+});	
 /* =============== END [SEE FIX1 in workflowy] ***TEMP FIX*** for making category[24] disabled to be false (to show true if only cat[24] has values) =============== */
 
 
