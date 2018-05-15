@@ -117,6 +117,7 @@ $(document).ready(function(){
              
             $('.content-loader').fadeOut('slow');
         else{
+            $('#test').fadeIn('slow');
             $('.content-loader').fadeIn('slow');
             var cus = $('#customerName').val();
             var loc = $('#customerLocation').val();
@@ -136,6 +137,7 @@ $(document).ready(function(){
             $('.content-loader').fadeOut('slow');
 
         else{
+            $('#test').fadeIn('slow');
             $('.content-loader').fadeIn('slow');
             var cusSession = $('#customerNameSession').val();
             var locSession = $('#customerLocationSession').val();
@@ -156,7 +158,9 @@ $(document).ready(function(){
         if($cLocation.val() == "" )    
         	$('.content-loader').fadeOut('slow');
         else{
+            // $('#test').fadeIn('slow');
         	$('.content-loader').fadeIn('slow');
+
         	var cusSession = $('#customerNameSession').val();
         	var locSession = $('#customerLocationSession').val();
         	$.post('query_functions.php', { customer: cusSession, location: locSession}, function(data) {
@@ -177,8 +181,13 @@ $(document).ready(function(){
      /* If customerName value is empty, hide main */
     $(document).ready(function(){
     $('#customerName').change(function(){
-        if(!$(this).val() )             
+        if(!$(this).val() ){
             $('#test').fadeOut('slow');
+        }      
+        if ($(this).val() == "-SELECT-"){
+            $('#test').fadeOut('slow');
+        }       
+            
     });
 });
 
@@ -210,3 +219,37 @@ $(document).ready(function(){
 		console.log("There is no value given to category2");
 	}
 });	
+
+
+//new
+// $(document).ready(function(){
+//     var cid = $("#customerName");
+//     cid.change(function(){
+//         var val = cid.val();
+//         if(val == "-SELECT-"){
+//         console.log("Reg -SELECT-");
+//         }
+//     });
+// });
+
+//new
+$(document).ready(function(){
+
+    var cid = $("#customerName");
+    var val = cid.val();
+
+    cid.change(function(){
+
+        if(val == "-SELECT-"){
+
+        console.log("Reg -SELECT-");
+
+        } else {
+            console.log("Not a select");
+        }
+
+    });
+
+});
+
+
